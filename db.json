@@ -1,0 +1,9 @@
+{
+    "incidencias-summary": [
+      { "id": 1, "count": 14, "high": 5, "medium": 2, "low": 3 }
+    ],
+    "incidencias-avg-time": [
+      { "id": 1, "currentAvgTimeMin": 400, "pastAvgTimeMin": 300 }
+    ]
+}
+  

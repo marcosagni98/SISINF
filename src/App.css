@@ -1,38 +1,71 @@
-.App {
-  text-align: center;
+.badge-primary {
+  background-color: rgba(13, 110, 253, 1);
+  color: #212529;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.badge-secondary {
+  background-color: rgba(108, 117, 125, 1);
+  color: #212529;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.badge-success {
+  background-color: #B7FFBC;
+  color: #212529;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.badge-danger {
+  background-color: #ff989e;
+  color: #212529;
 }
 
-.App-link {
-  color: #61dafb;
+.badge-warning {
+  background-color: #F7FFB7;
+  color: #212529;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.badge-info {
+  background-color: rgba(13, 202, 240, 1);
+  color: #212529;
+}
+
+.badge-light {
+  background-color: rgba(248, 249, 250, 1);
+  color: #212529;
+}
+
+.badge-dark {
+  background-color: rgba(33, 37, 41, 1);
+  color: #fff;
+}
+
+.badge-primary:hover {
+  background-color: hsl(217, 100%, 50%);
+}
+
+.badge-secondary:hover {
+  background-color: hsl(210, 12%, 45%);
+}
+
+.badge-success:hover {
+  background-color: hsl(145, 80%, 70%);
+}
+
+.badge-danger:hover {
+  background-color: hsl(0, 80%, 75%);
+}
+
+.badge-warning:hover {
+  background-color: hsl(55, 100%, 75%);
+}
+
+.badge-info:hover {
+  background-color: hsl(192, 90%, 60%);
+}
+
+.badge-light:hover {
+  background-color: hsl(0, 0%, 95%);
+}
+
+.badge-dark:hover {
+  background-color: hsl(0, 0%, 20%);
 }
