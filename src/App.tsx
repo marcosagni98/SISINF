@@ -6,6 +6,7 @@ import './App.css';
 import Register from './components/Auth/Register';
 import Dashboard from './components/Dashboard/Dashboard';
 import NewUser from './components/User/NewUser';
+import CreateIncidence from './components/Incidences/CreateIncidence';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Dashboard />} />
         <Route path="/newuser" element={<NewUser />} />
+        <Route path="/newincidence" element={<CreateIncidence />} />
       </Routes>
     </Router>
   );

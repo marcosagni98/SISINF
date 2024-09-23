@@ -17,7 +17,7 @@
                             <input type="text" className="form-control flex-fill my-4" style={{backgroundColor: "#cccccc"}} placeholder="Email" />
                             <div className="col-md-3">
                                 {/*Desplegable */}
-                                <select className="form-control my-4" style={{backgroundColor: "#cccccc"}}>
+                                <select className="form-select my-4" style={{backgroundColor: "#cccccc"}}>
                                     <option>Seleccione una opcion</option>
                                     <option>Usuario</option>
                                     <option>Técnico</option>    
