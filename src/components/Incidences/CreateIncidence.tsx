@@ -1,7 +1,9 @@
 import React from 'react';
+import Layout from '../shared/Layout';
 
 const CreateIncidence: React.FC = () => {
   return (
+    <Layout title=''>
     <div className="container my-4 p-4" style={{backgroundColor: "#cccccc"}}>
         <div className="container my-4 p-4" style={{backgroundColor: "#ffffff"}}>
             <div className="row">
@@ -30,6 +32,7 @@ const CreateIncidence: React.FC = () => {
             </div>
         </div>
       </div>
+      </Layout>
   );
 };
 

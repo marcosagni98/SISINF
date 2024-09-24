@@ -32,10 +32,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed }) => {
     <div className={`d-flex flex-column bg-light vh-100 ${isCollapsed ? 'd-none' : ''}`}>
       <nav className="nav flex-column p-3">
         <NavItem to="/" icon={faHome} label="Inicio" />
-        <NavItem to="/nueva-incidencia" icon={faPlus} label="Nueva Incidencia" />
+        <NavItem to="/newincidence" icon={faPlus} label="Nueva Incidencia" />
         <NavItem to="/mis-incidencias" icon={faList} label="Mis incidencias" />
         <NavItem to="/estadisticas" icon={faChartBar} label="Estadísticas" />
-        <NavItem to="/usuarios" icon={faUser} label="Usuarios" />
+        <NavItem to="/users" icon={faUser} label="Usuarios" />
         <NavItem to="/historico" icon={faHistory} label="Histórico" />
       </nav>
     </div>

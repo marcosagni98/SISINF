@@ -1,8 +1,10 @@
     import React from "react";
     import 'bootstrap/dist/css/bootstrap.min.css';
+    import Layout from '../shared/Layout';
 
     const NewUser = () => {
         return(
+            <Layout title=''>
             <div className="container my-4 p-4" style={{backgroundColor: "#cccccc"}}>
                 <div className="container my-4 p-4" style={{backgroundColor: "#ffffff"}}>
                     <div className="row">
@@ -30,7 +32,7 @@
                     </div>
                 </div>
             </div>
-
+            </Layout>
         );
     }
 
