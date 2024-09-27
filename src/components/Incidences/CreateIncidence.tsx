@@ -1,10 +1,11 @@
 import React from 'react';
 import Layout from '../shared/Layout';
+import './../../App.css';
 
 const CreateIncidence: React.FC = () => {
   return (
     <Layout title=''>
-    <div className="container my-4 p-4" style={{backgroundColor: "#cccccc"}}>
+    <div className="container my-4 p-4 bg-main">
         <div className="container my-4 p-4" style={{backgroundColor: "#ffffff"}}>
             <div className="row">
                 <div className="col-md-12">
@@ -13,12 +14,12 @@ const CreateIncidence: React.FC = () => {
                     </div> 
                     <h5 className="w-100 fw-lighter fs-6 mb-4">Indica de forma detalla la incidencia</h5>
                     {/*Campo Título */}
-                    <input type="text" className="form-control flex-fill my-4" style={{backgroundColor: "#cccccc"}} placeholder="Título" />
+                    <input type="text" className="form-control flex-fill my-4 bg-input" placeholder="Título" />
                     {/*Campo Descripción */}
-                    <input type="text" className="form-control flex-fill my-4" style={{backgroundColor: "#cccccc"}} placeholder="Descripción" />
+                    <input type="text" className="form-control flex-fill my-4 bg-input" placeholder="Descripción" />
                     <div className="col-md-3">
                         {/*Desplegable */}
-                        <select className="form-select my-4" style={{backgroundColor: "#cccccc"}}>
+                        <select className="form-select my-4 bg-input">
                             <option>Seleccione una opcion</option>
                             <option>Crítica</option>
                             <option>Alta</option>    

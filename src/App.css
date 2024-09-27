@@ -69,3 +69,12 @@
 .badge-dark:hover {
   background-color: hsl(0, 0%, 20%);
 }
+
+
+.bg-main{
+  background-color: #F1F1F1;
+}
+
+.bg-input{
+  background-color: #ECECEC;
+}

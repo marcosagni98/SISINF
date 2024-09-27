@@ -5,7 +5,7 @@
     const NewUser = () => {
         return(
             <Layout title=''>
-            <div className="container my-4 p-4" style={{backgroundColor: "#cccccc"}}>
+            <div className="container my-4 p-4 bg-main">
                 <div className="container my-4 p-4" style={{backgroundColor: "#ffffff"}}>
                     <div className="row">
                         <div className="col-md-12">
@@ -14,12 +14,12 @@
                             </div> 
                             <h5 className="w-100 fw-lighter fs-6 mb-4">Registra un nuevo usuario</h5>
                             {/*Campo Nombre */}
-                            <input type="text" className="form-control flex-fill my-4" style={{backgroundColor: "#cccccc"}} placeholder="Nombre" />
+                            <input type="text" className="form-control flex-fill my-4 bg-input" placeholder="Nombre" />
                             {/*Campo Email */}
-                            <input type="text" className="form-control flex-fill my-4" style={{backgroundColor: "#cccccc"}} placeholder="Email" />
+                            <input type="text" className="form-control flex-fill my-4 bg-input" placeholder="Email" />
                             <div className="col-md-3">
                                 {/*Desplegable */}
-                                <select className="form-select my-4" style={{backgroundColor: "#cccccc"}}>
+                                <select className="form-select my-4 bg-input">
                                     <option>Seleccione una opcion</option>
                                     <option>Usuario</option>
                                     <option>Técnico</option>    

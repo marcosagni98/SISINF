@@ -2,7 +2,11 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Layout from '../shared/Layout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faSearch, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faSearch, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import NavItem from '../shared/NavItem';
+
+
+
 
 const Users: React.FC = () => {
     return(
@@ -19,7 +23,7 @@ const Users: React.FC = () => {
                     </div>
                     {/* Boton de Añadir Usuario */}
                     <div>
-                        <button className="btn btn-dark">Añadir Usuario</button>
+                        <NavItem to="/newuser" icon={faPlus} label="Nuevo Usuario"/>
                     </div>
                 </div>
             </div>
