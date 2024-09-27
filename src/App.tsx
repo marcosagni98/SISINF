@@ -9,6 +9,7 @@ import NewUser from './components/User/NewUser';
 import CreateIncidence from './components/Incidences/CreateIncidence';
 import ConfigUsers from './components/User/ConfigUsers';
 import Users from './components/User/ConfigUsers';
+import MyIncidences from './components/Incidences/MyIncidences';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/newuser" element={<NewUser />} />
         <Route path="/newincidence" element={<CreateIncidence />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/mis-incidencias" element={<MyIncidences />} />
         </Routes>
     </Router>
   );
