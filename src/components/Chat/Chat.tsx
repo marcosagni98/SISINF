@@ -1,9 +1,12 @@
 import React from 'react';
+import Layout from '../shared/Layout';
 
 const Chat: React.FC = () => {
   return (
     <div>
-      <h1>Chat</h1>
+      <Layout title="Chat">
+        <div></div>
+      </Layout>
       {/* Aquí va el contenido del chat */}
     </div>
   );

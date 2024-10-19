@@ -2,10 +2,9 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowUp, faEye, faMessage, faSearch } from '@fortawesome/free-solid-svg-icons';
-import Sidebar from '../shared/Sidebar';
-import Topbar from '../shared/Topbar';
 import Layout from '../shared/Layout';
 import IncidenciasCard from './IncidenciasCard';
+import { NavLink } from "react-router-dom";
 
 const Dashboard = () => {
   return (

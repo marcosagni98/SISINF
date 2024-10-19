@@ -34,9 +34,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed }) => {
         <NavItem to="/" icon={faHome} label="Inicio" />
         <NavItem to="/newincidence" icon={faPlus} label="Nueva Incidencia" />
         <NavItem to="/mis-incidencias" icon={faList} label="Mis incidencias" />
-        <NavItem to="/estadisticas" icon={faChartBar} label="Estadísticas" />
+        <NavItem to="/statics" icon={faChartBar} label="Estadísticas" />
         <NavItem to="/users" icon={faUser} label="Usuarios" />
-        <NavItem to="/historico" icon={faHistory} label="Histórico" />
+        <NavItem to="/historic" icon={faHistory} label="Histórico" />
       </nav>
     </div>
   );

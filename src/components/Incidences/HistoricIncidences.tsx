@@ -1,13 +1,13 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faPlus, faList, faChartBar, IconDefinition, faUser, faHistory, faMessage, faEye, faExpand, faSearch} from '@fortawesome/free-solid-svg-icons';
-import Layout from '../shared/Layout';
+import React from "react";
+import Layout from '../../components/shared/Layout';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 
-const MyIncidences: React.FC = () => {
+const HistoricIncidences: React.FC = () => {
   return (
     <div>
-    <Layout title='Mis Incidencias'>
-    <div className="row">
+      <Layout title="Historico de Incidencias">
+        <div className="row">
             <div className="col-md-12">
                 <div className="d-flex my-3">
                     <h4 className="w-100 fw-bold fs-4" />
@@ -28,8 +28,7 @@ const MyIncidences: React.FC = () => {
                     <tr className="text-uppercase">
                         <th className="fw-semibold bg-dark text-light">ID</th>
                         <th className="fw-semibold bg-dark text-light">Título</th>
-                        <th className="fw-semibold bg-dark text-light">Estado</th>
-                        <th className="fw-semibold bg-dark text-light">Prioridad</th>
+                        <th className="fw-semibold bg-dark text-light">Resuelto por</th>
                         <th className="fw-semibold bg-dark text-light"></th>
                             
                     </tr>
@@ -38,22 +37,20 @@ const MyIncidences: React.FC = () => {
                     <tr>
                         <th scope="row">#1234</th>
                         <td>Error en la impresora</td>
-                        <td><span className="badge badge-warning text-dark">En progreso</span></td>
-                        <td><span className="badge badge-danger">Alta</span></td>
-                        <td className="d-flex justify-content-start gap-2">
+                        <td><span className="text-dark">Juan Perez</span></td>
+                        <td>
                             <button type="button" className="btn p-0">
-                                <FontAwesomeIcon icon={faExpand} />
+                                <FontAwesomeIcon icon={faEye} />
                             </button>
                         </td>
                     </tr>
                     <tr>
                         <th scope="row">#1235</th>
                         <td>Actualización de software</td>
-                        <td><span className="badge badge-success">Completado</span></td>
-                        <td><span className="badge badge-warning text-dark">Media</span></td>
-                        <td className="d-flex justify-content-start gap-2">
+                        <td><span className="text-dark">Maria Gonzalez</span></td>
+                        <td>
                             <button type="button" className="btn p-0">
-                                <FontAwesomeIcon icon={faExpand} />
+                                    <FontAwesomeIcon icon={faEye} />
                             </button>
                         </td>
                     </tr>
@@ -61,9 +58,9 @@ const MyIncidences: React.FC = () => {
                 </table>
             </div>
         </div>
-    </Layout>
+      </Layout>
     </div>
   );
 };
 
-export default MyIncidences;
+export default HistoricIncidences;
