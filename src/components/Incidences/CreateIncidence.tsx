@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../shared/Layout';
 import './../../App.css';
-import { faPlus, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import NavItem from '../shared/NavItem';
 
 const CreateIncidence: React.FC = () => {
