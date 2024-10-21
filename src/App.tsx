@@ -11,6 +11,7 @@ import MyIncidences from './components/Incidences/MyIncidences';
 import Statics from './pages/Statics';
 import HistoricIncidences from './components/Incidences/HistoricIncidences';
 import Chat from './components/Chat/Chat';
+import ResolveIncidence from './components/Incidences/ResolveIncidence';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/statics" element={<Statics />} />
         <Route path="/historic" element={<HistoricIncidences />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/resolveincidence" element={<ResolveIncidence />} />
         </Routes>
     </Router>
   );

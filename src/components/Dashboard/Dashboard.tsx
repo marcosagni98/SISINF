@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowUp, faEye, faMessage, faSearch } from '@fortawesome/free-solid-svg-icons';
 import Layout from '../shared/Layout';
 import IncidenciasCard from './IncidenciasCard';
-import { NavLink } from "react-router-dom";
+import NavItem from '../shared/NavItem';
 
 const Dashboard = () => {
   return (
@@ -60,7 +60,9 @@ const Dashboard = () => {
                         <tbody>
                         <tr>
                             <th scope="row">#1234</th>
-                            <td>Error en la impresora</td>
+                            <td>
+                                <NavItem icon={faEye} to='/resolveincidence' label='Error en la impresora'/>
+                            </td>
                             <td><span className="badge badge-warning text-dark">En progreso</span></td>
                             <td><span className="badge badge-danger">Alta</span></td>
                             <td>Juan Perez</td>
@@ -75,7 +77,9 @@ const Dashboard = () => {
                         </tr>
                         <tr>
                             <th scope="row">#1235</th>
-                            <td>Actualización de software</td>
+                            <td>
+                                <NavItem icon={faEye} to='/resolveincidence' label='Actualización de software'/>
+                            </td>
                             <td><span className="badge badge-success">Completado</span></td>
                             <td><span className="badge badge-warning text-dark">Media</span></td>
                             <td>Maria Gonzalez</td>
