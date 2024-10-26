@@ -9,6 +9,7 @@ import NewUser from './components/User/NewUser';
 import CreateIncidence from './components/Incidences/CreateIncidence';
 import ConfigUsers from './components/User/ConfigUsers';
 import Users from './components/User/ConfigUsers';
+import RecoverPassword from './pages/RecoverPassword';
 
 function App() {
   return (
@@ -16,11 +17,12 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/recover-password" element={<RecoverPassword />} />
         <Route path="/" element={<Dashboard />} />
         <Route path="/newuser" element={<NewUser />} />
         <Route path="/newincidence" element={<CreateIncidence />} />
         <Route path="/users" element={<Users />} />
-        </Routes>
+      </Routes>
     </Router>
   );
 }

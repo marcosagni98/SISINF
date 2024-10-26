@@ -7,7 +7,7 @@ const IncidenciasCard = () => {
 
   return (
     <div className="card p-3">
-    <h5>{loading ? <Skeleton /> : "Incidencias Activas"}</h5>
+    <h5>Incidencias Activas</h5>
     <h2 className="fw-semibold">{loading ? <Skeleton height={30} /> : incidencias?.count}</h2>
     {loading ? (
         <Skeleton height={30} />

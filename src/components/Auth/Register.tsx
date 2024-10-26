@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { NavLink } from 'react-router-dom';
 
 const Register: React.FC = () => {
   return (
@@ -18,7 +19,7 @@ const Register: React.FC = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="password" className="form-label">
-              Password
+              Contraseña
             </label>
             <input
               type="password"
@@ -28,7 +29,7 @@ const Register: React.FC = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="repeat-password" className="form-label">
-              Repeat password
+              Repetir contraseña
             </label>
             <input
               type="password"
@@ -38,13 +39,11 @@ const Register: React.FC = () => {
           </div>
           <div className="d-grid gap-2">
             <button type="submit" className="btn btn-dark">
-              Sign Up
+              Registrarse
             </button>
             <span className="text-secondary">
-              Do you already have an account?
-              <a href="#" className="text-secondary mx-1">
-                Sign In
-              </a>
+              ¿Ya tienes una cuenta?
+              <NavLink to="/login" className="text-secondary mx-1">Iniciar sesión</NavLink>
             </span>
           </div>
         </form>
