@@ -1,12 +1,26 @@
 {
   "active-incidences": [
-    { "id": 1, "count": 14, "high": 5, "medium": 2, "low": 3 }
+    {
+      "id": 1,
+      "count": 14,
+      "high": 5,
+      "medium": 2,
+      "low": 3
+    }
   ],
   "average-incidences-resolution-time": [
-    { "id": 1, "avgTimeMin": 150, "changeRatioFromLastMonth": 0.5 }
+    {
+      "id": 1,
+      "avgTimeMin": 150,
+      "changeRatioFromLastMonth": 0.5
+    }
   ],
   "user-happiness": [
-    { "id": 1, "happinessRatio": 0.98, "changeRatioFromLastMonth": 0.5 }
+    {
+      "id": 1,
+      "happinessRatio": 0.98,
+      "changeRatioFromLastMonth": 0.5
+    }
   ],
   "recent-incidences": [
     {
@@ -54,22 +68,25 @@
   ],
   "users": [
     {
-      "id": 1,
-      "name": "Juan Perez",
       "email": "juan@ejemplo.com",
-      "role": "Usuario"
+      "password": "$2a$10$HSdN4uKOqncTzhoe/W/G4ukS.KwhRyST30ocsZ7xHhNY85h.KjPGW",
+      "name": "Juan Perez",
+      "role": 0,
+      "id": 1
     },
     {
-      "id": 2,
-      "name": "Maria Gonzalez",
       "email": "maria@ejemplo.com",
-      "role": "Técnico"
+      "password": "$2a$10$m9dKYHp8crDscBjLVtjmL.MlI06lUfuinIlscWNvpcuEQP0Wkw1qG",
+      "name": "Maria Gonzalez",
+      "role": 1,
+      "id": 2
     },
     {
-      "id": 3,
-      "name": "Carlos Rodriguez",
       "email": "carlos@ejemplo.com",
-      "role": "Administrador"
+      "password": "$2a$10$RzdyHrovvL//viWJGFzJ4OVHVI6D1fEzht5YNzPQYi0VdNZ22HMGu",
+      "name": "Carlos Rodriguez",
+      "role": 2,
+      "id": 3
     }
   ]
 }

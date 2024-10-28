@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faPlus, faList, faChartBar, IconDefinition, faUser, faHistory } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import { UserRole } from "../../enums/userRole";
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -28,15 +30,17 @@ const NavItem: React.FC<NavItemProps> = ({ to, icon, label }) => {
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ isCollapsed }) => {
+  const { user } = useAuth();
+
   return (
     <div className={`d-flex flex-column vh-100 ${isCollapsed ? 'd-none' : ''}`}>
       <nav className="nav flex-column p-3">
         <NavItem to="/" icon={faHome} label="Inicio" />
         <NavItem to="/newincidence" icon={faPlus} label="Nueva Incidencia" />
         <NavItem to="/mis-incidencias" icon={faList} label="Mis incidencias" />
-        <NavItem to="/statics" icon={faChartBar} label="Estadísticas" />
-        <NavItem to="/users" icon={faUser} label="Usuarios" />
-        <NavItem to="/historic" icon={faHistory} label="Histórico" />
+        {user!.role === UserRole.Administrator && <NavItem to="/statics" icon={faChartBar} label="Estadísticas" />}
+        {user!.role === UserRole.Administrator && <NavItem to="/users" icon={faUser} label="Usuarios" />}
+        {user!.role >= UserRole.Technician && <NavItem to="/historic" icon={faHistory} label="Histórico" />}
       </nav>
     </div>
   );

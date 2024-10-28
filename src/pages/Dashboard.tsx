@@ -11,8 +11,12 @@ import useFetchAverageIncidencesResolutionTime from "../hooks/statistics/useFetc
 import useFetchUserHappiness from "../hooks/statistics/useFetchUserHappiness";
 import IncidencesTableComponent from "../components/Incidences/IncidencesTableComponent";
 import useFetchRecentIncidences from "../hooks/incidences/useFetchRecentIncidences";
+import { useAuth } from "../hooks/useAuth";
+import { UserRole } from "../enums/userRole";
 
 const Dashboard = () => {
+  const { user } = useAuth();
+
   const {
     data: dataActiveIncidences,
     completed: completedActiveIncidences,
@@ -51,29 +55,33 @@ const Dashboard = () => {
   return (
     <Layout title="Inicio">
       <div className="row">
-        <div className="col-4 mb-4">
-          <ActiveIncidencesComponent
-            data={dataActiveIncidences}
-            completed={completedActiveIncidences}
-            error={errorActiveIncidences}
-          />
-        </div>
+        {user!.role >= UserRole.Technician &&
+          <>
+            <div className="col-4 mb-4">
+              <ActiveIncidencesComponent
+                data={dataActiveIncidences}
+                completed={completedActiveIncidences}
+                error={errorActiveIncidences}
+              />
+            </div>
 
-        <div className="col-4 mb-4">
-          <AverageIncidencesResolutionTimeComponent
-            data={dataAverageIncidencesResolutionTime}
-            completed={completedAverageIncidencesResolutionTime}
-            error={errorAverageIncidencesResolutionTimes}
-          />
-        </div>
+            <div className="col-4 mb-4">
+              <AverageIncidencesResolutionTimeComponent
+                data={dataAverageIncidencesResolutionTime}
+                completed={completedAverageIncidencesResolutionTime}
+                error={errorAverageIncidencesResolutionTimes}
+              />
+            </div>
 
-        <div className="col-4 mb-4">
-          <UserHappinessComponent
-            data={dataUserHappiness}
-            completed={completedUserHappiness}
-            error={errorUserHappiness}
-          />
-        </div>
+            <div className="col-4 mb-4">
+              <UserHappinessComponent
+                data={dataUserHappiness}
+                completed={completedUserHappiness}
+                error={errorUserHappiness}
+              />
+            </div>
+          </>
+        }
       </div>
 
       <div className="row">

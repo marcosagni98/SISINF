@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "./useAuth";
 
 interface FetchBaseResult<T> {
   data: T | null;
@@ -7,17 +8,28 @@ interface FetchBaseResult<T> {
   fetchData: (url: string) => Promise<void>;
 }
 
-const useFetchBase = <T>(): FetchBaseResult<T> => {
+const useFetchWithAuthBase = <T>(): FetchBaseResult<T> => {
   const [data, setData] = useState<T | null>(null);
   const [completed, setCompleted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  const { token } = useAuth();
 
   const fetchData = async (url: string) => {
     setCompleted(false);
     setError(null);
 
     try {
-      const response = await fetch(url);
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      };
+
+      const config: RequestInit = {
+        headers,
+      };
+
+      const response = await fetch(url, config);
       if (!response.ok) throw new Error("Error fetching data");
       const result = await response.json();
       setData(result);
@@ -35,4 +47,4 @@ const useFetchBase = <T>(): FetchBaseResult<T> => {
   return { data, completed, error, fetchData };
 };
 
-export default useFetchBase;
+export default useFetchWithAuthBase;

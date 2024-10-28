@@ -6,6 +6,7 @@ import {
   faBars,
   IconDefinition,
 } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../../hooks/useAuth";
 
 interface TopbarProps {
   isCollapsed: boolean;
@@ -39,15 +40,16 @@ const Topbar: React.FC<TopbarProps> = ({
   title,
 }) => {
   const [darkMode, setDarkMode] = useState(false);
+  const { logout } = useAuth();
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
-    document.body.classList.toggle("bg-dark", !darkMode);
-    document.body.classList.toggle("text-white", !darkMode);
+    const newTheme = !darkMode ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-bs-theme', newTheme);
   };
 
   const handleLogout = () => {
-    console.log("Cerrando sesión");
+    logout();
   };
 
   return (

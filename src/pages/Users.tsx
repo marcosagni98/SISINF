@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Layout from "../components/shared/Layout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faPlus, faUser } from "@fortawesome/free-solid-svg-icons";
-import UsersTableComponent from "../components/User/UsersTableComponent";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import UsersTableComponent from "../components/Users/UsersTableComponent";
 import useFetchUsers from "../hooks/users/useFetchUsers";
 
 const Users: React.FC = () => {
