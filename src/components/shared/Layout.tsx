@@ -16,7 +16,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
       <Topbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} title={title} />
       <div className="d-flex">
         <Sidebar isCollapsed={isCollapsed} />
-        <div className="col p-3 bg-main">
+        <div className="col p-5 bg-main">
           {children}
         </div>
       </div>

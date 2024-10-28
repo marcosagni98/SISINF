@@ -1,5 +1,9 @@
 import React from 'react';
 import Layout from '../components/shared/Layout';
+import OverviewIncidencesComponent from '../components/Statistics/OverviewIncidencesComponent';
+import TotalIncidencesComponent from '../components/Statistics/TotalIncidencesComponent';
+import IncidencesResolutionComponent from '../components/Statistics/IncidencesResolutionComponent';
+import IncidencesSeverityComponent from '../components/Statistics/IncidencesSeverityComponent';
 
 const Statics: React.FC = () => {
   return (
@@ -7,25 +11,23 @@ const Statics: React.FC = () => {
       <Layout title="Estadisticas">
         <div className="row my-4">
           <div className="col">
-            <div className="bg-white">
-              Grafico1
-            </div>
+            <OverviewIncidencesComponent />
           </div>
           <div className="col">
             <div className="bg-white">
-              Grafico2
+             <TotalIncidencesComponent />
             </div>
           </div>
         </div>
         <div className="row my-4">
           <div className="col">
             <div className="bg-white">
-              Grafico3
+              <IncidencesResolutionComponent />
             </div>
           </div>
-          <div className="col">
+          <div className="col-4">
             <div className="bg-white">
-              Grafico4
+              <IncidencesSeverityComponent />
             </div>
           </div>
         </div>
