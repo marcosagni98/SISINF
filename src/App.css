@@ -78,3 +78,12 @@
 .bg-input{
   background-color: #ECECEC;
 }
+
+[data-bs-theme=dark] .bg-main{
+  background-color: #111111;
+}
+
+[data-bs-theme=dark] .btn-light{
+  color:white !important;
+  background-color: #111111;
+}

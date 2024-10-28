@@ -42,8 +42,8 @@ const Topbar: React.FC<TopbarProps> = ({
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
-    document.body.classList.toggle("bg-dark", !darkMode);
-    document.body.classList.toggle("text-white", !darkMode);
+    const newTheme = !darkMode ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-bs-theme', newTheme);
   };
 
   const handleLogout = () => {
