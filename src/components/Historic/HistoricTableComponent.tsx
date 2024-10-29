@@ -14,10 +14,10 @@ interface HistoricTableComponentProps {
 const HistoricTableHeaderComponent: React.FC = () => (
   <thead>
     <tr className="text-uppercase">
-      <th className="fw-semibold bg-dark text-light">ID</th>
-      <th className="fw-semibold bg-dark text-light">Título</th>
-      <th className="fw-semibold bg-dark text-light">Resuelto por</th>
-      <th className="fw-semibold bg-dark text-light">Acciones</th>
+      <th className="fw-semibold bg-tableHeader">ID</th>
+      <th className="fw-semibold bg-tableHeader">Título</th>
+      <th className="fw-semibold bg-tableHeader">Resuelto por</th>
+      <th className="fw-semibold bg-tableHeader">Acciones</th>
     </tr>
   </thead>
 );

@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 const Register: React.FC = () => {
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div className="d-flex justify-content-center align-items-center vh-100 bg-main">
       <div className="card p-4" style={{ width: '350px' }}>
         <form>
           <div className="mb-3">
@@ -38,7 +38,7 @@ const Register: React.FC = () => {
             />
           </div>
           <div className="d-grid gap-2">
-            <button type="submit" className="btn btn-dark">
+            <button type="submit" className="btn btn-light">
               Registrarse
             </button>
             <span className="text-secondary">

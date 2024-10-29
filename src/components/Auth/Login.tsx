@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 
 const Login: React.FC = () => {
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div className="d-flex justify-content-center align-items-center vh-100 bg-main">
       <div className="card p-4" style={{ width: '350px' }}>
         <form>
           <div className="mb-3">
@@ -29,7 +29,7 @@ const Login: React.FC = () => {
             <NavLink to="/recover-password" className="text-decoration-none text-secondary">Forgot password?</NavLink>
           </div>
           <div className="d-grid gap-2 text-center">
-            <button type="submit" className="btn btn-dark">
+            <button type="submit" className="btn btn-light">
               Sign In
             </button>
             <NavLink to="/register" className="text-decoration-none text-dark">Create an account</NavLink>

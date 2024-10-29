@@ -35,7 +35,7 @@ const AverageIncidencesResolutionTimeComponent: React.FC<
   const textClass = isNegative ? "text-danger" : "text-success";
 
   return (
-    <div className="card p-3">
+    <div className="card p-3 bg-card">
       <h5>Tiempo medio de resolución</h5>
       <h2 className="fw-semibold">{formatInterval(data!.avgTimeMin)}</h2>
       <p className={textClass}>

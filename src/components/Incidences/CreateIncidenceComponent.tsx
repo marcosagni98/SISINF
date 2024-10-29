@@ -30,7 +30,7 @@ const CreateIncidenceComponent: React.FC = () => {
   };
 
   return (
-    <div className="card">
+    <div className="card bg-card">
       <div className="card-body">
         <h4 className="fw-bold mb-3">Añadir una incidencia</h4>
         <p className="text-muted mb-4">
@@ -43,7 +43,7 @@ const CreateIncidenceComponent: React.FC = () => {
             </label>
             <input
               type="text"
-              className="form-control"
+              className="form-control bg-input"
               id="title"
               placeholder="Ingrese el título"
               value={formData.title}
@@ -55,7 +55,7 @@ const CreateIncidenceComponent: React.FC = () => {
               Descripción
             </label>
             <textarea
-              className="form-control"
+              className="form-control bg-input"
               id="description"
               rows={3}
               placeholder="Ingrese la descripción"
@@ -68,7 +68,7 @@ const CreateIncidenceComponent: React.FC = () => {
               Prioridad
             </label>
             <select
-              className="form-select"
+              className="form-select bg-input"
               id="priority"
               value={formData.priority}
               onChange={handleChange}
@@ -79,7 +79,7 @@ const CreateIncidenceComponent: React.FC = () => {
               <option value={3}>Baja</option>
             </select>
           </div>
-          <button type="submit" className="btn btn-dark">
+          <button type="submit" className="btn btn-light">
             Crear Incidencia
           </button>
         </form>

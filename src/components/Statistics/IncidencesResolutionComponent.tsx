@@ -79,7 +79,7 @@ const IncidencesResolutionComponent: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className='bg-static rounded'>
       <div id="chart">
         <ReactApexChart options={options} series={series} type="heatmap" height={350} />
       </div>

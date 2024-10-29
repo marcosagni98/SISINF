@@ -14,7 +14,7 @@ const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
   error,
 }) => {
   return (
-    <div className="card p-3">
+    <div className="card p-3 bg-card">
       <h5>Incidencias activas</h5>
       <h2 className="fw-semibold">
         {!completed || error ? (

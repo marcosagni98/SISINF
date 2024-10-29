@@ -14,11 +14,11 @@ interface UsersTableComponentProps {
 const UsersTableHeaderComponent: React.FC = () => (
   <thead>
     <tr className="text-uppercase">
-      <th className="fw-semibold bg-dark text-light">ID</th>
-      <th className="fw-semibold bg-dark text-light">Nombre</th>
-      <th className="fw-semibold bg-dark text-light">Email</th>
-      <th className="fw-semibold bg-dark text-light">Rol</th>
-      <th className="fw-semibold bg-dark text-light text-center">Acciones</th>
+      <th className="fw-semibold bg-tableHeader">ID</th>
+      <th className="fw-semibold bg-tableHeader">Nombre</th>
+      <th className="fw-semibold bg-tableHeader">Email</th>
+      <th className="fw-semibold bg-tableHeader">Rol</th>
+      <th className="fw-semibold bg-tableHeader text-center">Acciones</th>
     </tr>
   </thead>
 );

@@ -2,7 +2,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 const data = [
   { name: "Críticas", value: 2, color: "#ff4d4d" },
@@ -12,7 +12,7 @@ const data = [
 
 const IncidencesSeverityComponent: React.FC = () => {
   return (
-    <div className="p-3 card">
+    <div className="p-3 bg-static rounded">
       <h5 className="fw-bold">Gravedad de las incidencias</h5>
       <div className="d-flex gap-5">
         <div className="col-6">

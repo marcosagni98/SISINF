@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const data = [
@@ -13,7 +13,7 @@ const data = [
 
 const TotalIncidencesComponent: React.FC = () => {
     return (
-        <div className="p-3 bg-light rounded">
+        <div className="p-3 bg-static rounded">
             <h5>Total de incidencias</h5>
             <h2>32</h2>
             <p className="text-success">↑ 12% vs last year</p>

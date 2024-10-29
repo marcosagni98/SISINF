@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const OverviewIncidencesComponent: React.FC = () => {
   return (
-    <div className="card p-3">
+    <div className="p-3 bg-static rounded">
       <h5>Resumen de incidencias</h5>
       <div className="d-flex justify-content-around px-5 py-4 gap-4 fw-bold">
         <div className="text-center bg-light p-4 rounded-3 col-4">

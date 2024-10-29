@@ -40,12 +40,12 @@ interface IncidencesTableComponentProps {
 const IncidencesTableComponentHeader: React.FC = () => (
   <thead>
     <tr className="text-uppercase">
-      <th className="fw-semibold bg-dark text-light">ID</th>
-      <th className="fw-semibold bg-dark text-light">Título</th>
-      <th className="fw-semibold bg-dark text-light">Estado</th>
-      <th className="fw-semibold bg-dark text-light">Prioridad</th>
-      <th className="fw-semibold bg-dark text-light">Asignado a</th>
-      <th className="fw-semibold bg-dark text-light">Acciones</th>
+      <th className="fw-semibold bg-tableHeader">ID</th>
+      <th className="fw-semibold bg-tableHeader">Título</th>
+      <th className="fw-semibold bg-tableHeader">Prioridad</th>
+      <th className="fw-semibold bg-tableHeader">Asignado a</th>
+      <th className="fw-semibold bg-tableHeader">Estado</th>
+      <th className="fw-semibold bg-tableHeader">Acciones</th>
     </tr>
   </thead>
 );

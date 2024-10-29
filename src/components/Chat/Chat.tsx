@@ -24,8 +24,8 @@ const Chat = () => {
   };
 
   return (
-    <div className="container mt-4" style={{ maxWidth: '600px' }}>
-      <div className="card" style={{ height: '400px', overflowY: 'auto' }}>
+    <div className="container mt-4 bg-main">
+      <div className="card">
         <div className="card-body">
           {messages.map((message, index) => (
             <div

@@ -24,10 +24,10 @@ const MyIncidences: React.FC = () => {
               <div className="d-flex align-self-center gap-2 offset-9 col-3 pe-2">
                 <input
                   type="text"
-                  className="form-control flex-fill"
+                  className="form-control flex-fill bg-input"
                   placeholder="Buscar incidencia"
                 />
-                <button type="button" className="btn btn-dark flex-fill">
+                <button type="button" className="btn bg-input flex-fill">
                   Buscar
                 </button>
               </div>

@@ -14,19 +14,19 @@ const Statics: React.FC = () => {
             <OverviewIncidencesComponent />
           </div>
           <div className="col">
-            <div className="bg-white">
+            <div className="">
              <TotalIncidencesComponent />
             </div>
           </div>
         </div>
         <div className="row my-4">
           <div className="col">
-            <div className="bg-white">
+            <div className="">
               <IncidencesResolutionComponent />
             </div>
           </div>
           <div className="col-4">
-            <div className="bg-white">
+            <div className="">
               <IncidencesSeverityComponent />
             </div>
           </div>
