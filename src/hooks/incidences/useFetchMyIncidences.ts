@@ -1,10 +1,10 @@
-import useFetchBase from "../useFetchBase";
+import useFetchWithAuthBase from "../useFetchWithAuthBase";
 import { API_BASE_URL } from "../../config";
 import { IncidencesTableRow } from "../../interfaces/incidences/IncidencesTableRow";
 
 const useFetchMyIncidences = () => {
   const { data, completed, error, fetchData } =
-    useFetchBase<IncidencesTableRow[]>();
+    useFetchWithAuthBase<IncidencesTableRow[]>();
 
   const fetch = () => {
     return fetchData(`${API_BASE_URL}/my-incidences`);

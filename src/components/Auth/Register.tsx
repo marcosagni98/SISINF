@@ -8,6 +8,15 @@ const Register: React.FC = () => {
       <div className="card p-4" style={{ width: '350px' }}>
         <form>
           <div className="mb-3">
+            <label htmlFor="name" className="form-label">
+              Nombre
+            </label>
+            <input
+              className="form-control"
+              id="name"
+            />
+          </div>
+          <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email
             </label>

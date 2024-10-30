@@ -75,6 +75,15 @@
   background-color: #F1F1F1;
 }
 
+[data-bs-theme=dark] .bg-main {
+  background-color: #111111;
+}
+
+[data-bs-theme=dark] .btn-light {
+  color: white !important;
+  background-color: #111111;
+}
+
 .bg-input{
   background-color: #ECECEC;
 }
