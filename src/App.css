@@ -75,12 +75,16 @@
   background-color: #edede9;
 }
 
+.bg-bar{
+  background-color: #d5bdaf;
+}
+
 .bg-card{
   background-color: #d6ccc2;
 }
 
 .btn-light{
-  background-color: #edede9;
+  background-color: #d5bdaf;
   border: #edede9;
 }
 
@@ -103,8 +107,8 @@
 
 [data-bs-theme=dark] .btn-light{
   color:white !important;
-  background-color: #495057;
-  border: #495057;
+  background-color: #272932;
+  border: #272932;
 }
 
 
@@ -123,6 +127,10 @@
   background-color: #333333 !important;
 }
 
+[data-bs-theme=dark] .bg-bar{
+  color: white !important;
+  background-color: #272932;
+}
 
 [data-bs-theme=dark] .bg-static{
   color:black !important;
