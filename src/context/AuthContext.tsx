@@ -55,6 +55,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         logout();
       }
     } else {
+      console.log("Usuario nulo")
       setUser(null);
     }
   }, [token]);

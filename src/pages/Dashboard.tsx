@@ -55,7 +55,7 @@ const Dashboard = () => {
   return (
     <Layout title="Inicio">
       <div className="row">
-        {user!.role >= UserRole.Technician &&
+        {user && user!.role >= UserRole.Technician &&
           <>
             <div className="col-4 mb-4">
               <ActiveIncidencesComponent
