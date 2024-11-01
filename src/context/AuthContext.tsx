@@ -10,7 +10,7 @@ interface AuthContextType {
   logout: () => void;
 }
 
-interface User {
+export interface User {
   email: string;
   role: UserRole;
 }
@@ -23,8 +23,8 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 interface JwtPayload {
-  email: string;
-  role: UserRole;
+  ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"]: string;
+  ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]: UserRole;
   exp: number;
 }
 
@@ -46,8 +46,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
           logout();
         } else {
           setUser({
-            email: decoded.email,
-            role: decoded.role,
+            email: decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],
+            role: decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
           });
         }
       } catch (error) {
@@ -55,7 +55,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         logout();
       }
     } else {
-      console.log("Usuario nulo")
       setUser(null);
     }
   }, [token]);

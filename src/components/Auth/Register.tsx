@@ -28,7 +28,6 @@ const Register: React.FC = () => {
         //login(dataRegister);
         Swal.fire("Éxito", "Te has registrado correctamente", "success");
         navigate("/login");
-        console.log(dataRegister);
       } else if (errorRegister) {
         Swal.fire("Error", errorRegister, "error");
       }

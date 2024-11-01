@@ -31,8 +31,6 @@ const CreateIncidenceComponent: React.FC = () => {
       if (dataCreateIncidence) {
         Swal.fire("Éxito", "Has creado una incidencia correctamente", "success");
         navigate("/dashboard");
-        console.log(dataCreateIncidence?.message);
-        console.log(dataCreateIncidence?.statusCode);
       } else if (errorIncidence) {
         Swal.fire("Error", errorIncidence, "error");
       }
@@ -55,7 +53,6 @@ const CreateIncidenceComponent: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await postIncidence(formData);
-    console.log("Datos de la incidencia:", formData);
   };
 
   return (

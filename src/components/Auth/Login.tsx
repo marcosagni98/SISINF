@@ -31,7 +31,6 @@ const Login: React.FC = () => {
         login(dataLogin.token);
         Swal.fire("Éxito", "Has iniciado sesión correctamente", "success");
         navigate("/dashboard");
-        console.log(jwtDecode(dataLogin.token));
       } else if (errorLogin) {
         Swal.fire("Error", errorLogin, "error");
       }
