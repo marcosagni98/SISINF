@@ -1,17 +1,41 @@
-import React, { useState } from "react";
-
-export interface CreateIncidence {
-  title: string;
-  description: string;
-  priority: number;
-}
+import React, { useEffect, useState } from "react";
+import { CreateIncidence as CreateIncidenceInterface } from "../../interfaces/incidences/CreateIncidence";
+import usePostIncidence from "../../hooks/incidences/usePostIncidence";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const CreateIncidenceComponent: React.FC = () => {
-  const [formData, setFormData] = useState<CreateIncidence>({
+  const utcDate = new Date(Date.UTC(0,0,0,0,0,0));
+  const [formData, setFormData] = useState<CreateIncidenceInterface>({
     title: "",
     description: "",
     priority: 0,
+    status: 0,
+    createdAt: utcDate.toISOString(),
+    userId: 2,
+    technicianId: 1,
   });
+
+  const navigate = useNavigate();
+  
+  const {
+    data: dataCreateIncidence,
+    completed: completedCreateIncidence,
+    error: errorIncidence,
+    post: postIncidence,
+  } = usePostIncidence();
+
+
+  useEffect(() => {
+    if (completedCreateIncidence) {
+      if (dataCreateIncidence) {
+        Swal.fire("Éxito", "Has creado una incidencia correctamente", "success");
+        navigate("/dashboard");
+      } else if (errorIncidence) {
+        Swal.fire("Error", errorIncidence, "error");
+      }
+    }
+  }, [dataCreateIncidence, errorIncidence, completedCreateIncidence]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -20,13 +44,15 @@ const CreateIncidenceComponent: React.FC = () => {
 
     setFormData((prevData) => ({
       ...prevData,
-      [id]: id === "priority" ? parseInt(value) : value,
+      [id]: id === "priority" || id === "status" || id === "userId" || id === "technicianId"
+      ? parseInt(value)
+      : value,
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Datos de la incidencia:", formData);
+    await postIncidence(formData);
   };
 
   return (

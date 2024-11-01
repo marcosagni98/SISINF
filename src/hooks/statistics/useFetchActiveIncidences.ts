@@ -7,7 +7,7 @@ const useFetchActiveIncidences = () => {
     useFetchWithAuthBase<ActiveIncidences>();
 
   const fetch = () => {
-    return fetchData(`${API_BASE_URL}/active-incidences/1`);
+    return fetchData(`${API_BASE_URL}/api/v1/Incident`);
   };
 
   return { data, completed, error, fetch };

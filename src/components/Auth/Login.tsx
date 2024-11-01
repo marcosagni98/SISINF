@@ -7,6 +7,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { Login as LoginInterface } from "../../interfaces/auth/Login";
 import Swal from "sweetalert2";
 import usePostLogin from "../../hooks/auth/login";
+import { jwtDecode } from "jwt-decode";
 
 const Login: React.FC = () => {
   const [credentials, setCredentials] = useState<LoginInterface>({
@@ -27,7 +28,7 @@ const Login: React.FC = () => {
   useEffect(() => {
     if (completedLogin) {
       if (dataLogin) {
-        login(dataLogin.accessToken);
+        login(dataLogin.token);
         Swal.fire("Éxito", "Has iniciado sesión correctamente", "success");
         navigate("/dashboard");
       } else if (errorLogin) {
