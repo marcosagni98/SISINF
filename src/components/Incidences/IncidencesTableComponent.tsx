@@ -4,6 +4,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { IncidencesTableRow } from "../../interfaces/incidences/IncidencesTableRow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faMessage } from "@fortawesome/free-solid-svg-icons";
+import { NavLink } from "react-router-dom";
 
 function getStatusBadgeClass(status: string): string {
   switch (status.toLowerCase()) {
@@ -72,9 +73,9 @@ const IncidencesRowComponent: React.FC<IncidencesRowProps> = ({ row }) => (
     </td>
     <td>{row.assignedTo}</td>
     <td className="d-flex justify-content-end gap-2">
-      <button type="button" className="btn p-0">
+      <NavLink to={`/incidence/${row.id}`} className="btn p-0">
         <FontAwesomeIcon icon={faEye} />
-      </button>
+      </NavLink>
       <button type="button" className="btn p-0">
         <FontAwesomeIcon icon={faMessage} />
       </button>

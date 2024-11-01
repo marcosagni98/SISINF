@@ -38,9 +38,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed }) => {
         <NavItem to="/" icon={faHome} label="Inicio" />
         <NavItem to="/newincidence" icon={faPlus} label="Nueva Incidencia" />
         <NavItem to="/mis-incidencias" icon={faList} label="Mis incidencias" />
-        {user!.role === UserRole.Administrator && <NavItem to="/statics" icon={faChartBar} label="Estadísticas" />}
-        {user!.role === UserRole.Administrator && <NavItem to="/users" icon={faUser} label="Usuarios" />}
-        {user!.role >= UserRole.Technician && <NavItem to="/historic" icon={faHistory} label="Histórico" />}
+        {user !== null && user.role === UserRole.Administrator && <NavItem to="/statics" icon={faChartBar} label="Estadísticas" />}
+        {user !== null && user.role === UserRole.Administrator && <NavItem to="/users" icon={faUser} label="Usuarios" />}
+        {user !== null && user.role >= UserRole.Technician && <NavItem to="/historic" icon={faHistory} label="Histórico" />}
       </nav>
     </div>
   );

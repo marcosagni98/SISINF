@@ -5,7 +5,6 @@ import Register from "./components/Auth/Register";
 import CreateIncidence from "./pages/CreateIncidence";
 import RecoverPassword from "./pages/RecoverPassword";
 import Statics from "./pages/Statics";
-import Chat from "./components/Chat/Chat";
 import ResolveIncidence from "./components/Incidences/ResolveIncidence";
 import Dashboard from "./pages/Dashboard";
 import MyIncidences from "./pages/MyIncidences";
@@ -14,6 +13,7 @@ import Users from "./pages/Users";
 import Unauthorized from "./pages/Unauthorized";
 import PrivateRoute from "./components/shared/PrivateRoute";
 import { UserRole } from "./enums/userRole";
+import IncidenceDetails from "./pages/IncidenceDetails";
 
 function App() {
   return (
@@ -50,11 +50,11 @@ function App() {
       </Route>
 
       <Route element={<PrivateRoute />}>
-        <Route path="/chat" element={<Chat />} />
+        <Route path="/resolveincidence" element={<ResolveIncidence />} />
       </Route>
 
       <Route element={<PrivateRoute />}>
-        <Route path="/resolveincidence" element={<ResolveIncidence />} />
+        <Route path="/incidence/:id" element={<IncidenceDetails />} />
       </Route>
     </Routes>
   );

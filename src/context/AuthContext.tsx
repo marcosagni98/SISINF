@@ -47,7 +47,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         } else {
           setUser({
             email: decoded.email,
-            role: decoded.role,
+            role: UserRole.Administrator,
           });
         }
       } catch (error) {
