@@ -51,10 +51,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         } else {
           const roleString = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
 
-          const role = (Object.values(UserRole) as string[]).includes(roleString)
-            ? (roleString as unknown as UserRole)
-            : UserRole.User;
+          const roleMap: { [key: string]: UserRole } = {
+            "0": UserRole.User,
+            "1": UserRole.Technician,
+            "2": UserRole.Administrator
+          };
           
+          const role = roleMap[roleString];
+
           setUser({
             email: decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],
             role: role,

@@ -21,7 +21,7 @@ const Dashboard = () => {
     data: dataActiveIncidences,
     completed: completedActiveIncidences,
     error: errorActiveIncidences,
-    fetch: fetchActiveIncidences,
+    fetch: fetchActiveIncidences
   } = useFetchActiveIncidences();
 
   const {
@@ -51,7 +51,7 @@ const Dashboard = () => {
     fetchUserHappiness();
     fetchRecentIncidences();
   }, []);
-
+    
   return (
     <Layout title="Inicio">
       <div className="row">

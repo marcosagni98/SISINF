@@ -8,11 +8,13 @@ interface ActiveIncidencesProps {
   error: string | null;
 }
 
+
 const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
   data,
   completed,
   error,
 }) => {
+  console.log(data);
   return (
     <div className="card p-3">
       <h5>Incidencias activas</h5>
@@ -20,7 +22,7 @@ const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
         {!completed || error ? (
           <Skeleton height={30} width={50} />
         ) : (
-          data!.count
+          data!.total
         )}
       </h2>
       <div className="d-flex justify-content-between gap-2">
