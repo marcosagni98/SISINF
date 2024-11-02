@@ -53,7 +53,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
           const role = (Object.values(UserRole) as string[]).includes(roleString)
             ? (roleString as unknown as UserRole)
-            : UserRole.User;
+            : UserRole.Administrator;
           
           setUser({
             email: decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],

@@ -5,6 +5,7 @@ import { IncidencesTableRow } from "../../interfaces/incidences/IncidencesTableR
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
+import { incidencePriorityMap } from "../../enums/incidencePriority";
 
 function getStatusBadgeClass(status: string): string {
   switch (status.toLowerCase()) {
@@ -68,7 +69,7 @@ const IncidencesRowComponent: React.FC<IncidencesRowProps> = ({ row }) => (
     </td>
     <td>
       <span className={`badge ${getPriorityBadgeClass(row.priority.toString())}`}>
-        {row.priority}
+        {incidencePriorityMap.get(row.priority)}
       </span>
     </td>
     <td>{row.assignedTo}</td>
