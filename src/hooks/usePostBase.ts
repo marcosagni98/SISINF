@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-interface FetchBaseResult<T, Y> {
+interface PostBaseResult<T, Y> {
   data: T | null;
   completed: boolean;
   error: string | null;
   postData: (url: string, body: Y) => Promise<void>;
 }
 
-const usePostBase = <T, Y>(): FetchBaseResult<T, Y> => {
+const usePostBase = <T, Y>(): PostBaseResult<T, Y> => {
   const [data, setData] = useState<T | null>(null);
   const [completed, setCompleted] = useState(false);
   const [error, setError] = useState<string | null>(null);

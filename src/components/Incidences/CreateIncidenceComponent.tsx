@@ -3,21 +3,21 @@ import { CreateIncidence as CreateIncidenceInterface } from "../../interfaces/in
 import usePostIncidence from "../../hooks/incidences/usePostIncidence";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import { IncidencePriority, incidencePriorityMap } from "../../enums/incidencePriority";
 
 const CreateIncidenceComponent: React.FC = () => {
-  const utcDate = new Date(Date.UTC(0,0,0,0,0,0));
+  const { user } = useAuth();
+
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState<CreateIncidenceInterface>({
     title: "",
     description: "",
-    priority: 0,
-    status: 0,
-    createdAt: utcDate.toISOString(),
-    userId: 2,
-    technicianId: 1,
+    priority: null,
+    userId: null,
   });
 
-  const navigate = useNavigate();
-  
   const {
     data: dataCreateIncidence,
     completed: completedCreateIncidence,
@@ -25,11 +25,14 @@ const CreateIncidenceComponent: React.FC = () => {
     post: postIncidence,
   } = usePostIncidence();
 
-
   useEffect(() => {
     if (completedCreateIncidence) {
       if (dataCreateIncidence) {
-        Swal.fire("Éxito", "Has creado una incidencia correctamente", "success");
+        Swal.fire(
+          "Éxito",
+          "Has creado una incidencia correctamente",
+          "success"
+        );
         navigate("/dashboard");
       } else if (errorIncidence) {
         Swal.fire("Error", errorIncidence, "error");
@@ -38,21 +41,77 @@ const CreateIncidenceComponent: React.FC = () => {
   }, [dataCreateIncidence, errorIncidence, completedCreateIncidence]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { id, value } = e.target;
 
     setFormData((prevData) => ({
       ...prevData,
-      [id]: id === "priority" || id === "status" || id === "userId" || id === "technicianId"
-      ? parseInt(value)
-      : value,
+      [id]: id === "priority" ? parseInt(value) : value,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    formData.userId = user!.id;
+
     await postIncidence(formData);
+  };
+
+  const validateForm = () => {
+    if (formData.title.trim() === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Introduce un título",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      return false;
+    }
+
+    if (formData.description.trim() === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Introduce una descripción",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      return false;
+    }
+
+    if (!isIncidencePriority(formData.priority)) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Selecciona una prioridad válida",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      return false;
+    }
+
+    if (user === null) {
+      navigate("/login");
+      return false;
+    }
+
+    return true;
+  };
+
+  const isIncidencePriority = (value: any): value is IncidencePriority => {
+    return Object.values(IncidencePriority).includes(value);
   };
 
   return (
@@ -96,13 +155,13 @@ const CreateIncidenceComponent: React.FC = () => {
             <select
               className="form-select"
               id="priority"
-              value={formData.priority}
+              value={formData.priority ?? ""}
               onChange={handleChange}
             >
-              <option value={0}>Seleccione una opción</option>
-              <option value={1}>Alta</option>
-              <option value={2}>Media</option>
-              <option value={3}>Baja</option>
+              <option value={""}>Seleccione una opción</option>
+              <option value={IncidencePriority.High}>{incidencePriorityMap.get(IncidencePriority.High)}</option>
+              <option value={IncidencePriority.Medium}>{incidencePriorityMap.get(IncidencePriority.Medium)}</option>
+              <option value={IncidencePriority.Low}>{incidencePriorityMap.get(IncidencePriority.Low)}</option>
             </select>
           </div>
           <button type="submit" className="btn btn-dark">

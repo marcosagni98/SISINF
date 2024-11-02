@@ -1,9 +1,8 @@
+import { IncidencePriority } from "../../enums/incidencePriority";
+
 export interface CreateIncidence {
   title: string;
   description: string;
-  priority: number;
-  status: number;
-  createdAt: string;
-  userId: number;
-  technicianId: number;
+  priority: IncidencePriority | null;
+  userId: number | null;
 }

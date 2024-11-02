@@ -11,6 +11,8 @@ interface AuthContextType {
 }
 
 export interface User {
+  id: number;
+  name: string;
   email: string;
   role: UserRole;
 }
@@ -23,8 +25,10 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 interface JwtPayload {
+  ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]: string;
   ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"]: string;
-  ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]: UserRole;
+  ["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]: string;
+  ["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]: string;
   exp: number;
 }
 
@@ -45,13 +49,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         if (decoded.exp < currentTime) {
           logout();
         } else {
+          const roleString = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+
+          const role = (Object.values(UserRole) as string[]).includes(roleString)
+            ? (roleString as unknown as UserRole)
+            : UserRole.User;
+          
           setUser({
             email: decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],
-            role: decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
+            role: role,
+            id: parseInt(decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]),
+            name: decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]
           });
         }
       } catch (error) {
-        console.error("Token inválido");
         logout();
       }
     } else {

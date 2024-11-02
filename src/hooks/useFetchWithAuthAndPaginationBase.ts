@@ -1,21 +1,22 @@
 import { useState } from "react";
 import { useAuth } from "./useAuth";
+import { Pagination } from "../interfaces/shared/Paginated";
 
-interface FetchWithAuthBaseResult<T> {
-  data: T | null;
+interface FetchWithAutAndPaginationBaseResult<T> {
+  data: Pagination<T> | null;
   completed: boolean;
   error: string | null;
   fetchData: (url: string) => Promise<void>;
 }
 
-const useFetchWithAuthBase = <T>(): FetchWithAuthBaseResult<T> => {
-  const [data, setData] = useState<T | null>(null);
+const useFetchWithAuthAndPaginationBase = <T>(): FetchWithAutAndPaginationBaseResult<T> => {
+  const [data, setData] = useState<Pagination<T> | null>(null);
   const [completed, setCompleted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
   const { token } = useAuth();
 
-  const fetchData = async (url: string) => {
+  const fetchData = async (url: string, pageNumber = 1, pageSize = 10, search = "") => {
     setCompleted(false);
     setError(null);
 
@@ -29,7 +30,7 @@ const useFetchWithAuthBase = <T>(): FetchWithAuthBaseResult<T> => {
         headers,
       };
 
-      const response = await fetch(url, config);
+      const response = await fetch(`${url}?PageNumber=${pageNumber}&PageSize=${pageSize}&Search=${encodeURIComponent(search)}`, config);
       if (!response.ok) throw new Error("Error fetching data");
       const result = await response.json();
       setData(result);
@@ -47,4 +48,4 @@ const useFetchWithAuthBase = <T>(): FetchWithAuthBaseResult<T> => {
   return { data, completed, error, fetchData };
 };
 
-export default useFetchWithAuthBase;
+export default useFetchWithAuthAndPaginationBase;

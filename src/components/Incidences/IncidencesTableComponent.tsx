@@ -62,12 +62,12 @@ const IncidencesRowComponent: React.FC<IncidencesRowProps> = ({ row }) => (
       <span>{row.title}</span>
     </td>
     <td>
-      <span className={`badge ${getStatusBadgeClass(row.status)}`}>
+      <span className={`badge ${getStatusBadgeClass(row.status.toString())}`}>
         {row.status}
       </span>
     </td>
     <td>
-      <span className={`badge ${getPriorityBadgeClass(row.priority)}`}>
+      <span className={`badge ${getPriorityBadgeClass(row.priority.toString())}`}>
         {row.priority}
       </span>
     </td>
