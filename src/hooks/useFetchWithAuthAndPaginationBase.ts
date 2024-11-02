@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useAuth } from "./useAuth";
 import { Pagination } from "../interfaces/shared/Paginated";
+import { PaginationProps } from "../interfaces/shared/PaginationProps";
 
 interface FetchWithAutAndPaginationBaseResult<T> {
   data: Pagination<T> | null;
   completed: boolean;
   error: string | null;
-  fetchData: (url: string) => Promise<void>;
+  fetchData: (url: string, paginationProps: PaginationProps) => Promise<void>;
 }
 
 const useFetchWithAuthAndPaginationBase = <T>(): FetchWithAutAndPaginationBaseResult<T> => {
@@ -16,7 +17,7 @@ const useFetchWithAuthAndPaginationBase = <T>(): FetchWithAutAndPaginationBaseRe
   
   const { token } = useAuth();
 
-  const fetchData = async (url: string, pageNumber = 1, pageSize = 10, search = "") => {
+  const fetchData = async (url: string, paginationProps: PaginationProps) => {
     setCompleted(false);
     setError(null);
 
@@ -30,7 +31,7 @@ const useFetchWithAuthAndPaginationBase = <T>(): FetchWithAutAndPaginationBaseRe
         headers,
       };
 
-      const response = await fetch(`${url}?PageNumber=${pageNumber}&PageSize=${pageSize}&Search=${encodeURIComponent(search)}`, config);
+      const response = await fetch(`${url}?PageNumber=${paginationProps.pageNumber}&PageSize=${paginationProps.pageSize}&Search=${encodeURIComponent(paginationProps.search)}&OrderBy=${encodeURIComponent(paginationProps.orderBy)}&OrderDirection=${encodeURIComponent(paginationProps.orderDirection)}`, config);
       if (!response.ok) throw new Error("Error fetching data");
       const result = await response.json();
       setData(result);

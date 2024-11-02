@@ -1,4 +1,4 @@
-import { Dictionary } from "../../utils/interfaces/Dictionary";
+import { Dictionary } from "../shared/Dictionary";
 
 export interface IncidencesMonthlyResume {
     incidencesByMonth: Dictionary<number>;

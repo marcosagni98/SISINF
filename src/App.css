@@ -4,7 +4,7 @@
 }
 
 .badge-secondary {
-  background-color: rgba(108, 117, 125, 1);
+  background-color: rgba(168, 177, 185, 1);
   color: #212529;
 }
 
@@ -43,7 +43,7 @@
 }
 
 .badge-secondary:hover {
-  background-color: hsl(210, 12%, 45%);
+  background-color: hsl(210, 12%, 60%);
 }
 
 .badge-success:hover {
