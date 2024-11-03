@@ -67,7 +67,6 @@ const Dashboard = () => {
     fetchRecentIncidences(paginationProps);
   }, [paginationProps]);
 
-  console.log(dataRecentIncidences);
   const headers = [
     { key: "id", label: "ID", sortable: true },
     { key: "title", label: "Título", sortable: true },

@@ -15,8 +15,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
 import { PaginationProps } from "../interfaces/shared/PaginationProps";
 import { Tooltip } from "react-tooltip";
+import useFetchMyIncidencesPrioridad from "../hooks/incidences/useFetchMyIncidencesPrioridad";
 
-const MyIncidences: React.FC = () => {
+interface MyIncidencesProps {
+  prioridad?: IncidencePriority;
+}
+
+const MyIncidences: React.FC<MyIncidencesProps> = ({prioridad}) => {
   const [paginationProps, setPaginationProps] = useState<PaginationProps>({
     pageNumber: 1,
     pageSize: 10,
@@ -32,9 +37,22 @@ const MyIncidences: React.FC = () => {
     fetch: fetchMyIncidences,
   } = useFetchMyIncidences();
 
+
+  const {
+    data: dataMyIncidencesPrioridad,
+    completed: completedMyIncidencesPrioridad,
+    error: errorMyIncidencesPrioridad,
+    fetch: fetchMyIncidencesPrioridad,
+  } = useFetchMyIncidencesPrioridad();
+
   useEffect(() => {
-    fetchMyIncidences(paginationProps);
-  }, [paginationProps]);
+    if(prioridad == null){
+      fetchMyIncidences(paginationProps);
+    }
+    else{
+      fetchMyIncidencesPrioridad(paginationProps, prioridad); 
+    }
+  }, [paginationProps, prioridad]);
 
   const handlePageChange = (page: number) => {
     setPaginationProps((prev) => ({ ...prev, pageNumber: page }));
