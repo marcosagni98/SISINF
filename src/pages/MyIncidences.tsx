@@ -86,7 +86,7 @@ const MyIncidences: React.FC = () => {
     },
     { key: "assignedTo", label: "Asignado a", sortable: true },
     {
-      key: "id",
+      key: "actions",
       label: "Acciones",
       sortable: false,
       render: (id: number) => (

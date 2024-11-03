@@ -14,7 +14,6 @@ const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
   completed,
   error,
 }) => {
-  console.log(data);
   return (
     <div className="card p-3">
       <h5>Incidencias activas</h5>
