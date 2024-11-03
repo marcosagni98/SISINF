@@ -10,9 +10,9 @@ const IncidenceDetailsComponent: React.FC = () => {
 
   useEffect(() => {
     // Simula una llamada a una API para obtener los detalles de la incidencia
-    fetchIncidenceDetails(incidenceId).then((data) => setIncidence(data));
+    //fetchIncidenceDetails(incidenceId).then((data) => setIncidence(data));
   }, [incidenceId]);
-
+/*
   const fetchIncidenceDetails = async (
     id: number
   ): Promise<IncidenceDetails> => {
@@ -51,7 +51,7 @@ const IncidenceDetailsComponent: React.FC = () => {
       ],
     };
   };
-
+*/
   if (!incidence) {
     return <div>Cargando incidencia...</div>;
   }
@@ -91,7 +91,7 @@ const IncidenceDetailsComponent: React.FC = () => {
             <div className="col">
               <strong>Asignado a:</strong>
             </div>
-            <div className="col">{incidence.assignedTo}</div>
+            {/*<div className="col">{incidence.assignedTo}</div>*/}
           </div>
           <div className="row mb-3">
             <div className="col">
@@ -103,7 +103,7 @@ const IncidenceDetailsComponent: React.FC = () => {
             <div className="col">
               <strong>Informador:</strong>
             </div>
-            <div className="col">{incidence.createdBy}</div>
+            {/*<div className="col">{incidence.createdBy}</div>*/}
           </div>
         </div>
       </div>

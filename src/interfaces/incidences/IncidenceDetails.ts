@@ -1,17 +1,13 @@
-import { IncidenceHistory } from "./IncidenceHistory";
-import { IncidenceMessage } from "./IncidenceMessage";
-import { IncidenceWorkLog } from "./IncidenceWorkLog";
+import { IncidencePriority } from "../../enums/incidencePriority";
+import { IncidenceStatus } from "../../enums/incidenceStatus";
 
 export interface IncidenceDetails {
     id: number;
     title: string;
     description: string;
-    priority: string;
-    status: string;
+    priority: IncidencePriority;
+    status: IncidenceStatus;
     createdAt: Date;
-    createdBy: string;
-    assignedTo: string;
-    workLogs: IncidenceWorkLog[];
-    messages: IncidenceMessage[];
-    history: IncidenceHistory[];
+    userId: number;
+    technicianId: number;
 }

@@ -11,9 +11,9 @@ const IncidenceHistoryComponent: React.FC = () => {
 
   useEffect(() => {
     // Simula una llamada a una API para obtener los detalles de la incidencia
-    fetchIncidenceDetails(incidenceId).then((data) => setIncidence(data));
+//    fetchIncidenceDetails(incidenceId).then((data) => setIncidence(data));
   }, [incidenceId]);
-
+/*
   const fetchIncidenceDetails = async (
     id: number
   ): Promise<IncidenceDetails> => {
@@ -83,7 +83,7 @@ const IncidenceHistoryComponent: React.FC = () => {
       ],
     };
   };
-
+*/
   if (!incidence) {
     return <div>Cargando incidencia...</div>;
   }
@@ -93,6 +93,7 @@ const IncidenceHistoryComponent: React.FC = () => {
       <h5>Historial</h5>
       <div style={{ maxHeight: "200px", overflowY: "auto" }} className="card">
         <ul className="list-group list-group-striped">
+          {/*
           {incidence.history.length > 0 ? (
             incidence.history.map((history, index) => (
               <li key={index} className="list-group-item">
@@ -117,6 +118,7 @@ const IncidenceHistoryComponent: React.FC = () => {
               No hay worklogs disponibles.
             </p>
           )}
+            */}
         </ul>
       </div>
     </div>

@@ -3,6 +3,8 @@ import { IncidenceDetails } from "../../interfaces/incidences/IncidenceDetails";
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faEdit, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { IncidencePriority } from "../../enums/incidencePriority";
+import { IncidenceStatus } from "../../enums/incidenceStatus";
 
 const IncidenceWorklogComponent: React.FC = () => {
   const { id } = useParams<{ id: string }>(); // 'id' será una cadena
@@ -11,9 +13,9 @@ const IncidenceWorklogComponent: React.FC = () => {
 
   useEffect(() => {
     // Simula una llamada a una API para obtener los detalles de la incidencia
-    fetchIncidenceDetails(incidenceId).then((data) => setIncidence(data));
+    //fetchIncidenceDetails(incidenceId).then((data) => setIncidence(data));
   }, [incidenceId]);
-
+  /*
   const fetchIncidenceDetails = async (
     id: number
   ): Promise<IncidenceDetails> => {
@@ -23,8 +25,8 @@ const IncidenceWorklogComponent: React.FC = () => {
       title: "Problema con el servidor",
       description:
         "El servidor no responde desde esta mañana. Necesitamos una solución urgente.",
-      priority: "Alta",
-      status: "Abierto",
+      priority: IncidencePriority.High,
+      status: IncidenceStatus.InProgress,
       createdAt: new Date("2023-10-01T09:00:00"),
       createdBy: "Juan Pérez",
       assignedTo: "María Gómez",
@@ -76,7 +78,7 @@ const IncidenceWorklogComponent: React.FC = () => {
         },
       ],
     };
-  };
+  };*/
 
   if (!incidence) {
     return <div>Cargando incidencia...</div>;
@@ -90,6 +92,7 @@ const IncidenceWorklogComponent: React.FC = () => {
       </div>
       <div style={{ maxHeight: "200px", overflowY: "auto" }} className="card">
         <ul className="list-group  list-group-striped">
+          {/*
           {incidence.workLogs.length > 0 ? (
             incidence.workLogs.map((log, index) => (
               <li key={index} className="list-group-item">
@@ -109,6 +112,7 @@ const IncidenceWorklogComponent: React.FC = () => {
           ) : (
             <p className="text-center text-muted">No hay worklogs disponibles.</p>
           )}
+            */}
         </ul>
       </div>
     </div>
