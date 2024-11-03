@@ -6,7 +6,7 @@ import { PaginationProps } from "../../interfaces/shared/PaginationProps";
 
 const useFetchRecentIncidences = () => {
   const { data, completed, error, fetchData } =
-  useFetchWithAuthAndPaginationBase<IncidencesTableRow[]>();
+  useFetchWithAuthAndPaginationBase<IncidencesTableRow>();
 
   const fetch = (paginationProps: PaginationProps) => {
     return fetchData(`${API_BASE_URL}/api/v1/Incident`, paginationProps);

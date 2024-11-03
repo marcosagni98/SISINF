@@ -6,7 +6,7 @@ import { PaginationProps } from "../../interfaces/shared/PaginationProps";
 
 const useFetchHistoric = () => {
   const { data, completed, error, fetchData } =
-  useFetchWithAuthAndPaginationBase<HistoricTableRow[]>();
+  useFetchWithAuthAndPaginationBase<HistoricTableRow>();
 
   const fetch = (paginationProps: PaginationProps) => {
     return fetchData(`${API_BASE_URL}/api/v1/Incident/Historic`, paginationProps);

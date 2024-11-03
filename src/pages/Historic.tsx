@@ -8,6 +8,8 @@ import GenericTableComponent from "../components/shared/GenericTableComponent";
 import { PaginationProps } from "../interfaces/shared/PaginationProps";
 import PaginationComponent from "../components/shared/PaginationComponent";
 import { User } from "../context/AuthContext";
+import { IncidenceStatus, incidenceStatusMap } from "../enums/incidenceStatus";
+import { getStatusBadgeClass } from "../utils/getStatusBadgeClass";
 
 const Historic: React.FC = () => {
   const [paginationProps, setPaginationProps] = useState<PaginationProps>({
@@ -30,8 +32,6 @@ const Historic: React.FC = () => {
     fetchHistoric(paginationProps);
   }, [paginationProps]);
 
-  
-
   const handlePageChange = (page: number) => {
     setPaginationProps((prev) => ({ ...prev, pageNumber: page }));
   };
@@ -52,17 +52,27 @@ const Historic: React.FC = () => {
     { key: "id", label: "ID", sortable: true },
     { key: "title", label: "Título", sortable: true },
     {
+      key: "status",
+      label: "Estado",
+      sortable: true,
+      render: (status: IncidenceStatus) => (
+        <span className={`badge ${getStatusBadgeClass(status)}`}>
+          {incidenceStatusMap.get(status)}
+        </span>
+      ),
+    },
+    {
       key: "technicianId",
       label: "Resuelto por",
       sortable: true,
       render: (technicianId: number) => (
         <span>
-          <span>{technicianId ? technicianId : "No asignado"}</span>
+          <span>{technicianId ?? "No asignado"}</span>
         </span>
       )
     },
     {
-      key: "actions",
+      key: "id",
       label: "Acciones",
       sortable: false,
       render: (id: number) => (
