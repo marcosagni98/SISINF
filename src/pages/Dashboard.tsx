@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useEffect } from "react";
+import { faEye, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
 import ActiveIncidencesComponent from "../components/Statistics/ActiveIncidencesComponent";
 import AverageIncidencesResolutionTimeComponent from "../components/Statistics/AverageIncidencesResolutionTimeComponent";
 import UserHappinessComponent from "../components/Statistics/UserHappinessComponent";
@@ -13,9 +13,24 @@ import IncidencesTableComponent from "../components/Incidences/IncidencesTableCo
 import useFetchRecentIncidences from "../hooks/incidences/useFetchRecentIncidences";
 import { useAuth } from "../hooks/useAuth";
 import { UserRole } from "../enums/userRole";
+import GenericTableComponent from "../components/shared/GenericTableComponent";
+import { IncidenceStatus, incidenceStatusMap } from "../enums/incidenceStatus";
+import { getStatusBadgeClass } from "../utils/getStatusBadgeClass";
+import { IncidencePriority, incidencePriorityMap } from "../enums/incidencePriority";
+import { getPriorityBadgeClass } from "../utils/getPriorityBadgeClass";
+import { NavLink } from "react-router-dom";
+import { PaginationProps } from "../interfaces/shared/PaginationProps";
 
 const Dashboard = () => {
   const { user } = useAuth();
+
+  const [paginationProps, setPaginationProps] = useState<PaginationProps>({
+    pageNumber: 1,
+    pageSize: 10,
+    search: "",
+    orderBy: "id",
+    orderDirection: "asc",
+  });
 
   const {
     data: dataActiveIncidences,
@@ -49,9 +64,56 @@ const Dashboard = () => {
     fetchActiveIncidences();
     fetchAverageIncidencesResolutionTime();
     fetchUserHappiness();
-    fetchRecentIncidences();
-  }, []);
+    fetchRecentIncidences(paginationProps);
+  }, [paginationProps]);
+
+  console.log(dataRecentIncidences);
+  const headers = [
+    { key: "id", label: "ID", sortable: true },
+    { key: "title", label: "Título", sortable: true },
+    {
+      key: "status",
+      label: "Estado",
+      sortable: true,
+      render: (status: IncidenceStatus) => (
+        <span className={`badge ${getStatusBadgeClass(status)}`}>
+          {incidenceStatusMap.get(status)}
+        </span>
+      ),
+    },
+    {
+      key: "priority",
+      label: "Prioridad",
+      sortable: true,
+      render: (priority: IncidencePriority) => (
+        <span className={`badge ${getPriorityBadgeClass(priority)}`}>
+          {incidencePriorityMap.get(priority)}
+        </span>
+      ),
+    },
+    { key: "assignedTo", label: "Asignado a", sortable: true },
+    {
+      key: "actions",
+      label: "Acciones",
+      sortable: false,
+      render: (id: number) => (
+        <NavLink
+          to={`/incidence/${id}`}
+          className="text-decoration-none text-dark"
+          data-tooltip-id="action-tooltip"
+          data-tooltip-content="Ver incidencia"
+          data-tooltip-place="right"
+        >
+          <FontAwesomeIcon icon={faEye} />
+        </NavLink>
+      ),
+    },
+  ];
     
+  function handleSort(column: string): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <Layout title="Inicio">
       <div className="row">
@@ -101,7 +163,15 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="p-2">
-          <IncidencesTableComponent data={dataRecentIncidences} completed={completedRecentIncidences} error={errorRecentIncidences} />
+        <GenericTableComponent
+          headers={headers}
+          data={dataRecentIncidences?.items || []}
+          completed={completedRecentIncidences}
+          error={errorRecentIncidences}
+          onSort={handleSort}
+          sortColumn={paginationProps.orderBy}
+          sortDirection={paginationProps.orderDirection}
+        />
         </div>
       </div>
     </Layout>

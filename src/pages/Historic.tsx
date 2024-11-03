@@ -30,7 +30,7 @@ const Historic: React.FC = () => {
     fetchHistoric(paginationProps);
   }, [paginationProps]);
 
-  console.log(dataHistoric);
+  
 
   const handlePageChange = (page: number) => {
     setPaginationProps((prev) => ({ ...prev, pageNumber: page }));
