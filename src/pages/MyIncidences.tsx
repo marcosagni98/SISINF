@@ -4,6 +4,8 @@ import useFetchMyIncidences from "../hooks/incidences/useFetchMyIncidences";
 import PaginationComponent from "../components/shared/PaginationComponent";
 import GenericTableComponent from "../components/shared/GenericTableComponent";
 import { getPriorityBadgeClass } from "../utils/getPriorityBadgeClass";
+import { useSearchParams } from "react-router-dom";
+
 import {
   IncidencePriority,
   incidencePriorityMap,
@@ -21,7 +23,10 @@ interface MyIncidencesProps {
   prioridad?: IncidencePriority;
 }
 
-const MyIncidences: React.FC<MyIncidencesProps> = ({prioridad}) => {
+const MyIncidences: React.FC<MyIncidencesProps> = () => {
+  const [searchParams] = useSearchParams();
+  const prioridad = searchParams.get("prioridad") ? Number(searchParams.get("prioridad")) : null;
+
   const [paginationProps, setPaginationProps] = useState<PaginationProps>({
     pageNumber: 1,
     pageSize: 10,
@@ -29,7 +34,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = ({prioridad}) => {
     orderBy: "id",
     orderDirection: "asc",
   });
-
+  console.log(prioridad);
   const {
     data: dataMyIncidences,
     completed: completedMyIncidences,
@@ -121,9 +126,12 @@ const MyIncidences: React.FC<MyIncidencesProps> = ({prioridad}) => {
     },
   ];
 
-  const totalPages = dataMyIncidences?.totalCount
-    ? Math.ceil(dataMyIncidences.totalCount / paginationProps.pageSize)
-    : 1;
+  const totalPages = (() => {
+    const data = prioridad !== null ? dataMyIncidencesPrioridad : dataMyIncidences;
+    return data && data.totalCount
+      ? Math.ceil(data.totalCount / paginationProps.pageSize)
+      : 1;
+  })();
 
   return (
     <Layout title="Mis Incidencias">
@@ -155,9 +163,9 @@ const MyIncidences: React.FC<MyIncidencesProps> = ({prioridad}) => {
       <div className="row p-2">
         <GenericTableComponent
           headers={headers}
-          data={dataMyIncidences?.items || []}
-          completed={completedMyIncidences}
-          error={errorMyIncidences}
+          data={prioridad !== null ? dataMyIncidencesPrioridad?.items || [] : dataMyIncidences?.items || []}
+          completed={prioridad !== null ? completedMyIncidencesPrioridad : completedMyIncidences}
+          error={prioridad !== null ? errorMyIncidencesPrioridad : errorMyIncidences}
           onSort={handleSort}
           sortColumn={paginationProps.orderBy}
           sortDirection={paginationProps.orderDirection}
