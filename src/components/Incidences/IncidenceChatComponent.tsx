@@ -3,57 +3,7 @@ import { IncidenceMessage } from "../../interfaces/incidences/IncidenceMessage";
 import * as signalR from "@microsoft/signalr";
 
 const IncidenceChatComponent: React.FC = () => {
-  const [connection, setConnection] = useState<signalR.HubConnection | null>(null);
-  const [messages, setMessages] = useState<IncidenceMessage[]>([
-    {
-      sender: "Juan Pérez",
-      message: "¿Alguna actualización sobre el problema?",
-      sentAt: new Date("2023-10-01T10:00:00"),
-    },
-  ]);
-  const [newMessage, setNewMessage] = useState<string>("");
-  /*
-  useEffect(() => {
-    const connect = new signalR.HubConnectionBuilder()
-      .withUrl("/chatHub") // URL de tu SignalR hub
-      .withAutomaticReconnect()
-      .build();
-
-    connect.start().then(() => {
-      console.log("Conectado a SignalR");
-
-      // Unirse a un grupo específico basado en incidenceId
-      connect.invoke("JoinGroup", `Incidence-${incidenceId}`);
-
-      // Recibir mensajes
-      connect.on("ReceiveMessage", (message: IncidenceMessage) => {
-        setMessages((prevMessages) => [...prevMessages, message]);
-      });
-    });
-
-    setConnection(connect);
-
-    return () => {
-      if (connect) {
-        connect.stop();
-      }
-    };
-  }, [incidenceId]);
-  
-  const handleSendMessage = async () => {
-    if (connection && newMessage.trim() !== "") {
-      const message: IncidenceMessage = {
-        sender: "Usuario Actual", // Reemplaza con el nombre del usuario actual
-        message: newMessage,
-        sentAt: new Date(),
-      };
-
-      await connection.invoke("SendMessageToGroup", `Incidence-${incidenceId}`, message);
-      setNewMessage("");
-    }
-  };
-  */
-  return (
+  return (<></>/*
     <div className="card mt-4">
       <div className="card-body">
         <h5>Conversación de la incidencia</h5>
@@ -78,7 +28,7 @@ const IncidenceChatComponent: React.FC = () => {
           </button>
         </div>
       </div>
-    </div>
+    </div>*/
   );
 };
 

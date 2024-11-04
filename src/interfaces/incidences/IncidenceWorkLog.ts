@@ -1,5 +1,5 @@
 export interface IncidenceWorkLog {
-    user: string;
-    minutes: number;
+    technicianName: string;
+    minWorked: number;
     logDate: Date;
 }

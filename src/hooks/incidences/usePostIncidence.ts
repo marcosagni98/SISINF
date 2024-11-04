@@ -1,13 +1,11 @@
 import { API_BASE_URL } from "../../config";
-import { Login } from "../../interfaces/auth/Login";
-import { LoginResponse } from "../../interfaces/auth/LoginResponse";
 import { CreateIncidence } from "../../interfaces/incidences/CreateIncidence";
-import { CreateIncidenceResponse } from "../../interfaces/incidences/CreateIncidenceRespone";
+import { GenericRespone } from "../../interfaces/shared/GenericRespone";
 import usePostBase from "../usePostBase";
 
 const usePostIncidence = () => {
   const { data, completed, error, postData } =
-    usePostBase<CreateIncidenceResponse, CreateIncidence>();
+    usePostBase<GenericRespone, CreateIncidence>();
 
   const post = (data: CreateIncidence) => {
     return postData(`${API_BASE_URL}/api/v1/Incident`, data);

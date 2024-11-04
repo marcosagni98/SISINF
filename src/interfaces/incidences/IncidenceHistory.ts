@@ -1,6 +1,9 @@
+import { IncidenceStatus } from "../../enums/incidenceStatus";
+
 export interface IncidenceHistory {
-    status: string;
-    changedAt: Date;
-    changedBy: string;
+    status: IncidenceStatus;
+    changedAt: string;
+    changedBy: number;
+    changedByUserName: string;
     resolutionDetails: string;
 }
