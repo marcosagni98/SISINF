@@ -4,14 +4,14 @@
   import usePostBase from "../usePostBase";
 
   const usePostLogin = () => {
-    const { data, completed, error, postData } =
+    const { postData } =
       usePostBase<LoginResponse, Login>();
 
     const post = (data: Login) => {
       return postData(`${API_BASE_URL}/api/v1/Auth/login`, data);
     };
 
-    return { data, completed, error, post };  
+    return { post };  
   };
 
   export default usePostLogin;

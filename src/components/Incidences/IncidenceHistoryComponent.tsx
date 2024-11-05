@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { IncidenceHistory } from "../../interfaces/incidences/IncidenceHistory";
 import { getStatusBadgeClass } from "../../utils/getStatusBadgeClass";
-import { incidenceStatusMap } from "../../enums/incidenceStatus";
+import { IncidenceStatus, incidenceStatusMap } from "../../enums/incidenceStatus";
 import Skeleton from "react-loading-skeleton";
 import eventEmitter from "../../utils/eventEmitter";
-import { UpdateIncidenceStatus } from "../../interfaces/incidences/UpdateIncidenceStatus";
 import { toLocalDate } from "../../utils/toLocalDate";
 
 interface IncidenceHistoryProps {
@@ -21,31 +20,36 @@ const IncidenceHistoryComponent: React.FC<IncidenceHistoryProps> = ({
   const [history, setHistory] = useState<IncidenceHistory[]>([]);
 
   useEffect(() => {
+    eventEmitter.on(
+      "statusUpdated",
+      (eventPayload: {
+        changedAt: string,
+        changedBy: number,
+        changedByUserName: string,
+        resolutionDetails: string,
+        status: IncidenceStatus,
+      }) => {
+        setHistory((prevHistory) => [
+          ...prevHistory,
+          {
+            status: eventPayload.status,
+            changedAt: eventPayload.changedAt,
+            changedBy: eventPayload.changedBy,
+            changedByUserName: eventPayload.changedByUserName,
+            resolutionDetails: eventPayload.resolutionDetails,
+          },
+        ]);
+      }
+    );
+
+    return () => {
+      eventEmitter.removeAllListeners("statusUpdated");
+    };
+  }, []);
+
+  useEffect(() => {
     if (completed && !error) {
       setHistory(data!);
-
-      eventEmitter.on(
-        "statusUpdated",
-        (newStatusPayload: {
-          username: string;
-          payload: UpdateIncidenceStatus;
-        }) => {
-          setHistory((prevHistory) => [
-            ...prevHistory,
-            {
-              status: newStatusPayload.payload.statusId,
-              changedAt: (new Date()).toUTCString(),
-              changedBy: newStatusPayload.payload.changedBy,
-              changedByUserName: newStatusPayload.username,
-              resolutionDetails: newStatusPayload.payload.resolutionDetails,
-            },
-          ]);
-        }
-      );
-
-      return () => {
-        eventEmitter.removeAllListeners("statusUpdated");
-      };
     }
   }, [completed, error]);
 

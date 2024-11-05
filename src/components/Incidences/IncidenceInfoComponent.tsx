@@ -28,22 +28,25 @@ const IncidenceInfoComponent: React.FC<IncidenceInfoProps> = ({
   const [description, setDescription] = useState("");
 
   useEffect(() => {
+    eventEmitter.on("titleUpdated", (newTitle: string) => {
+      setTitle(newTitle);
+    });
+
+    eventEmitter.on("descriptionUpdated", (newDescription: string) => {
+      setDescription(newDescription);
+    });
+
+    return () => {
+      eventEmitter.removeAllListeners("titleUpdated");
+      eventEmitter.removeAllListeners("descriptionUpdated");
+    };
+  }, [])
+  
+
+  useEffect(() => {
     if (completed && !error) {
       setTitle(data!.title);
       setDescription(data!.desc);
-
-      eventEmitter.on("titleUpdated", (newTitle: string) => {
-        setTitle(newTitle);
-      });
-
-      eventEmitter.on("descriptionUpdated", (newDescription: string) => {
-        setDescription(newDescription);
-      });
-
-      return () => {
-        eventEmitter.removeAllListeners("titleUpdated");
-        eventEmitter.removeAllListeners("descriptionUpdated");
-      };
     }
   }, [completed, error]);
 

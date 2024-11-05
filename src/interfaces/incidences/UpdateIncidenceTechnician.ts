@@ -1,3 +1,3 @@
-export interface UpdateIncidenceStatus {
-  technitianId: number;
+export interface UpdateIncidenceTechnician {
+  technicianId: number;
 }

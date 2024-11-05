@@ -1,28 +1,62 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
 import { IncidenceWorkLog } from "../../interfaces/incidences/IncidenceWorkLog";
 import Skeleton from "react-loading-skeleton";
-import TaskTimeModal from "./TaskTimeModal";
+import eventEmitter from "../../utils/eventEmitter";
+import { toLocalDate } from "../../utils/toLocalDate";
 
 interface IncidenceWorklogProps {
   data: IncidenceWorkLog[] | null;
   completed: boolean;
   error: string | null;
+  handleOpenModal: () => void;
 }
 
 const IncidenceWorklogComponent: React.FC<IncidenceWorklogProps> = ({
   data,
   completed,
   error,
+  handleOpenModal,
 }) => {
-  const [modalShow, setModalShow] = useState<boolean>(false);
+  const [worklog, setWorklog] = useState<IncidenceWorkLog[]>([]);
+
+  useEffect(() => {
+    eventEmitter.on("worklogAdded", (eventPayload: {
+      logDate: string;
+      minWorked: number;
+      technicianName: string;
+    }) => {
+      setWorklog((prevWorklog) => [
+        ...prevWorklog,
+        {
+          logDate: eventPayload.logDate,
+          minWorked: eventPayload.minWorked,
+          technicianName: eventPayload.technicianName,
+        },
+      ]);
+    });
+
+    return () => {
+      eventEmitter.removeAllListeners("worklogAdded");
+    };
+  }, []);
+
+  useEffect(() => {
+    if (completed && !error) {
+      setWorklog(data!);
+    }
+  }, [completed, error]);
+
+  const totalMinWorked = worklog.reduce((acc, log) => acc + log.minWorked, 0);
 
   return (
     <div className="d-flex flex-column gap-3">
       <div className="d-flex justify-content-between align-items-center">
-        <h5>Registro de tiempo</h5>
-        <TaskTimeModal />
+        <h5>Registro de tiempo {worklog.length > 0 && (<span>({totalMinWorked} min)</span>)}</h5>
+        <button className="btn btn-dark" onClick={handleOpenModal}>
+          <FontAwesomeIcon icon={faClock}></FontAwesomeIcon> Imputar
+        </button>
       </div>
       <div style={{ maxHeight: "200px", overflowY: "auto" }} className="card">
         <ul className="list-group  list-group-striped">
@@ -52,8 +86,8 @@ const IncidenceWorklogComponent: React.FC<IncidenceWorklogProps> = ({
             </>
           ) : (
             <>
-              {data!.length > 0 ? (
-                data!.map((log, index) => (
+              {worklog!.length > 0 ? (
+                [...worklog].reverse().map((log, index) => (
                   <li key={index} className="list-group-item">
                     <div className="d-flex">
                       <div className="col-6">
@@ -63,7 +97,7 @@ const IncidenceWorklogComponent: React.FC<IncidenceWorklogProps> = ({
                         <p className="mb-1">Minutos: {log.minWorked}</p>
                       </div>
                       <div className="col-3">
-                        <p>{log.logDate.toLocaleDateString()}</p>
+                        <p>{toLocalDate(log.logDate)}</p>
                       </div>
                     </div>
                   </li>

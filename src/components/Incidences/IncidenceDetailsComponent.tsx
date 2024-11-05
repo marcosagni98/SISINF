@@ -30,9 +30,10 @@ interface IncidenceDetailsProps {
   errorIncidence: string | null;
   handleStatusChange: (newStatus: IncidenceStatus) => void;
   handlePriorityChange: (newPriority: IncidencePriority) => void;
-  users: UsersTableRow[] | null;
-  completedUsers: boolean;
-  errorUsers: string | null;
+  technicians: UsersTableRow[] | null;
+  completedTechnicians: boolean;
+  errorTechnicians: string | null;
+  handleNewTechnician: (newTechnicianId: number, newTechnicianName: string) => void;
 }
 
 const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
@@ -41,32 +42,57 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
   errorIncidence,
   handleStatusChange,
   handlePriorityChange,
-  users,
-  completedUsers,
-  errorUsers,
+  technicians,
+  completedTechnicians,
+  errorTechnicians,
+  handleNewTechnician,
 }) => {
   const { user } = useAuth();
   const [status, setStatus] = useState<IncidenceStatus | null>(null);
   const [priority, setPriority] = useState<IncidencePriority | null>(null);
+  const [assignedTo, setAssignedTo] = useState<string | null>(null);
+
+  useEffect(() => {
+    eventEmitter.on(
+      "statusUpdated",
+      (eventPayload: {
+        changedAt: string,
+        changedBy: number,
+        changedByUserName: string,
+        resolutionDetails: string,
+        status: IncidenceStatus,
+      }) => {
+        setStatus(eventPayload.status);
+      }
+    );
+
+    eventEmitter.on(
+      "priorityUpdated",
+      (newPriority: IncidencePriority) => {
+        setPriority(newPriority);
+      }
+    );
+
+    eventEmitter.on(
+      "technicianUpdated",
+      (newTechnician: string) => {
+        setAssignedTo(newTechnician);
+      }
+    );
+
+    return () => {
+      eventEmitter.removeAllListeners("statusUpdated");
+      eventEmitter.removeAllListeners("priorityUpdated");
+      eventEmitter.removeAllListeners("technicianUpdated");
+    };
+  }, [])
+  
 
   useEffect(() => {
     if (completedIncidence && !errorIncidence) {
       setStatus(dataIncidence!.status);
       setPriority(dataIncidence!.priority);
-
-      eventEmitter.on(
-        "statusUpdated",
-        (newStatusPayload: {
-          username: string;
-          payload: UpdateIncidenceStatus;
-        }) => {
-          setStatus(newStatusPayload.payload.statusId);
-        }
-      );
-
-      return () => {
-        eventEmitter.removeAllListeners("statusUpdated");
-      };
+      setAssignedTo(dataIncidence!.assignedTo);
     }
   }, [completedIncidence, errorIncidence]);
 
@@ -79,7 +105,7 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
               <strong>Asignado a:</strong>
             </div>
             <div className="col position-relative">
-              {!completedIncidence || errorIncidence || !completedUsers || errorUsers ? (
+              {!completedIncidence || errorIncidence || !completedTechnicians || errorTechnicians ? (
                 <Skeleton width={40} />
               ) : (
                 <>
@@ -91,14 +117,14 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                       >
-                        {dataIncidence!.assignedTo}
+                        {assignedTo}
                       </button>
                       <ul className="dropdown-menu">
-                        {users!.map((user, index) => {
+                        {technicians!.map((user, index) => {
                           return (
-                            dataIncidence!.assignedTo !== user.name && (
+                            assignedTo !== user.name && (
                               <li key={user.id}>
-                                <button className="btn dropdown-item">
+                                <button className="btn dropdown-item" onClick={() => handleNewTechnician(user.id, user.name)}>
                                   {user.name}
                                 </button>
                               </li>
@@ -108,7 +134,7 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
                       </ul>
                     </div>
                   ) : (
-                    <span>{dataIncidence!.assignedTo}</span>
+                    <span>{assignedTo}</span>
                   )}
                 </>
               )}
@@ -127,7 +153,7 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
                     <div className="dropdown">
                       <button
                         className={`btn dropdown-toggle badge me-2 ${getStatusBadgeClass(
-                          dataIncidence!.status
+                          status!
                         )}`}
                         type="button"
                         data-bs-toggle="dropdown"
@@ -159,7 +185,7 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
                   ) : (
                     <span
                       className={`badge me-2 ${getStatusBadgeClass(
-                        dataIncidence!.status
+                        status!
                       )}`}
                     >
                       {incidenceStatusMap.get(status!)}
@@ -182,7 +208,7 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
                     <div className="dropdown">
                       <button
                         className={`btn dropdown-toggle badge me-2 ${getPriorityBadgeClass(
-                          dataIncidence!.priority
+                          priority!
                         )}`}
                         type="button"
                         data-bs-toggle="dropdown"
@@ -214,7 +240,7 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
                   ) : (
                     <span
                       className={`badge me-2 ${getPriorityBadgeClass(
-                        dataIncidence!.priority
+                        priority!
                       )}`}
                     >
                       {incidencePriorityMap.get(priority!)}

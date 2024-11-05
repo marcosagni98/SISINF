@@ -23,18 +23,19 @@ import usePutIncidentStatus from "../hooks/incidences/usePutIncidentStatus";
 import { IncidenceStatus, incidenceStatusMap } from "../enums/incidenceStatus";
 import { UpdateIncidenceStatus } from "../interfaces/incidences/UpdateIncidenceStatus";
 import { IncidencePriority } from "../enums/incidencePriority";
-import useFetchUsers from "../hooks/users/useFetchUsers";
 import { UserRole } from "../enums/userRole";
 import { toLocalDate } from "../utils/toLocalDate";
+import usePutIncidentPriority from "../hooks/incidences/usePutIncidentPriority";
+import useFetchTechnicians from "../hooks/users/useFetchTechnicians";
+import usePutIncidentTechnician from "../hooks/incidences/usePutIncidentTechnician";
+import usePostWorklog from "../hooks/incidences/usePostWorklog";
+import useFetchMessages from "../hooks/incidences/useFetchMessages";
 
 const IncidenceDetails = () => {
   const { id } = useParams();
   const { user } = useAuth();
   const [dataInitialized, setDataInitialized] = useState(false);
   const [connection, setConnection] = useState<HubConnection | null>(null);
-
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
 
   const {
     data: dataIncidence,
@@ -43,14 +44,14 @@ const IncidenceDetails = () => {
     fetch: fetchIncidence,
   } = useFetchIncidence();
 
-  const {
+  let {
     data: dataIncidenceWorklog,
     completed: completedIncidenceWorklog,
     error: errorIncidenceWorklog,
     fetch: fetchIncidenceWorklog,
   } = useFetchIncidenceWorklog();
 
-  const {
+  let {
     data: dataIncidenceHistory,
     completed: completedIncidenceHistory,
     error: errorIncidenceHistory,
@@ -58,11 +59,18 @@ const IncidenceDetails = () => {
   } = useFetchIncidenceHistory();
 
   const {
-    data: dataUsers,
-    completed: completedUsers,
-    error: errorUsers,
-    fetch: fetchUsers,
-  } = useFetchUsers();
+    data: dataTechnicians,
+    completed: completedTechnicians,
+    error: errorTechnicians,
+    fetch: fetchTechnicians,
+  } = useFetchTechnicians();
+
+  const {
+    data: dataMessages,
+    completed: completedMessages,
+    error: errorMessages,
+    fetch: fetchMessages,
+  } = useFetchMessages();
 
   useEffect(() => {
     if (id !== undefined && user !== null && !dataInitialized) {
@@ -70,14 +78,9 @@ const IncidenceDetails = () => {
       fetchIncidence(incidenceId);
       fetchIncidenceWorklog(incidenceId);
       fetchIncidenceHistory(incidenceId);
+      fetchMessages(incidenceId);
       if (user.role === UserRole.Administrator) {
-        fetchUsers({
-          orderBy: "id",
-          orderDirection: "asc",
-          pageNumber: 1,
-          pageSize: 1000,
-          search: "",
-        });
+        fetchTechnicians();
       }
       setDataInitialized(true);
     }
@@ -92,13 +95,13 @@ const IncidenceDetails = () => {
         .build();
 
       setConnection(newConnection);
-      /*
+      
       newConnection
         .start()
         .then(() => {
           console.log("Conexión de SignalR iniciada");
           newConnection.on("ReceiveMessage", (message) => {
-            setMessages((prevMessages) => [...prevMessages, message]);
+            console.log(message);
           });
         })
         .catch((err) => console.error("Error al iniciar la conexión:", err));
@@ -108,26 +111,23 @@ const IncidenceDetails = () => {
           console.log("Conexión de SignalR detenida");
         });
       };
-      */
     }
   }, [id, user]);
-  /*
-  const sendMessage = async (incidentId, messageText) => {
+  
+  const sendMessage = async (newMessage: string) => {
     if (connection) {
       try {
         await connection.invoke(
           "SendMessage",
-          incidentId,
-          user.id,
-          messageText
+          parseInt(id!),
+          user!.id,
+          newMessage
         );
-        setNewMessage("");
       } catch (err) {
         console.error("Error al enviar el mensaje:", err);
       }
     }
   };
-*/
 
   const { put: putIncidenceInfo } = usePutIncidentInfo();
 
@@ -254,6 +254,7 @@ const IncidenceDetails = () => {
           resolutionDetails: result.value,
           statusId: newStatus,
         };
+
         const { data, error } = await putIncidenceStatus(
           parseInt(id!),
           newStatusPayload
@@ -261,10 +262,15 @@ const IncidenceDetails = () => {
 
         if (data?.statusCode === 200) {
           dataIncidence!.status = newStatus;
-          eventEmitter.emit("statusUpdated", {
-            username: user!.name,
-            payload: newStatusPayload,
-          });
+
+          const emitHistoryPayload = {
+            changedAt: new Date().toUTCString(),
+            changedBy: user!.id,
+            changedByUserName: user!.name,
+            resolutionDetails: result.value,
+            status: newStatus,
+          };
+          eventEmitter.emit("statusUpdated", emitHistoryPayload);
 
           Swal.fire({
             icon: "success",
@@ -275,6 +281,113 @@ const IncidenceDetails = () => {
             icon: "error",
             title: "Error",
             text: `Hubo un problema al actualizar el estado. ${error}.`,
+          });
+        }
+      }
+    });
+  };
+
+  const { put: putIncidencePriority } = usePutIncidentPriority();
+
+  const changePriority = async (newPriority: IncidencePriority) => {
+    const { data, error } = await putIncidencePriority(parseInt(id!), {
+      priorityId: newPriority,
+    });
+
+    if (data?.statusCode === 200) {
+      dataIncidence!.priority = newPriority;
+      eventEmitter.emit("priorityUpdated", newPriority);
+
+      Swal.fire({
+        icon: "success",
+        title: "Prioridad actualizada",
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: `Hubo un problema al actualizar la prioridad. ${error}.`,
+      });
+    }
+  };
+
+  const { put: putIncidentTechnician } = usePutIncidentTechnician();
+
+  const setNewTechnician = async (
+    newTechnicianId: number,
+    newTechnicianName: string
+  ) => {
+    const { data, error } = await putIncidentTechnician(parseInt(id!), {
+      technicianId: newTechnicianId,
+    });
+
+    if (data?.statusCode === 200) {
+      dataIncidence!.technicianId = newTechnicianId;
+      dataIncidence!.technicianName = newTechnicianName;
+      eventEmitter.emit("technicianUpdated", newTechnicianName);
+
+      Swal.fire({
+        icon: "success",
+        title: "Nuevo técnico asignado",
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: `Hubo un problema al asignar un nuevo técnico. ${error}.`,
+      });
+    }
+  };
+
+  const { post: postWorklog } = usePostWorklog();
+
+  const inputWorklogModal = () => {
+    Swal.fire({
+      title: '<h5><FontAwesomeIcon icon="pencil" /> Imputación de tiempo</h5>',
+      html:
+        '<label for="workLogInput" class="form-label">Ingrese el tiempo en minutos a imputar</label>' +
+        `<input type="number" id="workLogInput" class="swal2-input" placeholder="Minutos"/>`,
+      showCancelButton: true,
+      confirmButtonText: "Guardar",
+      cancelButtonText: "Cancelar",
+      preConfirm: () => {
+        const inputElement = (
+          document.getElementById("workLogInput") as HTMLInputElement
+        ).value;
+        if (inputElement.trim() === "") {
+          Swal.showValidationMessage("Por favor, ingrese un tiempo.");
+          return;
+        }
+        return inputElement;
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed && result.value) {
+        const createWorklogPayload = {
+          incidentId: parseInt(id!),
+          minWorked: parseInt(result.value),
+          technicianId: user!.id,
+        };
+        const { data, error } = await postWorklog(createWorklogPayload);
+
+        if (data?.statusCode === 201) {
+          dataIncidence!.description = result.value;
+
+          const emitWorklogPayload = {
+            logDate: new Date().toUTCString(),
+            minWorked: parseInt(result.value),
+            technicianName: user!.name,
+          };
+          eventEmitter.emit("worklogAdded", emitWorklogPayload);
+
+          Swal.fire({
+            icon: "success",
+            title: "Añadida imputación de tiempo",
+          });
+        } else if (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: `Hubo un problema al imputar tiempo. ${error}.`,
           });
         }
       }
@@ -299,7 +412,12 @@ const IncidenceDetails = () => {
             handleEditTitle={changeTitleModal}
             handleEditDescription={changeDescriptionModal}
           />
-          <IncidenceChatComponent />
+          <IncidenceChatComponent
+            data={dataMessages}
+            completed={completedMessages}
+            error={errorMessages}
+            handleSendMessage={sendMessage}
+          />
         </div>
         <div className="col-4 mb-4 d-flex flex-column gap-3">
           <IncidenceDetailsComponent
@@ -320,19 +438,17 @@ const IncidenceDetails = () => {
             completedIncidence={completedIncidence}
             errorIncidence={errorIncidence}
             handleStatusChange={changeStatusModal}
-            handlePriorityChange={function (
-              newPriority: IncidencePriority
-            ): void {
-              throw new Error("Function not implemented.");
-            }}
-            users={dataUsers === null ? null : dataUsers.items}
-            completedUsers={completedUsers}
-            errorUsers={errorUsers}
+            handlePriorityChange={changePriority}
+            technicians={dataTechnicians === null ? null : dataTechnicians}
+            completedTechnicians={completedTechnicians}
+            errorTechnicians={errorTechnicians}
+            handleNewTechnician={setNewTechnician}
           />
           <IncidenceWorklogComponent
             data={dataIncidenceWorklog}
             completed={completedIncidenceWorklog}
             error={errorIncidenceWorklog}
+            handleOpenModal={inputWorklogModal}
           />
           <IncidenceHistoryComponent
             data={dataIncidenceHistory}
