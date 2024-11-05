@@ -1,5 +1,7 @@
 export interface IncidenceMessage {
-    sender: string;
-    message: string;
+    senderId: number;
+    incidentId: number;
+    senderName: string;
+    text: string;
     sentAt: string;
 }

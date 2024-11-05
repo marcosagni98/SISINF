@@ -31,10 +31,22 @@ const Register: React.FC = () => {
     const { data, error } = await postRegister(credentials);
 
     if (data?.statusCode === 201) {
-      Swal.fire("Éxito", "Te has registrado correctamente", "success");
+      Swal.fire({
+        icon: "success",
+        title: "Éxito",
+        text: "Te has registrado correctamente",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       navigate("/login");
     } else if (error) {
-      Swal.fire("Error", error, "error");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 

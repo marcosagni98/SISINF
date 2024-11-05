@@ -48,10 +48,22 @@ const CreateIncidenceComponent: React.FC = () => {
     const { data, error } = await postIncidence(formData);
 
     if (data?.statusCode === 201) {
-      Swal.fire("Éxito", "Has creado una incidencia correctamente", "success");
+      Swal.fire({
+        icon: "success",
+        title: "Éxito",
+        text: "Has creado una incidencia correctamente",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       navigate("/dashboard");
     } else if (error) {
-      Swal.fire("Error", error, "error");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 

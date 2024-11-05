@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import IncidenceChatComponent from "../components/Incidences/IncidenceChatComponent";
 import IncidenceDetailsComponent from "../components/Incidences/IncidenceDetailsComponent";
 import IncidenceHistoryComponent from "../components/Incidences/IncidenceHistoryComponent";
@@ -30,10 +30,12 @@ import useFetchTechnicians from "../hooks/users/useFetchTechnicians";
 import usePutIncidentTechnician from "../hooks/incidences/usePutIncidentTechnician";
 import usePostWorklog from "../hooks/incidences/usePostWorklog";
 import useFetchMessages from "../hooks/incidences/useFetchMessages";
+import { IncidenceMessage } from "../interfaces/incidences/IncidenceMessage";
 
 const IncidenceDetails = () => {
   const { id } = useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [dataInitialized, setDataInitialized] = useState(false);
   const [connection, setConnection] = useState<HubConnection | null>(null);
 
@@ -72,8 +74,15 @@ const IncidenceDetails = () => {
     fetch: fetchMessages,
   } = useFetchMessages();
 
+  const userAllowed =
+  dataIncidence && user
+    ? user.role === UserRole.Administrator ||
+      dataIncidence.technicianId === user.id ||
+      dataIncidence.userId === user.id
+    : false;
+
   useEffect(() => {
-    if (id !== undefined && user !== null && !dataInitialized) {
+    if (!dataInitialized && id !== undefined && user !== null) {
       const incidenceId = parseInt(id);
       fetchIncidence(incidenceId);
       fetchIncidenceWorklog(incidenceId);
@@ -85,7 +94,13 @@ const IncidenceDetails = () => {
       setDataInitialized(true);
     }
 
-    if (user !== null && connection === null) {
+    if (dataIncidence && user !== null) {
+      if (!userAllowed) {
+        navigate("/unauthorized");
+      }
+    }
+
+    if (userAllowed && user !== null && connection === null) {
       const newConnection = new HubConnectionBuilder()
         .withUrl(`${API_BASE_URL}/messagehub?userId=${user.id}`, {
           withCredentials: false,
@@ -95,13 +110,16 @@ const IncidenceDetails = () => {
         .build();
 
       setConnection(newConnection);
-      
+
       newConnection
         .start()
         .then(() => {
           console.log("Conexión de SignalR iniciada");
-          newConnection.on("ReceiveMessage", (message) => {
-            console.log(message);
+          newConnection.on("ReceiveMessage", (message: IncidenceMessage) => {
+            console.log("recibo");
+            if (message.incidentId === parseInt(id!)) {
+              eventEmitter.emit("messageAdded", message);
+            }
           });
         })
         .catch((err) => console.error("Error al iniciar la conexión:", err));
@@ -112,8 +130,8 @@ const IncidenceDetails = () => {
         });
       };
     }
-  }, [id, user]);
-  
+  }, [id, user, dataIncidence]);
+
   const sendMessage = async (newMessage: string) => {
     if (connection) {
       try {
@@ -121,6 +139,7 @@ const IncidenceDetails = () => {
           "SendMessage",
           parseInt(id!),
           user!.id,
+          user!.name,
           newMessage
         );
       } catch (err) {
@@ -166,12 +185,16 @@ const IncidenceDetails = () => {
           Swal.fire({
             icon: "success",
             title: "Título actualizado",
+            showConfirmButton: false,
+            timer: 1500,
           });
         } else {
           Swal.fire({
             icon: "error",
             title: "Error",
             text: `Hubo un problema al actualizar el título. ${error}.`,
+            showConfirmButton: false,
+            timer: 1500,
           });
         }
       }
@@ -215,12 +238,16 @@ const IncidenceDetails = () => {
           Swal.fire({
             icon: "success",
             title: "Descripción actualizada",
+            showConfirmButton: false,
+            timer: 1500,
           });
         } else {
           Swal.fire({
             icon: "error",
             title: "Error",
             text: `Hubo un problema al actualizar el título. ${error}.`,
+            showConfirmButton: false,
+            timer: 1500,
           });
         }
       }
@@ -275,12 +302,16 @@ const IncidenceDetails = () => {
           Swal.fire({
             icon: "success",
             title: "Estado actualizado",
+            showConfirmButton: false,
+            timer: 1500,
           });
         } else {
           Swal.fire({
             icon: "error",
             title: "Error",
             text: `Hubo un problema al actualizar el estado. ${error}.`,
+            showConfirmButton: false,
+            timer: 1500,
           });
         }
       }
@@ -301,12 +332,16 @@ const IncidenceDetails = () => {
       Swal.fire({
         icon: "success",
         title: "Prioridad actualizada",
+        showConfirmButton: false,
+        timer: 1500,
       });
     } else {
       Swal.fire({
         icon: "error",
         title: "Error",
         text: `Hubo un problema al actualizar la prioridad. ${error}.`,
+        showConfirmButton: false,
+        timer: 1500,
       });
     }
   };
@@ -329,12 +364,16 @@ const IncidenceDetails = () => {
       Swal.fire({
         icon: "success",
         title: "Nuevo técnico asignado",
+        showConfirmButton: false,
+        timer: 1500,
       });
     } else {
       Swal.fire({
         icon: "error",
         title: "Error",
         text: `Hubo un problema al asignar un nuevo técnico. ${error}.`,
+        showConfirmButton: false,
+        timer: 1500,
       });
     }
   };
@@ -382,17 +421,22 @@ const IncidenceDetails = () => {
           Swal.fire({
             icon: "success",
             title: "Añadida imputación de tiempo",
+            showConfirmButton: false,
+            timer: 1500,
           });
         } else if (error) {
           Swal.fire({
             icon: "error",
             title: "Error",
             text: `Hubo un problema al imputar tiempo. ${error}.`,
+            showConfirmButton: false,
+            timer: 1500,
           });
         }
       }
     });
   };
+
 
   return (
     <Layout title="Inicio">

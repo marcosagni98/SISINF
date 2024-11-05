@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IncidenceMessage } from "../../interfaces/incidences/IncidenceMessage";
 import { toLocalDate } from "../../utils/toLocalDate";
+import eventEmitter from "../../utils/eventEmitter";
+import { useAuth } from "../../hooks/useAuth";
 
 interface IncidenceChatProps {
   data: IncidenceMessage[] | null;
@@ -15,8 +17,25 @@ const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
   error,
   handleSendMessage,
 }) => {
+  const { user } = useAuth();
+
   const [messages, setMessages] = useState<IncidenceMessage[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
+
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleMessageAdded = (eventPayload: IncidenceMessage) => {
+      console.log(eventPayload);
+      setMessages((prevMessages) => [...prevMessages, eventPayload]);
+    };
+
+    eventEmitter.on("messageAdded", handleMessageAdded);
+
+    return () => {
+      eventEmitter.removeListener("messageAdded", handleMessageAdded);
+    };
+  }, []);
 
   useEffect(() => {
     if (completed && !error) {
@@ -24,10 +43,14 @@ const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
     }
   }, [completed, error, data]);
 
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   const handleSendClick = () => {
     if (newMessage.trim()) {
       handleSendMessage(newMessage.trim());
-      setNewMessage(""); // Limpiar el campo de mensaje después de enviarlo
+      setNewMessage("");
     }
   };
 
@@ -36,16 +59,25 @@ const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
       <div className="card-body">
         <h5>Conversación de la incidencia</h5>
         <div
-          className="chat-window mb-3"
+          className="chat d-flex flex-column mb-3"
           style={{ maxHeight: "300px", overflowY: "auto" }}
         >
           {messages.map((msg, index) => (
-            <div key={index} className="mb-2">
-              <strong>{msg.sender}</strong>{" "}
-              <small className="text-muted">{toLocalDate(msg.sentAt)}</small>
-              <p>{msg.message}</p>
+            <div
+              key={index}
+              className={`mb-2 p-3 rounded ${
+                user && user.id === msg.senderId
+                  ? "ms-auto bg-light"
+                  : "bg-dark text-white"
+              }`}
+              style={{ width: "fit-content" }}
+            >
+              <strong>{msg.senderName}</strong>{" "}
+              <small>{toLocalDate(msg.sentAt)}</small>
+              <p>{msg.text}</p>
             </div>
           ))}
+          <div ref={chatEndRef} />
         </div>
         <div className="input-group">
           <input

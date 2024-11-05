@@ -32,10 +32,23 @@ const Login: React.FC = () => {
     const { data, error } = await postLogin(credentials);
     if (data) {
       login(data.token);
-      Swal.fire("Éxito", "Has iniciado sesión correctamente", "success");
+      Swal.fire({
+        icon: "success",
+        title: "Éxito",
+        text: "Has iniciado sesión correctamente",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
       navigate("/dashboard");
     } else if (error) {
-      Swal.fire("Error", error, "error");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 

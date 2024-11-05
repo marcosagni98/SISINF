@@ -5,7 +5,6 @@ import Register from "./components/Auth/Register";
 import CreateIncidence from "./pages/CreateIncidence";
 import RecoverPassword from "./pages/RecoverPassword";
 import Statics from "./pages/Statics";
-import ResolveIncidence from "./components/Incidences/ResolveIncidence";
 import Dashboard from "./pages/Dashboard";
 import MyIncidences from "./pages/MyIncidences";
 import Historic from "./pages/Historic";
@@ -41,16 +40,12 @@ function App() {
         <Route path="/mis-incidencias" element={<MyIncidences />} />
       </Route>
 
-      <Route element={<PrivateRoute />}>
+      <Route element={<PrivateRoute roles={[UserRole.Administrator]}/>}>
         <Route path="/statics" element={<Statics />} />
       </Route>
 
-      <Route element={<PrivateRoute />}>
+      <Route element={<PrivateRoute roles={[UserRole.Technician, UserRole.Administrator]}/>}>
         <Route path="/historic" element={<Historic />} />
-      </Route>
-
-      <Route element={<PrivateRoute />}>
-        <Route path="/resolveincidence" element={<ResolveIncidence />} />
       </Route>
 
       <Route element={<PrivateRoute />}>
