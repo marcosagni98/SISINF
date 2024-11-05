@@ -1,10 +1,10 @@
 import React from 'react';
-import RecoverPassword from '../components/Auth/RecoverPassword';
+import RecoverPasswordComponent from '../components/Auth/RecoverPasswordComponent';
 
-const LoginPage: React.FC = () => {
+const RecoverPage: React.FC = () => {
   return (
-    <RecoverPassword />
+    <RecoverPasswordComponent />
   );
 };
 
-export default LoginPage;
+export default RecoverPage;

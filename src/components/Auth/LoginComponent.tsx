@@ -1,22 +1,23 @@
-import React, { useState } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { Register as RegisterInterface } from "../../interfaces/auth/Register";
-import usePostRegister from "../../hooks/auth/register";
-import Swal from "sweetalert2";
+// src/components/Login.tsx
 
-const Register: React.FC = () => {
-  const [credentials, setCredentials] = useState<RegisterInterface>({
+import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import { Login as LoginInterface } from "../../interfaces/auth/Login";
+import Swal from "sweetalert2";
+import usePostLogin from "../../hooks/auth/usePostLogin";
+
+const LoginComponent: React.FC = () => {
+  const [credentials, setCredentials] = useState<LoginInterface>({
     email: "",
     password: "",
-    name: "",
   });
 
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const {
-    post: postRegister,
-  } = usePostRegister();
+  const { post: postLogin } = usePostLogin();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,17 +29,18 @@ const Register: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { data, error } = await postRegister(credentials);
-
-    if (data?.statusCode === 201) {
+    const { data, error } = await postLogin(credentials);
+    if (data) {
+      login(data.token);
       Swal.fire({
         icon: "success",
         title: "Éxito",
-        text: "Te has registrado correctamente",
+        text: "Has iniciado sesión correctamente",
         showConfirmButton: false,
         timer: 1500,
       });
-      navigate("/login");
+
+      navigate("/dashboard");
     } else if (error) {
       Swal.fire({
         icon: "error",
@@ -52,21 +54,8 @@ const Register: React.FC = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      <div className="card p-4" style={{ width: '350px' }}>
+      <div className="card p-4" style={{ width: "350px" }}>
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="name" className="form-label">
-              Nombre
-            </label>
-            <input
-              className="form-control"
-              id="name"
-              name="name"
-              value={credentials.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email
@@ -94,25 +83,20 @@ const Register: React.FC = () => {
               onChange={handleChange}
               required
             />
+            <NavLink
+              to="/recover-password"
+              className="text-decoration-none text-secondary"
+            >
+              ¿Has olvidado tu contraseña?
+            </NavLink>
           </div>
-          <div className="mb-3">
-            <label htmlFor="repeat-password" className="form-label">
-              Repetir contraseña
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              id="repeat-password"
-            />
-          </div>
-          <div className="d-grid gap-2">
+          <div className="d-grid gap-2 text-center">
             <button type="submit" className="btn btn-dark">
-              Registrarse
+              Iniciar sesión
             </button>
-            <span className="text-secondary">
-              ¿Ya tienes una cuenta?
-              <NavLink to="/login" className="text-secondary mx-1">Iniciar sesión</NavLink>
-            </span>
+            <NavLink to="/register" className="text-decoration-none text-dark">
+              Registrarse
+            </NavLink>
           </div>
         </form>
       </div>
@@ -120,4 +104,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default LoginComponent;

@@ -1,23 +1,22 @@
-// src/components/Login.tsx
-
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
-import { Login as LoginInterface } from "../../interfaces/auth/Login";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { Register as RegisterInterface } from "../../interfaces/auth/Register";
 import Swal from "sweetalert2";
-import usePostLogin from "../../hooks/auth/login";
+import usePostRegister from "../../hooks/auth/usePostRegister";
 
-const Login: React.FC = () => {
-  const [credentials, setCredentials] = useState<LoginInterface>({
+const RegisterComponent: React.FC = () => {
+  const [credentials, setCredentials] = useState<RegisterInterface>({
     email: "",
     password: "",
+    name: "",
   });
 
-  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const { post: postLogin } = usePostLogin();
+  const {
+    post: postRegister,
+  } = usePostRegister();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -29,18 +28,17 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { data, error } = await postLogin(credentials);
-    if (data) {
-      login(data.token);
+    const { data, error } = await postRegister(credentials);
+
+    if (data?.statusCode === 201) {
       Swal.fire({
         icon: "success",
         title: "Éxito",
-        text: "Has iniciado sesión correctamente",
+        text: "Te has registrado correctamente",
         showConfirmButton: false,
         timer: 1500,
       });
-
-      navigate("/dashboard");
+      navigate("/login");
     } else if (error) {
       Swal.fire({
         icon: "error",
@@ -54,8 +52,21 @@ const Login: React.FC = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      <div className="card p-4" style={{ width: "350px" }}>
+      <div className="card p-4" style={{ width: '350px' }}>
         <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="name" className="form-label">
+              Nombre
+            </label>
+            <input
+              className="form-control"
+              id="name"
+              name="name"
+              value={credentials.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email
@@ -83,20 +94,25 @@ const Login: React.FC = () => {
               onChange={handleChange}
               required
             />
-            <NavLink
-              to="/recover-password"
-              className="text-decoration-none text-secondary"
-            >
-              ¿Has olvidado tu contraseña?
-            </NavLink>
           </div>
-          <div className="d-grid gap-2 text-center">
+          <div className="mb-3">
+            <label htmlFor="repeat-password" className="form-label">
+              Repetir contraseña
+            </label>
+            <input
+              type="password"
+              className="form-control"
+              id="repeat-password"
+            />
+          </div>
+          <div className="d-grid gap-2">
             <button type="submit" className="btn btn-dark">
-              Iniciar sesión
-            </button>
-            <NavLink to="/register" className="text-decoration-none text-dark">
               Registrarse
-            </NavLink>
+            </button>
+            <span className="text-secondary">
+              ¿Ya tienes una cuenta?
+              <NavLink to="/login" className="text-secondary mx-1">Iniciar sesión</NavLink>
+            </span>
           </div>
         </form>
       </div>
@@ -104,4 +120,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default RegisterComponent;
