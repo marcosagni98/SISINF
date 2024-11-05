@@ -1,21 +1,9 @@
-import { useState } from "react";
-
-interface FetchBaseResult<T, Y> {
-  data: T | null;
-  completed: boolean;
-  error: string | null;
-  postData: (url: string, body: Y) => Promise<void>;
+interface PostBaseResult<T, Y> {
+  postData: (url: string, body: Y) => Promise<{ data: T | null; error: string | null }>;
 }
 
-const usePostBase = <T, Y>(): FetchBaseResult<T, Y> => {
-  const [data, setData] = useState<T | null>(null);
-  const [completed, setCompleted] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const postData = async (url: string, body: Y) => {
-    setCompleted(false);
-    setError(null);
-
+const usePostBase = <T, Y>(): PostBaseResult<T, Y> => {
+  const postData = async (url: string, body: Y): Promise<{ data: T | null; error: string | null }>  => {
     try {
       const headers = {
         "Content-Type": "application/json",
@@ -28,24 +16,20 @@ const usePostBase = <T, Y>(): FetchBaseResult<T, Y> => {
       };
 
       const response = await fetch(url, config);
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Error fetching data");
-      }
+      if (!response.ok) throw new Error("Error fetching data");
+
       const result = await response.json();
-      setData(result);
+      return { data: result, error: null };
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setError(err.message);
+        return { data: null, error: err.message };
       } else {
-        setError("Ocurrió un error desconocido");
+        return { data: null, error: "Unknown error occurred" };
       }
-    } finally {
-      setCompleted(true);
     }
   };
 
-  return { data, completed, error, postData };
+  return { postData };
 };
 
 export default usePostBase;

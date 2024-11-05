@@ -1,20 +1,29 @@
-import React, { useState } from "react";
-
-export interface CreateIncidence {
-  title: string;
-  description: string;
-  priority: number;
-}
+import React, { useEffect, useState } from "react";
+import { CreateIncidence as CreateIncidenceInterface } from "../../interfaces/incidences/CreateIncidence";
+import usePostIncidence from "../../hooks/incidences/usePostIncidence";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import {
+  IncidencePriority,
+  incidencePriorityMap,
+} from "../../enums/incidencePriority";
 
 const CreateIncidenceComponent: React.FC = () => {
-  const [formData, setFormData] = useState<CreateIncidence>({
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState<CreateIncidenceInterface>({
     title: "",
     description: "",
-    priority: 0,
+    priority: null,
   });
 
+  const { post: postIncidence } = usePostIncidence();
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { id, value } = e.target;
 
@@ -24,9 +33,77 @@ const CreateIncidenceComponent: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Datos de la incidencia:", formData);
+
+    if (!validateForm()) {
+      return;
+    }
+
+    const { data, error } = await postIncidence(formData);
+
+    if (data?.statusCode === 201) {
+      Swal.fire({
+        icon: "success",
+        title: "Éxito",
+        text: "Has creado una incidencia correctamente",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navigate("/dashboard");
+    } else if (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
+
+  const validateForm = () => {
+    if (formData.title.trim() === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Introduce un título",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      return false;
+    }
+
+    if (formData.description.trim() === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Introduce una descripción",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      return false;
+    }
+
+    if (!isIncidencePriority(formData.priority)) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Selecciona una prioridad válida",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      return false;
+    }
+
+    return true;
+  };
+
+  const isIncidencePriority = (value: any): value is IncidencePriority => {
+    return Object.values(IncidencePriority).includes(value);
   };
 
   return (
@@ -70,13 +147,19 @@ const CreateIncidenceComponent: React.FC = () => {
             <select
               className="form-select"
               id="priority"
-              value={formData.priority}
+              value={formData.priority ?? ""}
               onChange={handleChange}
             >
-              <option value={0}>Seleccione una opción</option>
-              <option value={1}>Alta</option>
-              <option value={2}>Media</option>
-              <option value={3}>Baja</option>
+              <option value={""}>Seleccione una opción</option>
+              <option value={IncidencePriority.High}>
+                {incidencePriorityMap.get(IncidencePriority.High)}
+              </option>
+              <option value={IncidencePriority.Medium}>
+                {incidencePriorityMap.get(IncidencePriority.Medium)}
+              </option>
+              <option value={IncidencePriority.Low}>
+                {incidencePriorityMap.get(IncidencePriority.Low)}
+              </option>
             </select>
           </div>
           <button type="submit" className="btn btn-dark">

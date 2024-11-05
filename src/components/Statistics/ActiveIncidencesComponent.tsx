@@ -8,6 +8,7 @@ interface ActiveIncidencesProps {
   error: string | null;
 }
 
+
 const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
   data,
   completed,
@@ -20,7 +21,7 @@ const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
         {!completed || error ? (
           <Skeleton height={30} width={50} />
         ) : (
-          data!.count
+          data!.total
         )}
       </h2>
       <div className="d-flex justify-content-between gap-2">

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Register as RegisterInterface } from "../../interfaces/auth/Register";
-import usePostRegister from "../../hooks/auth/register";
 import Swal from "sweetalert2";
+import usePostRegister from "../../hooks/auth/usePostRegister";
 
-const Register: React.FC = () => {
+const RegisterComponent: React.FC = () => {
   const [credentials, setCredentials] = useState<RegisterInterface>({
     email: "",
     password: "",
@@ -15,25 +15,8 @@ const Register: React.FC = () => {
   const navigate = useNavigate();
 
   const {
-    data: dataRegister,
-    completed: completedRegister,
-    error: errorRegister,
     post: postRegister,
   } = usePostRegister();
-
-
-  useEffect(() => {
-    if (completedRegister) {
-      if (dataRegister) {
-        //login(dataRegister);
-        Swal.fire("Éxito", "Te has registrado correctamente", "success");
-        navigate("/login");
-        console.log(dataRegister);
-      } else if (errorRegister) {
-        Swal.fire("Error", errorRegister, "error");
-      }
-    }
-  }, [dataRegister, errorRegister, completedRegister]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -45,7 +28,26 @@ const Register: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await postRegister(credentials);
+    const { data, error } = await postRegister(credentials);
+
+    if (data?.statusCode === 201) {
+      Swal.fire({
+        icon: "success",
+        title: "Éxito",
+        text: "Te has registrado correctamente",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navigate("/login");
+    } else if (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
   return (
@@ -118,4 +120,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default RegisterComponent;

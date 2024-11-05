@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useAuth } from "./useAuth";
 
-interface FetchBaseResult<T> {
+interface FetchWithAuthBaseResult<T> {
   data: T | null;
   completed: boolean;
   error: string | null;
   fetchData: (url: string) => Promise<void>;
 }
 
-const useFetchWithAuthBase = <T>(): FetchBaseResult<T> => {
+const useFetchWithAuthBase = <T>(): FetchWithAuthBaseResult<T> => {
   const [data, setData] = useState<T | null>(null);
   const [completed, setCompleted] = useState(false);
   const [error, setError] = useState<string | null>(null);

@@ -4,6 +4,8 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { IncidencesTableRow } from "../../interfaces/incidences/IncidencesTableRow";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faMessage } from "@fortawesome/free-solid-svg-icons";
+import { NavLink } from "react-router-dom";
+import { incidencePriorityMap } from "../../enums/incidencePriority";
 
 function getStatusBadgeClass(status: string): string {
   switch (status.toLowerCase()) {
@@ -61,20 +63,20 @@ const IncidencesRowComponent: React.FC<IncidencesRowProps> = ({ row }) => (
       <span>{row.title}</span>
     </td>
     <td>
-      <span className={`badge ${getStatusBadgeClass(row.status)}`}>
+      <span className={`badge ${getStatusBadgeClass(row.status.toString())}`}>
         {row.status}
       </span>
     </td>
     <td>
-      <span className={`badge ${getPriorityBadgeClass(row.priority)}`}>
-        {row.priority}
+      <span className={`badge ${getPriorityBadgeClass(row.priority.toString())}`}>
+        {incidencePriorityMap.get(row.priority)}
       </span>
     </td>
     <td>{row.assignedTo}</td>
     <td className="d-flex justify-content-end gap-2">
-      <button type="button" className="btn p-0">
+      <NavLink to={`/incidence/${row.id}`} className="btn p-0">
         <FontAwesomeIcon icon={faEye} />
-      </button>
+      </NavLink>
       <button type="button" className="btn p-0">
         <FontAwesomeIcon icon={faMessage} />
       </button>

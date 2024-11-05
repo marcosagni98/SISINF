@@ -6,7 +6,7 @@ const useFetchUserHappiness = () => {
   const { data, completed, error, fetchData } = useFetchWithAuthBase<UserHappiness>();
 
   const fetch = () => {
-    return fetchData(`${API_BASE_URL}/user-happiness/1`);
+    return fetchData(`${API_BASE_URL}/api/v1/Statistics/User-happiness`);
   };
 
   return { data, completed, error, fetch };

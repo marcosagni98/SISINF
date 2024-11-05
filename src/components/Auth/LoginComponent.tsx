@@ -1,15 +1,14 @@
 // src/components/Login.tsx
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { Login as LoginInterface } from "../../interfaces/auth/Login";
 import Swal from "sweetalert2";
-import usePostLogin from "../../hooks/auth/login";
-import { jwtDecode } from "jwt-decode";
+import usePostLogin from "../../hooks/auth/usePostLogin";
 
-const Login: React.FC = () => {
+const LoginComponent: React.FC = () => {
   const [credentials, setCredentials] = useState<LoginInterface>({
     email: "",
     password: "",
@@ -18,25 +17,7 @@ const Login: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const {
-    data: dataLogin,
-    completed: completedLogin,
-    error: errorLogin,
-    post: postLogin,
-  } = usePostLogin();
-
-  useEffect(() => {
-    if (completedLogin) {
-      if (dataLogin) {
-        login(dataLogin.token);
-        Swal.fire("Éxito", "Has iniciado sesión correctamente", "success");
-        navigate("/dashboard");
-        console.log(jwtDecode(dataLogin.token));
-      } else if (errorLogin) {
-        Swal.fire("Error", errorLogin, "error");
-      }
-    }
-  }, [dataLogin, errorLogin, completedLogin]);
+  const { post: postLogin } = usePostLogin();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -48,7 +29,27 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await postLogin(credentials);
+    const { data, error } = await postLogin(credentials);
+    if (data) {
+      login(data.token);
+      Swal.fire({
+        icon: "success",
+        title: "Éxito",
+        text: "Has iniciado sesión correctamente",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      navigate("/dashboard");
+    } else if (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
   return (
@@ -103,4 +104,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default LoginComponent;
