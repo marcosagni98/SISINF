@@ -10,15 +10,12 @@ import {
 } from "../../enums/incidencePriority";
 
 const CreateIncidenceComponent: React.FC = () => {
-  const { user } = useAuth();
-
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState<CreateIncidenceInterface>({
     title: "",
     description: "",
     priority: null,
-    userId: null,
   });
 
   const { post: postIncidence } = usePostIncidence();
@@ -43,15 +40,25 @@ const CreateIncidenceComponent: React.FC = () => {
       return;
     }
 
-    formData.userId = user!.id;
-
     const { data, error } = await postIncidence(formData);
 
     if (data?.statusCode === 201) {
-      Swal.fire("Éxito", "Has creado una incidencia correctamente", "success");
+      Swal.fire({
+        icon: "success",
+        title: "Éxito",
+        text: "Has creado una incidencia correctamente",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       navigate("/dashboard");
     } else if (error) {
-      Swal.fire("Error", error, "error");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
@@ -89,11 +96,6 @@ const CreateIncidenceComponent: React.FC = () => {
         timer: 1500,
       });
 
-      return false;
-    }
-
-    if (user === null) {
-      navigate("/login");
       return false;
     }
 

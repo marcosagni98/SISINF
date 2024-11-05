@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import IncidenceChatComponent from "../components/Incidences/IncidenceChatComponent";
 import IncidenceDetailsComponent from "../components/Incidences/IncidenceDetailsComponent";
 import IncidenceHistoryComponent from "../components/Incidences/IncidenceHistoryComponent";
@@ -30,10 +30,15 @@ import useFetchTechnicians from "../hooks/users/useFetchTechnicians";
 import usePutIncidentTechnician from "../hooks/incidences/usePutIncidentTechnician";
 import usePostWorklog from "../hooks/incidences/usePostWorklog";
 import useFetchMessages from "../hooks/incidences/useFetchMessages";
+import { IncidenceMessage } from "../interfaces/incidences/IncidenceMessage";
+import usePostFeedback from "../hooks/incidences/usePostFeedback";
+import { IncidenceFeedback } from "../interfaces/incidences/IncidenceFeedback";
+import useFetchFeedback from "../hooks/incidences/useFetchFeedback";
 
 const IncidenceDetails = () => {
   const { id } = useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [dataInitialized, setDataInitialized] = useState(false);
   const [connection, setConnection] = useState<HubConnection | null>(null);
 
@@ -71,21 +76,42 @@ const IncidenceDetails = () => {
     error: errorMessages,
     fetch: fetchMessages,
   } = useFetchMessages();
+  
+  const {
+    data: dataFeedback,
+    completed: completedFeedback,
+    error: errorFeedback,
+    fetch: fetchFeedback,
+  } = useFetchFeedback();
+
+  const userAllowed =
+    dataIncidence && user
+      ? user.role === UserRole.Administrator ||
+        dataIncidence.technicianId === user.id ||
+        dataIncidence.userId === user.id
+      : false;
 
   useEffect(() => {
-    if (id !== undefined && user !== null && !dataInitialized) {
+    if (!dataInitialized && id !== undefined && user !== null) {
       const incidenceId = parseInt(id);
       fetchIncidence(incidenceId);
       fetchIncidenceWorklog(incidenceId);
       fetchIncidenceHistory(incidenceId);
       fetchMessages(incidenceId);
+      fetchFeedback(incidenceId);
       if (user.role === UserRole.Administrator) {
         fetchTechnicians();
       }
       setDataInitialized(true);
     }
 
-    if (user !== null && connection === null) {
+    if (dataIncidence && user !== null) {
+      if (!userAllowed) {
+        navigate("/unauthorized");
+      }
+    }
+
+    if (userAllowed && user !== null && connection === null) {
       const newConnection = new HubConnectionBuilder()
         .withUrl(`${API_BASE_URL}/messagehub?userId=${user.id}`, {
           withCredentials: false,
@@ -95,13 +121,16 @@ const IncidenceDetails = () => {
         .build();
 
       setConnection(newConnection);
-      
+
       newConnection
         .start()
         .then(() => {
           console.log("Conexión de SignalR iniciada");
-          newConnection.on("ReceiveMessage", (message) => {
-            console.log(message);
+          newConnection.on("ReceiveMessage", (message: IncidenceMessage) => {
+            console.log("recibo");
+            if (message.incidentId === parseInt(id!)) {
+              eventEmitter.emit("messageAdded", message);
+            }
           });
         })
         .catch((err) => console.error("Error al iniciar la conexión:", err));
@@ -112,8 +141,8 @@ const IncidenceDetails = () => {
         });
       };
     }
-  }, [id, user]);
-  
+  }, [id, user, dataIncidence]);
+
   const sendMessage = async (newMessage: string) => {
     if (connection) {
       try {
@@ -121,6 +150,7 @@ const IncidenceDetails = () => {
           "SendMessage",
           parseInt(id!),
           user!.id,
+          user!.name,
           newMessage
         );
       } catch (err) {
@@ -166,12 +196,16 @@ const IncidenceDetails = () => {
           Swal.fire({
             icon: "success",
             title: "Título actualizado",
+            showConfirmButton: false,
+            timer: 1500,
           });
         } else {
           Swal.fire({
             icon: "error",
             title: "Error",
             text: `Hubo un problema al actualizar el título. ${error}.`,
+            showConfirmButton: false,
+            timer: 1500,
           });
         }
       }
@@ -215,12 +249,16 @@ const IncidenceDetails = () => {
           Swal.fire({
             icon: "success",
             title: "Descripción actualizada",
+            showConfirmButton: false,
+            timer: 1500,
           });
         } else {
           Swal.fire({
             icon: "error",
             title: "Error",
             text: `Hubo un problema al actualizar el título. ${error}.`,
+            showConfirmButton: false,
+            timer: 1500,
           });
         }
       }
@@ -275,12 +313,16 @@ const IncidenceDetails = () => {
           Swal.fire({
             icon: "success",
             title: "Estado actualizado",
+            showConfirmButton: false,
+            timer: 1500,
           });
         } else {
           Swal.fire({
             icon: "error",
             title: "Error",
             text: `Hubo un problema al actualizar el estado. ${error}.`,
+            showConfirmButton: false,
+            timer: 1500,
           });
         }
       }
@@ -301,12 +343,16 @@ const IncidenceDetails = () => {
       Swal.fire({
         icon: "success",
         title: "Prioridad actualizada",
+        showConfirmButton: false,
+        timer: 1500,
       });
     } else {
       Swal.fire({
         icon: "error",
         title: "Error",
         text: `Hubo un problema al actualizar la prioridad. ${error}.`,
+        showConfirmButton: false,
+        timer: 1500,
       });
     }
   };
@@ -329,12 +375,16 @@ const IncidenceDetails = () => {
       Swal.fire({
         icon: "success",
         title: "Nuevo técnico asignado",
+        showConfirmButton: false,
+        timer: 1500,
       });
     } else {
       Swal.fire({
         icon: "error",
         title: "Error",
         text: `Hubo un problema al asignar un nuevo técnico. ${error}.`,
+        showConfirmButton: false,
+        timer: 1500,
       });
     }
   };
@@ -365,7 +415,6 @@ const IncidenceDetails = () => {
         const createWorklogPayload = {
           incidentId: parseInt(id!),
           minWorked: parseInt(result.value),
-          technicianId: user!.id,
         };
         const { data, error } = await postWorklog(createWorklogPayload);
 
@@ -382,12 +431,98 @@ const IncidenceDetails = () => {
           Swal.fire({
             icon: "success",
             title: "Añadida imputación de tiempo",
+            showConfirmButton: false,
+            timer: 1500,
           });
         } else if (error) {
           Swal.fire({
             icon: "error",
             title: "Error",
             text: `Hubo un problema al imputar tiempo. ${error}.`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      }
+    });
+  };
+
+  const { post: postFeedback } = usePostFeedback();
+
+  const showRatingModal = () => {
+    Swal.fire({
+      title: "<h5>Valorar resolución de la incidencia</h5>",
+      html: `
+        <div class="d-flex justify-content-center">
+          <div class="text-center">
+            <div class="rating-container d-flex flex-row-reverse justify-content-center gap-1 mb-3">
+              ${[5, 4, 3, 2, 1]
+                .map(
+                  (i) => `
+                    <input type="radio" name="rating" id="star-${i}" value="${i}" class="star-input">
+                    <label for="star-${i}" class="star-label">★</label>
+                  `
+                )
+                .join("")}
+            </div>
+            <div class="mb-3">
+              <label for="feedBackInput" class="form-label mb-3">Ingrese un comentario si lo desea</label>
+              <textarea id="feedBackInput" class="swal2-input w-100" placeholder="Retroalimentación ..."></textarea>
+            </div>
+          </div>
+        </div>
+      `,
+      showCancelButton: true,
+      confirmButtonText: "Enviar",
+      cancelButtonText: "Cancelar",
+      preConfirm: () => {
+        const selectedRating = (
+          document.querySelector(
+            'input[name="rating"]:checked'
+          ) as HTMLInputElement
+        )?.value;
+        const feedBack = (
+          document.getElementById("feedBackInput") as HTMLInputElement
+        ).value;
+
+        if (!selectedRating) {
+          Swal.showValidationMessage("Por favor, seleccione una calificación.");
+          return;
+        }
+
+        return { rating: parseInt(selectedRating), feedBack };
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed && result.value) {
+        const { rating, feedBack } = result.value;
+        const createFeedback = {
+          feedback: feedBack,
+          incidentId: parseInt(id!),
+          rating: rating,
+        };
+
+        const { data, error } = await postFeedback(createFeedback);
+
+        const eventPayload: IncidenceFeedback = {
+          feedback: createFeedback.feedback,
+          rating: createFeedback.rating,
+        };
+        if (data?.statusCode === 201) {
+          eventEmitter.emit("feedbackAdded", eventPayload);
+
+          Swal.fire({
+            icon: "success",
+            title: "Añadida valoración",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else if (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: `Hubo un problema al añadir la valoración. ${error}.`,
+            showConfirmButton: false,
+            timer: 1500,
           });
         }
       }
@@ -430,7 +565,8 @@ const IncidenceDetails = () => {
                       dataIncidence.technicianId !== null
                         ? dataIncidence.technicianName
                         : "Sin asignar",
-                    createdBy: dataIncidence.userName,
+                    createdBy: dataIncidence.userId,
+                    createdByName: dataIncidence.userName,
                     createdAt: toLocalDate(dataIncidence.createdAt),
                   }
                 : null
@@ -443,6 +579,10 @@ const IncidenceDetails = () => {
             completedTechnicians={completedTechnicians}
             errorTechnicians={errorTechnicians}
             handleNewTechnician={setNewTechnician}
+            handleValorar={showRatingModal}
+            incidenceFeedback={dataFeedback}
+            completedFeedback={completedFeedback}
+            errorFeedback={errorFeedback}
           />
           <IncidenceWorklogComponent
             data={dataIncidenceWorklog}

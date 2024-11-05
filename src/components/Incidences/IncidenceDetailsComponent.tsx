@@ -15,12 +15,14 @@ import { getStatusBadgeClass } from "../../utils/getStatusBadgeClass";
 import { UsersTableRow } from "../../interfaces/users/UsersTableRow";
 import { useAuth } from "../../hooks/useAuth";
 import { UserRole } from "../../enums/userRole";
+import { IncidenceFeedback } from "../../interfaces/incidences/IncidenceFeedback";
 
 interface IncidenceDetails {
   priority: IncidencePriority;
   status: IncidenceStatus;
   assignedTo: string;
-  createdBy: string;
+  createdBy: number;
+  createdByName: string;
   createdAt: string;
 }
 
@@ -33,7 +35,14 @@ interface IncidenceDetailsProps {
   technicians: UsersTableRow[] | null;
   completedTechnicians: boolean;
   errorTechnicians: string | null;
-  handleNewTechnician: (newTechnicianId: number, newTechnicianName: string) => void;
+  handleNewTechnician: (
+    newTechnicianId: number,
+    newTechnicianName: string
+  ) => void;
+  handleValorar: () => void;
+  incidenceFeedback: IncidenceFeedback | null;
+  completedFeedback: boolean;
+  errorFeedback: string | null;
 }
 
 const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
@@ -46,47 +55,50 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
   completedTechnicians,
   errorTechnicians,
   handleNewTechnician,
+  handleValorar,
+  incidenceFeedback,
+  completedFeedback,
+  errorFeedback,
 }) => {
   const { user } = useAuth();
   const [status, setStatus] = useState<IncidenceStatus | null>(null);
   const [priority, setPriority] = useState<IncidencePriority | null>(null);
   const [assignedTo, setAssignedTo] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<IncidenceFeedback | null>(null);
 
   useEffect(() => {
     eventEmitter.on(
       "statusUpdated",
       (eventPayload: {
-        changedAt: string,
-        changedBy: number,
-        changedByUserName: string,
-        resolutionDetails: string,
-        status: IncidenceStatus,
+        changedAt: string;
+        changedBy: number;
+        changedByUserName: string;
+        resolutionDetails: string;
+        status: IncidenceStatus;
       }) => {
         setStatus(eventPayload.status);
       }
     );
 
-    eventEmitter.on(
-      "priorityUpdated",
-      (newPriority: IncidencePriority) => {
-        setPriority(newPriority);
-      }
-    );
+    eventEmitter.on("priorityUpdated", (newPriority: IncidencePriority) => {
+      setPriority(newPriority);
+    });
 
-    eventEmitter.on(
-      "technicianUpdated",
-      (newTechnician: string) => {
-        setAssignedTo(newTechnician);
-      }
-    );
+    eventEmitter.on("technicianUpdated", (newTechnician: string) => {
+      setAssignedTo(newTechnician);
+    });
+
+    eventEmitter.on("feedbackAdded", (eventPayload: IncidenceFeedback) => {
+      setFeedback(eventPayload);
+    });
 
     return () => {
       eventEmitter.removeAllListeners("statusUpdated");
       eventEmitter.removeAllListeners("priorityUpdated");
       eventEmitter.removeAllListeners("technicianUpdated");
+      eventEmitter.removeAllListeners("feedbackAdded");
     };
-  }, [])
-  
+  }, []);
 
   useEffect(() => {
     if (completedIncidence && !errorIncidence) {
@@ -95,6 +107,12 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
       setAssignedTo(dataIncidence!.assignedTo);
     }
   }, [completedIncidence, errorIncidence]);
+
+  useEffect(() => {
+    if (completedFeedback && !errorFeedback) {
+      setFeedback(incidenceFeedback!);
+    }
+  }, [completedFeedback, errorFeedback]);
 
   return (
     <div>
@@ -105,7 +123,10 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
               <strong>Asignado a:</strong>
             </div>
             <div className="col position-relative">
-              {!completedIncidence || errorIncidence || !completedTechnicians || errorTechnicians ? (
+              {!completedIncidence ||
+              errorIncidence ||
+              !completedTechnicians ||
+              errorTechnicians ? (
                 <Skeleton width={40} />
               ) : (
                 <>
@@ -124,7 +145,12 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
                           return (
                             assignedTo !== user.name && (
                               <li key={user.id}>
-                                <button className="btn dropdown-item" onClick={() => handleNewTechnician(user.id, user.name)}>
+                                <button
+                                  className="btn dropdown-item"
+                                  onClick={() =>
+                                    handleNewTechnician(user.id, user.name)
+                                  }
+                                >
                                   {user.name}
                                 </button>
                               </li>
@@ -184,12 +210,40 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
                     </div>
                   ) : (
                     <span
-                      className={`badge me-2 ${getStatusBadgeClass(
-                        status!
-                      )}`}
+                      className={`badge me-2 ${getStatusBadgeClass(status!)}`}
                     >
                       {incidenceStatusMap.get(status!)}
                     </span>
+                  )}
+                  {user!.id === dataIncidence!.createdBy &&
+                    status === IncidenceStatus.Review &&
+                    !feedback && (
+                      <button
+                        className="btn btn-dark btn-sm mt-2"
+                        type="button"
+                        onClick={handleValorar}
+                      >
+                        Valorar resolución
+                      </button>
+                    )}
+                  {feedback && (
+                    <div className="d-flex flex-column mt-2">
+                      <span>{feedback.feedback}</span>
+                      <div>
+                        {[...Array(5)].map((_, i) => (
+                          <label
+                            key={i}
+                            htmlFor={`star-${i}`}
+                            className="star"
+                            style={{
+                              color: feedback.rating-1 >= i ? "#FFD700" : "#ccc",
+                            }}
+                          >
+                            ★
+                          </label>
+                        ))}
+                      </div>
+                    </div>
                   )}
                 </>
               )}
@@ -255,7 +309,11 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
               <strong>Informador:</strong>
             </div>
             <div className="col">
-              {!completedIncidence || errorIncidence ? <Skeleton width={80} /> : dataIncidence!.createdBy}
+              {!completedIncidence || errorIncidence ? (
+                <Skeleton width={80} />
+              ) : (
+                dataIncidence!.createdByName
+              )}
             </div>
           </div>
         </div>
@@ -263,7 +321,11 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
       <div className="px-3 pt-3">
         <span>
           Creado:{" "}
-          {!completedIncidence || errorIncidence ? <Skeleton width={80} /> : dataIncidence!.createdAt}
+          {!completedIncidence || errorIncidence ? (
+            <Skeleton width={80} />
+          ) : (
+            dataIncidence!.createdAt
+          )}
         </span>
       </div>
     </div>

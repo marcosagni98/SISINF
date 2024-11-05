@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Register as RegisterInterface } from "../../interfaces/auth/Register";
-import usePostRegister from "../../hooks/auth/register";
 import Swal from "sweetalert2";
+import usePostRegister from "../../hooks/auth/usePostRegister";
 
-const Register: React.FC = () => {
+const RegisterComponent: React.FC = () => {
   const [credentials, setCredentials] = useState<RegisterInterface>({
     email: "",
     password: "",
@@ -31,10 +31,22 @@ const Register: React.FC = () => {
     const { data, error } = await postRegister(credentials);
 
     if (data?.statusCode === 201) {
-      Swal.fire("Éxito", "Te has registrado correctamente", "success");
+      Swal.fire({
+        icon: "success",
+        title: "Éxito",
+        text: "Te has registrado correctamente",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       navigate("/login");
     } else if (error) {
-      Swal.fire("Error", error, "error");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
@@ -108,4 +120,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default RegisterComponent;

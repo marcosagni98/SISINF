@@ -6,9 +6,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { Login as LoginInterface } from "../../interfaces/auth/Login";
 import Swal from "sweetalert2";
-import usePostLogin from "../../hooks/auth/login";
+import usePostLogin from "../../hooks/auth/usePostLogin";
 
-const Login: React.FC = () => {
+const LoginComponent: React.FC = () => {
   const [credentials, setCredentials] = useState<LoginInterface>({
     email: "",
     password: "",
@@ -32,10 +32,23 @@ const Login: React.FC = () => {
     const { data, error } = await postLogin(credentials);
     if (data) {
       login(data.token);
-      Swal.fire("Éxito", "Has iniciado sesión correctamente", "success");
+      Swal.fire({
+        icon: "success",
+        title: "Éxito",
+        text: "Has iniciado sesión correctamente",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
       navigate("/dashboard");
     } else if (error) {
-      Swal.fire("Error", error, "error");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
@@ -91,4 +104,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default LoginComponent;

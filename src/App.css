@@ -104,3 +104,38 @@ ul.list-group.list-group-striped li:nth-of-type(even){
 .position-relative:hover .edit-button {
   opacity: 1;
 }
+
+.rating-container {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+}
+
+.star-input {
+  display: none;
+}
+
+.star {
+  font-size: 2rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.star-label {
+  font-size: 2rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+/* Efecto de hover: llena las estrellas hasta la estrella en la que se posiciona el cursor */
+.star-label:hover,
+.star-label:hover ~ .star-label {
+  color: #FFD700;
+}
+
+/* Estrellas seleccionadas */
+.star-input:checked ~ .star-label {
+  color: #FFD700;
+}
