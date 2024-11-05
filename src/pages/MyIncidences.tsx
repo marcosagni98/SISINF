@@ -34,7 +34,6 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
     orderBy: "id",
     orderDirection: "asc",
   });
-  console.log(prioridad);
   const {
     data: dataMyIncidences,
     completed: completedMyIncidences,

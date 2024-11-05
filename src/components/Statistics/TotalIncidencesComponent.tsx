@@ -1,24 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-const data = [
-    { name: 'Jan', incidencias: 1 },
-    { name: 'Feb', incidencias: 2 },
-    { name: 'Mar', incidencias: 0 },
-    { name: 'Apr', incidencias: 4 },
-    { name: 'May', incidencias: 5 },
-    { name: 'Jun', incidencias: 3 },
-];
+import useFetchMonthlyIncidences from '../../hooks/statistics/useFetchMonthlyIncidences';
 
 const TotalIncidencesComponent: React.FC = () => {
+    const {
+        data: dataMonthlyIncidences,
+        completed: completedMonthlyIncidences,
+        error: errorMonthlyIncidences,
+        fetch: fetchMonthlyIncidences
+    } = useFetchMonthlyIncidences();
+
+    useEffect(() => {
+        fetchMonthlyIncidences();
+    }, []);
+
+    // Transformar los datos para el BarChart
+    const chartData = Object.entries(dataMonthlyIncidences?.incidencesByMonth || {}).map(([month, incidences]) => ({
+        name: month, // Puedes cambiar esto por el nombre del mes si es necesario
+        incidencias: incidences,
+    }));
+
+    console.log(chartData); // Para ver el resultado de la transformación
+
     return (
         <div className="p-3 bg-light rounded">
             <h5>Total de incidencias</h5>
-            <h2>32</h2>
-            <p className="text-success">↑ 12% vs last year</p>
             <ResponsiveContainer width="95%" height={200}>
-                <BarChart data={data}>
+                <BarChart data={chartData}> {/* Asegúrate de pasar los datos al BarChart */}
+                    <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
