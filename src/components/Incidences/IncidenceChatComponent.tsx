@@ -53,6 +53,12 @@ const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
       setNewMessage("");
     }
   };
+  
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSendClick();
+    }
+  };
 
   return (
     <div className="card mt-4">
@@ -86,6 +92,7 @@ const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
             placeholder="Escribe un mensaje..."
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
+            onKeyPress={handleKeyPress}
           />
           <button className="btn btn-dark" onClick={handleSendClick}>
             Enviar

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import IncidenceChatComponent from "../components/Incidences/IncidenceChatComponent";
 import IncidenceDetailsComponent from "../components/Incidences/IncidenceDetailsComponent";
 import IncidenceHistoryComponent from "../components/Incidences/IncidenceHistoryComponent";
@@ -31,6 +31,9 @@ import usePutIncidentTechnician from "../hooks/incidences/usePutIncidentTechnici
 import usePostWorklog from "../hooks/incidences/usePostWorklog";
 import useFetchMessages from "../hooks/incidences/useFetchMessages";
 import { IncidenceMessage } from "../interfaces/incidences/IncidenceMessage";
+import usePostFeedback from "../hooks/incidences/usePostFeedback";
+import { IncidenceFeedback } from "../interfaces/incidences/IncidenceFeedback";
+import useFetchFeedback from "../hooks/incidences/useFetchFeedback";
 
 const IncidenceDetails = () => {
   const { id } = useParams();
@@ -73,13 +76,20 @@ const IncidenceDetails = () => {
     error: errorMessages,
     fetch: fetchMessages,
   } = useFetchMessages();
+  
+  const {
+    data: dataFeedback,
+    completed: completedFeedback,
+    error: errorFeedback,
+    fetch: fetchFeedback,
+  } = useFetchFeedback();
 
   const userAllowed =
-  dataIncidence && user
-    ? user.role === UserRole.Administrator ||
-      dataIncidence.technicianId === user.id ||
-      dataIncidence.userId === user.id
-    : false;
+    dataIncidence && user
+      ? user.role === UserRole.Administrator ||
+        dataIncidence.technicianId === user.id ||
+        dataIncidence.userId === user.id
+      : false;
 
   useEffect(() => {
     if (!dataInitialized && id !== undefined && user !== null) {
@@ -88,6 +98,7 @@ const IncidenceDetails = () => {
       fetchIncidenceWorklog(incidenceId);
       fetchIncidenceHistory(incidenceId);
       fetchMessages(incidenceId);
+      fetchFeedback(incidenceId);
       if (user.role === UserRole.Administrator) {
         fetchTechnicians();
       }
@@ -404,7 +415,6 @@ const IncidenceDetails = () => {
         const createWorklogPayload = {
           incidentId: parseInt(id!),
           minWorked: parseInt(result.value),
-          technicianId: user!.id,
         };
         const { data, error } = await postWorklog(createWorklogPayload);
 
@@ -437,6 +447,87 @@ const IncidenceDetails = () => {
     });
   };
 
+  const { post: postFeedback } = usePostFeedback();
+
+  const showRatingModal = () => {
+    Swal.fire({
+      title: "<h5>Valorar resolución de la incidencia</h5>",
+      html: `
+        <div class="d-flex justify-content-center">
+          <div class="text-center">
+            <div class="rating-container d-flex flex-row-reverse justify-content-center gap-1 mb-3">
+              ${[5, 4, 3, 2, 1]
+                .map(
+                  (i) => `
+                    <input type="radio" name="rating" id="star-${i}" value="${i}" class="star-input">
+                    <label for="star-${i}" class="star-label">★</label>
+                  `
+                )
+                .join("")}
+            </div>
+            <div class="mb-3">
+              <label for="feedBackInput" class="form-label mb-3">Ingrese un comentario si lo desea</label>
+              <textarea id="feedBackInput" class="swal2-input w-100" placeholder="Retroalimentación ..."></textarea>
+            </div>
+          </div>
+        </div>
+      `,
+      showCancelButton: true,
+      confirmButtonText: "Enviar",
+      cancelButtonText: "Cancelar",
+      preConfirm: () => {
+        const selectedRating = (
+          document.querySelector(
+            'input[name="rating"]:checked'
+          ) as HTMLInputElement
+        )?.value;
+        const feedBack = (
+          document.getElementById("feedBackInput") as HTMLInputElement
+        ).value;
+
+        if (!selectedRating) {
+          Swal.showValidationMessage("Por favor, seleccione una calificación.");
+          return;
+        }
+
+        return { rating: parseInt(selectedRating), feedBack };
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed && result.value) {
+        const { rating, feedBack } = result.value;
+        const createFeedback = {
+          feedback: feedBack,
+          incidentId: parseInt(id!),
+          rating: rating,
+        };
+
+        const { data, error } = await postFeedback(createFeedback);
+
+        const eventPayload: IncidenceFeedback = {
+          feedback: createFeedback.feedback,
+          rating: createFeedback.rating,
+        };
+        if (data?.statusCode === 201) {
+          eventEmitter.emit("feedbackAdded", eventPayload);
+
+          Swal.fire({
+            icon: "success",
+            title: "Añadida valoración",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else if (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: `Hubo un problema al añadir la valoración. ${error}.`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      }
+    });
+  };
 
   return (
     <Layout title="Inicio">
@@ -474,7 +565,8 @@ const IncidenceDetails = () => {
                       dataIncidence.technicianId !== null
                         ? dataIncidence.technicianName
                         : "Sin asignar",
-                    createdBy: dataIncidence.userName,
+                    createdBy: dataIncidence.userId,
+                    createdByName: dataIncidence.userName,
                     createdAt: toLocalDate(dataIncidence.createdAt),
                   }
                 : null
@@ -487,6 +579,10 @@ const IncidenceDetails = () => {
             completedTechnicians={completedTechnicians}
             errorTechnicians={errorTechnicians}
             handleNewTechnician={setNewTechnician}
+            handleValorar={showRatingModal}
+            incidenceFeedback={dataFeedback}
+            completedFeedback={completedFeedback}
+            errorFeedback={errorFeedback}
           />
           <IncidenceWorklogComponent
             data={dataIncidenceWorklog}

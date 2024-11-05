@@ -10,15 +10,12 @@ import {
 } from "../../enums/incidencePriority";
 
 const CreateIncidenceComponent: React.FC = () => {
-  const { user } = useAuth();
-
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState<CreateIncidenceInterface>({
     title: "",
     description: "",
     priority: null,
-    userId: null,
   });
 
   const { post: postIncidence } = usePostIncidence();
@@ -42,8 +39,6 @@ const CreateIncidenceComponent: React.FC = () => {
     if (!validateForm()) {
       return;
     }
-
-    formData.userId = user!.id;
 
     const { data, error } = await postIncidence(formData);
 
@@ -101,11 +96,6 @@ const CreateIncidenceComponent: React.FC = () => {
         timer: 1500,
       });
 
-      return false;
-    }
-
-    if (user === null) {
-      navigate("/login");
       return false;
     }
 
