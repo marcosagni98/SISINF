@@ -1,10 +1,10 @@
 import useFetchWithAuthBase from "../useFetchWithAuthBase";
 import { API_BASE_URL } from "../../config";
-import { ActiveIncidences } from "../../interfaces/statistics/ActiveIncidences";
+import { IncidentCountByDateArray } from "../../interfaces/statistics/IncidencesByDay";
 
 const useFetchIncidencesByDay = () => {
   const { data, completed, error, fetchData } =
-    useFetchWithAuthBase<ActiveIncidences>();
+    useFetchWithAuthBase<IncidentCountByDateArray>();
 
   const fetch = () => {
     return fetchData(`${API_BASE_URL}/api/v1/Statistics/incidences-by-day`);
