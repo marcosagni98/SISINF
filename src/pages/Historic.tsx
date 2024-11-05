@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import Layout from "../components/shared/Layout";
 import HistoricTableComponent from "../components/Historic/HistoricTableComponent";
 import useFetchHistoric from "../hooks/historic/useFetchHistoric";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const Historic: React.FC = () => {
   const {
@@ -27,8 +29,8 @@ const Historic: React.FC = () => {
                   className="form-control flex-fill bg-input"
                   placeholder="Buscar incidencia"
                 />
-                <button type="button" className="btn bg-input flex-fill">
-                  Buscar
+                <button type="button" className="btn btn-light flex-fill">
+                  <FontAwesomeIcon icon={faSearch} />
                 </button>
               </div>
               {/* Boton de Añadir Usuario */}

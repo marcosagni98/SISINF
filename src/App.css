@@ -72,20 +72,25 @@
 
 
 .bg-main{
-  background-color: #edede9;
+  background-color: #f1f1f1;
 }
 
 .bg-bar{
-  background-color: #d5bdaf;
+  background-color: #d1d1d1;
 }
 
 .bg-card{
-  background-color: #d6ccc2;
+  background-color: #FFFFFF;
 }
 
 .btn-light{
-  background-color: #d5bdaf;
+  background-color: #d1d1d1;
   border: #edede9;
+}
+
+.btn-dark{
+  background-color: #949494;
+  border: #949494;
 }
 
 .bg-input{
@@ -93,11 +98,11 @@
 }
 
 .bg-tableHeader{
-  background-color: #d6ccc2 !important;
+  background-color: #d2d2d2 !important;
 }
 
 .bg-static{
-  background-color: #d6ccc2;
+  background-color: #FFFFFF;
 }
 
 [data-bs-theme=dark] .bg-main{
@@ -133,6 +138,6 @@
 }
 
 [data-bs-theme=dark] .bg-static{
-  color:black !important;
-  background-color: #a49694 !important;
+  color:white !important;
+  background-color: #333333 !important;
 }

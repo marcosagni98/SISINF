@@ -16,8 +16,7 @@ const AverageIncidencesResolutionTimeComponent: React.FC<
 > = ({ data, completed, error }) => {
   if (!completed || error) {
     return (
-      <div className="card p-3">
-        <>
+      <div className="card p-3 bg-card">
           <h5>Tiempo medio de resolución</h5>
           <h2 className="fw-semibold">
             <Skeleton width={220} height={36} />
@@ -25,7 +24,6 @@ const AverageIncidencesResolutionTimeComponent: React.FC<
           <p>
             <Skeleton width={200} height={20} />
           </p>
-        </>
       </div>
     );
   }

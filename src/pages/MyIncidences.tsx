@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import Layout from "../components/shared/Layout";
 import IncidencesTableComponent from "../components/Incidences/IncidencesTableComponent";
 import useFetchMyIncidences from "../hooks/incidences/useFetchMyIncidences";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const MyIncidences: React.FC = () => {
   const {
@@ -27,9 +29,9 @@ const MyIncidences: React.FC = () => {
                   className="form-control flex-fill bg-input"
                   placeholder="Buscar incidencia"
                 />
-                <button type="button" className="btn bg-input flex-fill">
-                  Buscar
-                </button>
+                <button type="button" className="btn btn-light flex-fill">
+                <FontAwesomeIcon icon={faSearch} />
+              </button>
               </div>
             </div>
           </div>

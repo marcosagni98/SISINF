@@ -86,7 +86,7 @@ const Dashboard = () => {
                 className="form-control flex-fill bg-input"
                 placeholder="Buscar incidencia"
               />
-              <button type="button" className="btn bg-input flex-fill">
+              <button type="button" className="btn btn-light flex-fill">
                 <FontAwesomeIcon icon={faSearch} />
               </button>
             </div>
