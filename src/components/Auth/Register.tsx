@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Register as RegisterInterface } from "../../interfaces/auth/Register";
@@ -15,24 +15,8 @@ const Register: React.FC = () => {
   const navigate = useNavigate();
 
   const {
-    data: dataRegister,
-    completed: completedRegister,
-    error: errorRegister,
     post: postRegister,
   } = usePostRegister();
-
-
-  useEffect(() => {
-    if (completedRegister) {
-      if (dataRegister) {
-        //login(dataRegister);
-        Swal.fire("Éxito", "Te has registrado correctamente", "success");
-        navigate("/login");
-      } else if (errorRegister) {
-        Swal.fire("Error", errorRegister, "error");
-      }
-    }
-  }, [dataRegister, errorRegister, completedRegister]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -44,7 +28,14 @@ const Register: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await postRegister(credentials);
+    const { data, error } = await postRegister(credentials);
+
+    if (data?.statusCode === 201) {
+      Swal.fire("Éxito", "Te has registrado correctamente", "success");
+      navigate("/login");
+    } else if (error) {
+      Swal.fire("Error", error, "error");
+    }
   };
 
   return (

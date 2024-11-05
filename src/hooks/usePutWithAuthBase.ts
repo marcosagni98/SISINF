@@ -1,16 +1,21 @@
-interface PostBaseResult<T, Y> {
-  postData: (url: string, body: Y) => Promise<{ data: T | null; error: string | null }>;
+import { useAuth } from "./useAuth";
+
+interface FetchWithAuthBaseResult<T, Y> {
+  putData: (url: string, body: Y) => Promise<{ data: T | null; error: string | null }>;
 }
 
-const usePostBase = <T, Y>(): PostBaseResult<T, Y> => {
-  const postData = async (url: string, body: Y): Promise<{ data: T | null; error: string | null }>  => {
+const usePutWithAuthBase = <T, Y>(): FetchWithAuthBaseResult<T, Y> => {
+  const { token } = useAuth();
+
+  const putData = async (url: string, body: Y): Promise<{ data: T | null; error: string | null }> => {
     try {
       const headers = {
         "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
       };
 
       const config: RequestInit = {
-        method: "POST",
+        method: "PUT",
         headers,
         body: JSON.stringify(body),
       };
@@ -29,7 +34,7 @@ const usePostBase = <T, Y>(): PostBaseResult<T, Y> => {
     }
   };
 
-  return { postData };
+  return { putData };
 };
 
-export default usePostBase;
+export default usePutWithAuthBase;

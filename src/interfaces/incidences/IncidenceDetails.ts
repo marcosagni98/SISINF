@@ -7,7 +7,9 @@ export interface IncidenceDetails {
     description: string;
     priority: IncidencePriority;
     status: IncidenceStatus;
-    createdAt: Date;
+    createdAt: string;
     userId: number;
-    technicianId: number;
+    userName: string;
+    technicianId: number | undefined;
+    technicianName: string;
 }

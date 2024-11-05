@@ -1,4 +1,3 @@
-import useFetchWithAuthBase from "../useFetchWithAuthBase";
 import { API_BASE_URL } from "../../config";
 import { IncidencesTableRow } from "../../interfaces/incidences/IncidencesTableRow";
 import useFetchWithAuthAndPaginationBase from "../useFetchWithAuthAndPaginationBase";

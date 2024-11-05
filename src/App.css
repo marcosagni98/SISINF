@@ -95,3 +95,12 @@ ul.list-group.list-group-striped li:nth-of-type(odd){
 ul.list-group.list-group-striped li:nth-of-type(even){
   background: #f0f0f0;
 }
+
+.edit-button {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.position-relative:hover .edit-button {
+  opacity: 1;
+}
