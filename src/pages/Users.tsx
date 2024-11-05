@@ -14,8 +14,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { UsersTableRow } from "../interfaces/users/UsersTableRow";
 import { Tooltip } from "react-tooltip";
+import usePutUpdateUser from "../hooks/usePutUpdateUser";
+import { Navigate, useNavigate } from "react-router-dom";
+import { User } from "../context/AuthContext";
 
 const Users: React.FC = () => {
+  const navigate = useNavigate();
+  
   const [paginationProps, setPaginationProps] = useState<PaginationProps>({
     pageNumber: 1,
     pageSize: 10,
@@ -60,6 +65,17 @@ const Users: React.FC = () => {
     fetchUsers(paginationProps);
   };
 
+  const { put: putUpdateUser } = usePutUpdateUser();
+
+  const cambiarRol = (id: number, userType: UserRole) => {
+    if(userType === UserRole.User){
+      putUpdateUser(id, 1);
+    }
+    else if(userType === UserRole.Technician){
+      putUpdateUser(id, 0);
+    }
+  }
+
   const headers = [
     { key: "id", label: "ID", sortable: true },
     { key: "name", label: "Nombre", sortable: true },
@@ -81,6 +97,7 @@ const Users: React.FC = () => {
             data-tooltip-id="action-tooltip"
             data-tooltip-content="Ascender"
             data-tooltip-place="right"
+            onClick={() => cambiarRol(row.id, row.userType)}
           >
             <FontAwesomeIcon icon={faArrowUp} />
           </button>
@@ -90,6 +107,7 @@ const Users: React.FC = () => {
             data-tooltip-id="action-tooltip"
             data-tooltip-content="Degradar"
             data-tooltip-place="right"
+            onClick={() => cambiarRol(row.id, row.userType)}
           >
             <FontAwesomeIcon icon={faArrowDown} />
           </button>

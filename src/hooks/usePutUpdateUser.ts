@@ -5,10 +5,10 @@ import { UpdateUser } from "../interfaces/users/UpdateUser";
 
 const usePutUpdateUser = () => {
     const { putData } =
-        usePutWithAuthBase<GenericRespone, UpdateUser>();
+        usePutWithAuthBase<GenericRespone, number>();
 
-    const put = (id: number, data: UpdateUser) => {
-        return putData(`${API_BASE_URL}/api/v1/Incident/update-user-type/${id}`, data);
+    const put = (id: number, data: number) => {
+        return putData(`${API_BASE_URL}/api/v1/User/update-user-type/${id}`, data);
     };
 
     return { put };
