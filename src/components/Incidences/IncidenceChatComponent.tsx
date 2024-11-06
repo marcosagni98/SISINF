@@ -11,6 +11,15 @@ interface IncidenceChatProps {
   handleSendMessage: (message: string) => void;
 }
 
+/**
+ * IncidenceChatComponent
+ *
+ * This component displays and manages a chat interface for an incidence,
+ * allowing users to view messages and send new ones in real-time.
+ *
+ * @param {IncidenceChatProps} props - Contains chat data, status flags, and a message handler
+ * @returns {React.ReactElement} - A real-time chat component
+ */
 const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
   data,
   completed,
@@ -24,6 +33,10 @@ const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
+   /**
+   * Real-time Event Handling: Subscribes to message updates.
+   * When a new message event is triggered, it appends the message to the chat.
+   */
   useEffect(() => {
     const handleMessageAdded = (eventPayload: IncidenceMessage) => {
       console.log(eventPayload);
@@ -37,6 +50,10 @@ const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
     };
   }, []);
 
+  /**
+   * Initializes messages once data is fully loaded.
+   * Ensures that messages are only set if data load is complete and there is no error.
+   */
   useEffect(() => {
     if (completed && !error) {
       setMessages(data!);
