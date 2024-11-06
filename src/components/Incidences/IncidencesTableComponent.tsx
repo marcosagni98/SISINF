@@ -7,6 +7,11 @@ import { faEye, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import { incidencePriorityMap } from "../../enums/incidencePriority";
 
+/**
+ * Returns the corresponding badge class for each status type
+ * @param status - The status of the incidence
+ * @returns - The CSS class for the status badge
+ */
 function getStatusBadgeClass(status: string): string {
   switch (status.toLowerCase()) {
     case "en progreso":
@@ -20,6 +25,11 @@ function getStatusBadgeClass(status: string): string {
   }
 }
 
+/**
+ * Returns the corresponding badge class for each priority type
+ * @param priority - The priority of the incidence
+ * @returns - The CSS class for the priority badge
+ */
 function getPriorityBadgeClass(priority: string): string {
   switch (priority.toLowerCase()) {
     case "alta":
