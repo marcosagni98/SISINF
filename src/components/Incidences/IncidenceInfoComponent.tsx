@@ -27,6 +27,11 @@ const IncidenceInfoComponent: React.FC<IncidenceInfoProps> = ({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+  /**
+   * useEffect to handle updates to title and description. Listens for events
+   * 'titleUpdated' and 'descriptionUpdated', updating the component’s
+   * title and description states when triggered.
+   */
   useEffect(() => {
     eventEmitter.on("titleUpdated", (newTitle: string) => {
       setTitle(newTitle);
@@ -42,7 +47,10 @@ const IncidenceInfoComponent: React.FC<IncidenceInfoProps> = ({
     };
   }, [])
   
-
+   /**
+   * useEffect to initially set the title and description once data is fully loaded
+   * and there are no errors. Updates title and description states with data values.
+   */
   useEffect(() => {
     if (completed && !error) {
       setTitle(data!.title);
