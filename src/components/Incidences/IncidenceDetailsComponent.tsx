@@ -66,6 +66,9 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
   const [assignedTo, setAssignedTo] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<IncidenceFeedback | null>(null);
 
+  /**
+   * Effect to listen for events to update status, priority, assigned technician, and feedback.
+   */
   useEffect(() => {
     eventEmitter.on(
       "statusUpdated",
@@ -100,6 +103,9 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
     };
   }, []);
 
+  /**
+   * Effect to initialize incident details once data is loaded and error-free.
+   */
   useEffect(() => {
     if (completedIncidence && !errorIncidence) {
       setStatus(dataIncidence!.status);
@@ -108,6 +114,9 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
     }
   }, [completedIncidence, errorIncidence]);
 
+  /**
+   * Effect to initialize feedback once data is loaded and error-free.
+   */
   useEffect(() => {
     if (completedFeedback && !errorFeedback) {
       setFeedback(incidenceFeedback!);
