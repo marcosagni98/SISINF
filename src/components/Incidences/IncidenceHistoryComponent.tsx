@@ -19,6 +19,10 @@ const IncidenceHistoryComponent: React.FC<IncidenceHistoryProps> = ({
 }) => {
   const [history, setHistory] = useState<IncidenceHistory[]>([]);
 
+  /**
+   * Event listener for status updates, which adds new status entries
+   * to the history array when "statusUpdated" events occur.
+   */
   useEffect(() => {
     eventEmitter.on(
       "statusUpdated",
@@ -47,6 +51,10 @@ const IncidenceHistoryComponent: React.FC<IncidenceHistoryProps> = ({
     };
   }, []);
 
+  /**
+   * Effect to set the initial history data after it is fully loaded
+   * and there are no errors.
+   */
   useEffect(() => {
     if (completed && !error) {
       setHistory(data!);
