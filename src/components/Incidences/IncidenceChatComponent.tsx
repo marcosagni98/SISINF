@@ -60,10 +60,16 @@ const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
     }
   }, [completed, error, data]);
 
+  /**
+   * Auto-scroll to the latest message whenever `messages` updates.
+   */
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  /**
+   * handleSendClick - Sends the message if it's not empty
+   */
   const handleSendClick = () => {
     if (newMessage.trim()) {
       handleSendMessage(newMessage.trim());
@@ -71,6 +77,11 @@ const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
     }
   };
   
+  /**
+   * handleKeyPress - Checks for Enter key to send message
+   *
+   * @param {React.KeyboardEvent<HTMLInputElement>} e - Keyboard event
+   */
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSendClick();
