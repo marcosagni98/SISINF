@@ -42,6 +42,10 @@ const IncidenceWorklogComponent: React.FC<IncidenceWorklogProps> = ({
     };
   }, []);
 
+  /** 
+   * useEffect hook to listen for the "worklogAdded" event.
+   * Adds new worklog entries when an event with log details is emitted.
+   */
   useEffect(() => {
     if (completed && !error) {
       setWorklog(data!);
