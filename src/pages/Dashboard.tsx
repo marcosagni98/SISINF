@@ -20,6 +20,7 @@ import { IncidencePriority, incidencePriorityMap } from "../enums/incidencePrior
 import { getPriorityBadgeClass } from "../utils/getPriorityBadgeClass";
 import { NavLink } from "react-router-dom";
 import { PaginationProps } from "../interfaces/shared/PaginationProps";
+import { Tooltip } from "react-tooltip";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -92,7 +93,7 @@ const Dashboard = () => {
     },
     { key: "assignedTo", label: "Asignado a", sortable: true },
     {
-      key: "actions",
+      key: "id",
       label: "Acciones",
       sortable: false,
       render: (id: number) => (
@@ -173,6 +174,7 @@ const Dashboard = () => {
         />
         </div>
       </div>
+      <Tooltip id="action-tooltip" />
     </Layout>
   );
 };
