@@ -49,6 +49,14 @@ interface IncidencesTableComponentProps {
   error: string | null;
 }
 
+/**
+ * IncidencesTableComponentHeader
+ *
+ * This component renders the header of the incidences table, with column names such as ID, Title,
+ * Status, Priority, Assigned To, and Actions.
+ *
+ * @returns {React.ReactElement} - The header row for the incidences table.
+ */
 const IncidencesTableComponentHeader: React.FC = () => (
   <thead>
     <tr className="text-uppercase">
@@ -93,6 +101,7 @@ const IncidencesRowComponent: React.FC<IncidencesRowProps> = ({ row }) => (
     </td>
   </tr>
 );
+
 
 const IncidencesTableComponent: React.FC<IncidencesTableComponentProps> = ({
   data,

@@ -12,6 +12,17 @@ interface IncidenceHistoryProps {
   error: string | null;
 }
 
+/**
+ * IncidenceHistoryComponent
+ *
+ * Component that renders the history of an incidence, showing the changes made to the incidence's
+ * status, and the corresponding details like the user who made the change and any resolution details.
+ *
+ * It listens for "statusUpdated" events and dynamically updates the history.
+ *
+ * @component
+ * @returns {React.ReactElement} - The rendered incidence history component.
+ */
 const IncidenceHistoryComponent: React.FC<IncidenceHistoryProps> = ({
   data,
   completed,

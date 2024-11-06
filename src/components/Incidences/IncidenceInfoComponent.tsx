@@ -17,6 +17,16 @@ interface IncidenceInfoProps {
   handleEditDescription: () => void;
 }
 
+/**
+ * IncidenceInfoComponent
+ *
+ * This component displays the title and description of an incidence. It allows the title
+ * and description to be edited through buttons. The component listens for changes in the title
+ * and description through events and updates accordingly.
+ *
+ * @component
+ * @returns {React.ReactElement} - The rendered component with title, description, and edit buttons.
+ */
 const IncidenceInfoComponent: React.FC<IncidenceInfoProps> = ({
   data,
   completed,

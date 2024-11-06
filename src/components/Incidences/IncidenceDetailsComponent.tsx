@@ -45,6 +45,15 @@ interface IncidenceDetailsProps {
   errorFeedback: string | null;
 }
 
+/**
+ * IncidenceDetailsComponent
+ * 
+ * Component to display and manage details of an incidence, including status, priority, technician assignment, and feedback.
+ * The component allows admins to update the status and priority, assign technicians, and rate the resolution of the incidence.
+ *
+ * @component
+ * @returns {React.ReactElement} - The rendered incidence details component
+ */
 const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
   dataIncidence,
   completedIncidence,
