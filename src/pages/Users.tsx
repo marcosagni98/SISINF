@@ -14,8 +14,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { UsersTableRow } from "../interfaces/users/UsersTableRow";
 import { Tooltip } from "react-tooltip";
+import usePutUpdateUserRole from "../hooks/users/usePutUpdateUserRole";
+import { Navigate, useNavigate } from "react-router-dom";
+import { User } from "../context/AuthContext";
+import Swal from "sweetalert2";
+import { Pagination } from "../interfaces/shared/Paginated";
 
 const Users: React.FC = () => {
+  const navigate = useNavigate();
+  const [users, setUsers] = useState<Pagination<UsersTableRow> | null>(null);
   const [paginationProps, setPaginationProps] = useState<PaginationProps>({
     pageNumber: 1,
     pageSize: 10,
@@ -34,6 +41,12 @@ const Users: React.FC = () => {
   useEffect(() => {
     fetchUsers(paginationProps);
   }, [paginationProps]);
+
+  useEffect(() => {
+    if (dataUsers) {
+      setUsers(dataUsers);
+    }
+  }, [dataUsers]);
 
   const handlePageChange = (page: number) => {
     setPaginationProps((prev) => ({ ...prev, pageNumber: page }));
@@ -60,6 +73,60 @@ const Users: React.FC = () => {
     fetchUsers(paginationProps);
   };
 
+  const { put: putUpdateUserRole } = usePutUpdateUserRole();
+
+  const cambiarRol = async (id: number, userType: UserRole) => {
+    if (userType === UserRole.Administrator) {
+      return;
+    }
+
+    let data = null;
+    let error = null;
+
+    switch (userType) {
+      case UserRole.User:
+        ({ data, error } = await putUpdateUserRole(id, UserRole.Technician));
+        break;
+      case UserRole.Technician:
+        ({ data, error } = await putUpdateUserRole(id, UserRole.User));
+        break;
+      default:
+        break;
+    }
+
+    if (data?.statusCode === 200) {
+      Swal.fire({
+        icon: "success",
+        title: "Éxito",
+        text: "Se ha cambiado el rol con éxito",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      setUsers((prevUsers) => {
+        if (!prevUsers) return prevUsers;
+      
+        return {
+          ...prevUsers,
+          items: prevUsers.items.map((user) =>
+            user.id === id
+              ? { ...user, userType: userType === UserRole.User ? UserRole.Technician : UserRole.User }
+              : user
+          ),
+          totalCount: prevUsers.totalCount,
+        };
+      });
+    } else if (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
+
   const headers = [
     { key: "id", label: "ID", sortable: true },
     { key: "name", label: "Nombre", sortable: true },
@@ -81,6 +148,7 @@ const Users: React.FC = () => {
             data-tooltip-id="action-tooltip"
             data-tooltip-content="Ascender"
             data-tooltip-place="right"
+            onClick={() => cambiarRol(row.id, row.userType)}
           >
             <FontAwesomeIcon icon={faArrowUp} />
           </button>
@@ -90,6 +158,7 @@ const Users: React.FC = () => {
             data-tooltip-id="action-tooltip"
             data-tooltip-content="Degradar"
             data-tooltip-place="right"
+            onClick={() => cambiarRol(row.id, row.userType)}
           >
             <FontAwesomeIcon icon={faArrowDown} />
           </button>
@@ -97,8 +166,8 @@ const Users: React.FC = () => {
     },
   ];
 
-  const totalPages = dataUsers?.totalCount
-    ? Math.ceil(dataUsers.totalCount / paginationProps.pageSize)
+  const totalPages = users?.totalCount
+    ? Math.ceil(users.totalCount / paginationProps.pageSize)
     : 1;
 
   return (
@@ -131,7 +200,7 @@ const Users: React.FC = () => {
       <div className="row p-2">
         <GenericTableComponent
           headers={headers}
-          data={dataUsers?.items || []}
+          data={users?.items || []}
           completed={completedUsers}
           error={errorUsers}
           onSort={handleSort}

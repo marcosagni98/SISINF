@@ -4,6 +4,8 @@ import useFetchMyIncidences from "../hooks/incidences/useFetchMyIncidences";
 import PaginationComponent from "../components/shared/PaginationComponent";
 import GenericTableComponent from "../components/shared/GenericTableComponent";
 import { getPriorityBadgeClass } from "../utils/getPriorityBadgeClass";
+import { useSearchParams } from "react-router-dom";
+
 import {
   IncidencePriority,
   incidencePriorityMap,
@@ -15,8 +17,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
 import { PaginationProps } from "../interfaces/shared/PaginationProps";
 import { Tooltip } from "react-tooltip";
+import useFetchMyIncidencesPrioridad from "../hooks/incidences/useFetchMyIncidencesPrioridad";
 
-const MyIncidences: React.FC = () => {
+interface MyIncidencesProps {
+  prioridad?: IncidencePriority;
+}
+
+const MyIncidences: React.FC<MyIncidencesProps> = () => {
+  const [searchParams] = useSearchParams();
+  const prioridad = searchParams.get("prioridad") ? Number(searchParams.get("prioridad")) : null;
+
   const [paginationProps, setPaginationProps] = useState<PaginationProps>({
     pageNumber: 1,
     pageSize: 10,
@@ -24,7 +34,6 @@ const MyIncidences: React.FC = () => {
     orderBy: "id",
     orderDirection: "asc",
   });
-
   const {
     data: dataMyIncidences,
     completed: completedMyIncidences,
@@ -32,9 +41,22 @@ const MyIncidences: React.FC = () => {
     fetch: fetchMyIncidences,
   } = useFetchMyIncidences();
 
+
+  const {
+    data: dataMyIncidencesPrioridad,
+    completed: completedMyIncidencesPrioridad,
+    error: errorMyIncidencesPrioridad,
+    fetch: fetchMyIncidencesPrioridad,
+  } = useFetchMyIncidencesPrioridad();
+
   useEffect(() => {
-    fetchMyIncidences(paginationProps);
-  }, [paginationProps]);
+    if(prioridad == null){
+      fetchMyIncidences(paginationProps);
+    }
+    else{
+      fetchMyIncidencesPrioridad(paginationProps, prioridad); 
+    }
+  }, [paginationProps, prioridad]);
 
   const handlePageChange = (page: number) => {
     setPaginationProps((prev) => ({ ...prev, pageNumber: page }));
@@ -103,9 +125,12 @@ const MyIncidences: React.FC = () => {
     },
   ];
 
-  const totalPages = dataMyIncidences?.totalCount
-    ? Math.ceil(dataMyIncidences.totalCount / paginationProps.pageSize)
-    : 1;
+  const totalPages = (() => {
+    const data = prioridad !== null ? dataMyIncidencesPrioridad : dataMyIncidences;
+    return data && data.totalCount
+      ? Math.ceil(data.totalCount / paginationProps.pageSize)
+      : 1;
+  })();
 
   return (
     <Layout title="Mis Incidencias">
@@ -137,9 +162,9 @@ const MyIncidences: React.FC = () => {
       <div className="row p-2">
         <GenericTableComponent
           headers={headers}
-          data={dataMyIncidences?.items || []}
-          completed={completedMyIncidences}
-          error={errorMyIncidences}
+          data={prioridad !== null ? dataMyIncidencesPrioridad?.items || [] : dataMyIncidences?.items || []}
+          completed={prioridad !== null ? completedMyIncidencesPrioridad : completedMyIncidences}
+          error={prioridad !== null ? errorMyIncidencesPrioridad : errorMyIncidences}
           onSort={handleSort}
           sortColumn={paginationProps.orderBy}
           sortDirection={paginationProps.orderDirection}
