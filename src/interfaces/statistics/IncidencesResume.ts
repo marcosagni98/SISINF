@@ -1,5 +1,5 @@
 export interface IncidencesResume {
-    openIncidences: number;
+    openedIncidences: number;
     closedIncidences: number;
     unassignedIncidences: number;
 }

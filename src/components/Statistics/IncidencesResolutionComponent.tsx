@@ -1,89 +1,64 @@
-// HeatMapChart.tsx
-import React, { useEffect, useState } from 'react';
-import ReactApexChart from 'react-apexcharts';
-import { ApexOptions } from 'apexcharts';
-import useFetchIncidencesByDay from '../../hooks/statistics/useFetchIncidencesByDay';
-
-const generateDatesOfYear = (year: number): string[] => {
-  const dates = [];
-  for (let month = 0; month < 12; month++) {
-    const daysInMonth = new Date(year, month + 1, 0).getDate(); // Obtener el número de días en el mes
-    for (let day = 1; day <= daysInMonth; day++) {
-      dates.push(`${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`);
-    }
-  }
-  return dates;
-};
+import React, { useEffect, useState } from "react";
+import HeatMap from '@uiw/react-heat-map';
+import useFetchIncidencesByDay from "../../hooks/statistics/useFetchIncidencesByDay";
 
 const IncidencesResolutionComponent: React.FC = () => {
-  const [combinedData, setCombinedData] = useState<{ x: string; y: number }[]>([]);
-
   const {
-    data: dataIncidencesByDay,
-    completed: completedIncidencesByDay,
-    error: errorIncidencesByDay,
-    fetch: fetchIncidencesByDay
+    data: dataIncidencesResolution,
+    completed: completedIncidencesResolution,
+    error: errorIncidencesResolution,
+    fetch: getIncidencesResolution,
   } = useFetchIncidencesByDay();
 
-  useEffect(() => {
-    fetchIncidencesByDay();
-}, []);
-
-  console.log(dataIncidencesByDay);
+  // Local state to store the year dynamically
+  const [year, setYear] = useState<number | null>(null);
 
   useEffect(() => {
-    if (dataIncidencesByDay) {
-      const incidentDays = new Set(dataIncidencesByDay.map((item) => item.date));
-      const allDaysOfYear = generateDatesOfYear(new Date().getFullYear());
+    getIncidencesResolution();
+  }, []);
 
-      // Crear el array de datos combinando días con y sin incidencias
-      const data = allDaysOfYear.map(day => ({
-        x: day,
-        y: incidentDays.has(day) ? dataIncidencesByDay.find(item => item.date === day)?.count || 0 : 0, // Si hay incidencias, usar el conteo; si no, usar 0
-      }));
+  // Update the year based on the first and last date from the API response
+  useEffect(() => {
+    if (dataIncidencesResolution && dataIncidencesResolution.length > 0) {
+      const firstDate = dataIncidencesResolution[0].date;
+      const lastDate = dataIncidencesResolution[dataIncidencesResolution.length - 1].date;
 
-      setCombinedData(data);
+      // Extract the year from the first and last date
+      const startYear = new Date(firstDate).getFullYear();
+      const endYear = new Date(lastDate).getFullYear();
+
+      // Set the year state if both dates match the same year
+      if (startYear === endYear) {
+        setYear(startYear);
+      } else {
+        // If the years are different, you may want to handle it differently
+        // or use a range like `startYear` to `endYear`.
+        setYear(startYear); // For simplicity, we're just using the start year here
+      }
     }
-  }, [dataIncidencesByDay]); // Se ejecuta cuando dataIncidencesByDay cambia
+  }, [dataIncidencesResolution]);
 
-  const series = [
-    {
-      name: 'Incidencias por Día',
-      data: combinedData,
-    },
-  ];
-
-
-  const options: ApexOptions = {
-    chart: {
-      height: 350,
-      type: 'heatmap',
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    colors: ['#008FFB'],
-    title: {
-      text: 'HeatMap Chart (Single color)',
-    },
-    plotOptions: {
-      heatmap: {
-        shadeIntensity: 0.5,
-        colorScale: {
-          ranges: [
-            { from: 0, to: 2, color: '#eff0f1' },
-            { from: 2, to: 100, color: '#005bbf' },
-          ],
-        },
-      },
-    },
-  };
-
+  if (!completedIncidencesResolution || errorIncidencesResolution) {
+    return (
+      <div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
   return (
     <div>
-      <div id="chart">
-        <ReactApexChart options={options} series={series} type="heatmap" height={350} />
-      </div>
+      {dataIncidencesResolution ? (
+        <HeatMap
+          width={750}
+          value={dataIncidencesResolution}
+          weekLabels={['', 'Mon', '', 'Wed', '', 'Fri', '']}
+          // Dynamically set the start and end date based on the year
+          startDate={year ? new Date(`${year}-01-01`) : new Date()}
+          endDate={year ? new Date(`${year}-12-31`) : new Date()}
+        />
+      ) : (
+        <p>No data available</p>
+      )}
     </div>
   );
 };
