@@ -1,9 +1,7 @@
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { ActiveIncidences } from "../../interfaces/statistics/ActiveIncidences";
-import { on } from "events";
 import { IncidencePriority } from "../../enums/incidencePriority";
-import NavItem from "../shared/NavItem";
 import { Navigate, useNavigate } from "react-router-dom";
 
 interface ActiveIncidencesProps {
@@ -12,6 +10,21 @@ interface ActiveIncidencesProps {
   error: string | null;
 }
 
+/**
+ * ActiveIncidencesComponent Component
+ *
+ * This component displays the current active incidences data, with priority
+ * breakdowns for high, medium, and low priority incidences. It includes loading
+ * skeletons for the data while fetching, and displays an error message if there
+ * is a loading error.
+ *
+ * @component
+ * @param {ActiveIncidencesProps} props - Contains incidence data (`data`), a boolean
+ * indicating if loading is complete (`completed`), and an error message (`error`) if
+ * an issue occurred during data fetching.
+ * @returns {React.ReactElement} - A card component showing active incidence stats,
+ * with buttons to filter by priority.
+ */
 
 
 const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
@@ -21,6 +34,14 @@ const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
 }) => {
 
   const navigate = useNavigate();
+  
+  /**
+   * handleClick Function
+   *
+   * Navigates to a filtered view of incidences based on the selected priority.
+   *
+   * @param {IncidencePriority} priority - The priority level of incidences to filter.
+   */
 
   const handleClick = (priority: IncidencePriority) => {
     //console.log(`Clicked on ${priority}`);
