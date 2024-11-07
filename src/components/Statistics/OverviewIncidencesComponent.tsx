@@ -26,7 +26,7 @@ const OverviewIncidencesComponent: React.FC = () => {
       <div className="d-flex justify-content-around px-5 py-4 gap-4 fw-bold">
         <div className="card text-center badge-info p-4 rounded-3 col-4">
           <FontAwesomeIcon icon={faTicket} size="2x" />
-          {dataResumeIncidences?.openIncidences}
+          {dataResumeIncidences?.openedIncidences}
           <p>Incidencias abiertas</p>
         </div>
         <div className="card text-center badge-success p-4 rounded-3 col-4">
