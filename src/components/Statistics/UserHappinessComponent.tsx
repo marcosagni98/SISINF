@@ -17,7 +17,7 @@ const UserHappinessComponent: React.FC<UserHappinessProps> = ({
 }) => {
   if (!completed || error) {
     return (
-      <div className="card p-3 bg-card">
+      <div className="card p-3 bg-main">
         <h5>Satisfacción del usuario</h5>
         <h2 className="fw-semibold">
           <Skeleton width={50} height={36} />
@@ -34,7 +34,7 @@ const UserHappinessComponent: React.FC<UserHappinessProps> = ({
   const textClass = isNegative ? "text-danger" : "text-success";
 
   return (
-    <div className="card p-3 bg-card">
+    <div className="card p-3 bg-main">
       <h5>Satisfacción del usuario</h5>
       <h2 className="fw-semibold">{data!.happinessRatio * 100}%</h2>
       <p className={textClass}>

@@ -73,8 +73,8 @@ const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
               key={index}
               className={`mb-2 p-3 rounded ${
                 user && user.id === msg.senderId
-                  ? "ms-auto bg-light"
-                  : "bg-dark text-white"
+                  ? "ms-auto your-chat-message"
+                  : "chat-message"
               }`}
               style={{ width: "fit-content" }}
             >
@@ -94,7 +94,7 @@ const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyPress={handleKeyPress}
           />
-          <button className="btn btn-dark" onClick={handleSendClick}>
+          <button className="btn button-main-dark" onClick={handleSendClick}>
             Enviar
           </button>
         </div>

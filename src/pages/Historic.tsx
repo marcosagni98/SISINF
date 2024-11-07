@@ -77,7 +77,7 @@ const Historic: React.FC = () => {
       render: (id: number) => (
         <NavLink
           to={`/incidence/${id}`}
-          className="text-decoration-none text-dark"
+          className="text-decoration-none icon-main"
           data-tooltip-id="action-tooltip"
           data-tooltip-content="Ver incidencia"
           data-tooltip-place="right"
@@ -101,10 +101,10 @@ const Historic: React.FC = () => {
               <div className="d-flex align-self-center gap-2 offset-9 col-3">
                 <input
                   type="text"
-                  className="form-control flex-fill bg-input"
+                  className="form-control flex-fill"
                   placeholder="Buscar incidencia"
                 />
-                <button type="button" className="btn btn-light flex-fill">
+                <button type="button" className="btn button-main flex-fill">
                   <FontAwesomeIcon icon={faSearch} />
                 </button>
               </div>

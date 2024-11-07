@@ -112,7 +112,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
       render: (id: number) => (
         <NavLink
           to={`/incidence/${id}`}
-          className="text-decoration-none text-dark"
+          className="text-decoration-none icon-main"
           data-tooltip-id="action-tooltip"
           data-tooltip-content="Ver incidencia"
           data-tooltip-place="right"
@@ -149,7 +149,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
             />
             <button
               type="button"
-              className="btn btn-dark ms-2"
+              className="btn button-main ms-2"
               onClick={handleSearch}
             >
               <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>

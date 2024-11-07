@@ -42,8 +42,8 @@ const RecoverPasswordComponent: React.FC = () => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      <div className="card p-4" style={{ width: '350px' }}>
+    <div className="d-flex justify-content-center align-items-center vh-100 bg-background">
+      <div className="card p-4 bg-main" style={{ width: '350px' }}>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
@@ -58,7 +58,7 @@ const RecoverPasswordComponent: React.FC = () => {
             />
           </div>
           <div className="d-grid gap-2">
-            <button type="submit" className="btn btn-dark">
+            <button type="submit" className="btn button-main-dark">
               Recuperar contraseña
             </button>
             <NavLink to="/login" className="text-secondary mx-1">

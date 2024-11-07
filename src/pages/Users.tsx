@@ -188,7 +188,7 @@ const Users: React.FC = () => {
             />
             <button
               type="button"
-              className="btn btn-dark ms-2"
+              className="btn button-main ms-2"
               onClick={handleSearch}
             >
               <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>

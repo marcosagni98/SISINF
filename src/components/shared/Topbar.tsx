@@ -27,7 +27,7 @@ const TopbarBtn: React.FC<TopbarBtnProps> = ({
 }) => (
   <button
     type="button"
-    className={`btn btn-light ${className || ""}`}
+    className={`btn ${className || ""}`}
     onClick={clickHandler}
   >
     <FontAwesomeIcon icon={icon} />
@@ -53,7 +53,7 @@ const Topbar: React.FC<TopbarProps> = ({
   };
 
   return (
-    <div className="d-flex justify-content-between align-items-center py-3 px-4">
+    <div className="d-flex bg-border-topbar justify-content-between align-items-center py-3 px-4">
       <TopbarBtn
         icon={faBars}
         clickHandler={() => setIsCollapsed(!isCollapsed)}
@@ -64,7 +64,7 @@ const Topbar: React.FC<TopbarProps> = ({
         <div className="dropdown">
           <button
             type="button"
-            className="btn btn-light dropdown-toggle"
+            className="btn dropdown-toggle"
             id="dropdownMenuButton"
             data-bs-toggle="dropdown"
             aria-expanded="false"

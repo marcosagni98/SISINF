@@ -43,7 +43,7 @@ const GenericTableComponent = <T extends {}>({
               <th
                 key={header.key}
                 onClick={() => onSort(header.key)}
-                className="fw-semibold bg-dark text-light"
+                className="fw-semibold"
               >
                 {header.label}
                 {header.sortable ? (

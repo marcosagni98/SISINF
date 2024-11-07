@@ -16,7 +16,7 @@ const AverageIncidencesResolutionTimeComponent: React.FC<
 > = ({ data, completed, error }) => {
   if (!completed || error) {
     return (
-      <div className="card p-3 bg-card">
+      <div className="card p-3 bg-main">
           <h5>Tiempo medio de resolución</h5>
           <h2 className="fw-semibold">
             <Skeleton width={220} height={36} />
@@ -33,7 +33,7 @@ const AverageIncidencesResolutionTimeComponent: React.FC<
   const textClass = isNegative ? "text-danger" : "text-success";
 
   return (
-    <div className="card p-3 bg-card">
+    <div className="card p-3 bg-main">
       <h5>Tiempo medio de resolución</h5>
       <h2 className="fw-semibold">{formatInterval(data!.avgTimeMin)}</h2>
       <p className={textClass}>

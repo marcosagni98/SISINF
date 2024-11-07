@@ -9,7 +9,6 @@ import Layout from "../components/shared/Layout";
 import useFetchActiveIncidences from "../hooks/statistics/useFetchActiveIncidences";
 import useFetchAverageIncidencesResolutionTime from "../hooks/statistics/useFetchAverageIncidencesResolutionTime";
 import useFetchUserHappiness from "../hooks/statistics/useFetchUserHappiness";
-import IncidencesTableComponent from "../components/Incidences/IncidencesTableComponent";
 import useFetchRecentIncidences from "../hooks/incidences/useFetchRecentIncidences";
 import { useAuth } from "../hooks/useAuth";
 import { UserRole } from "../enums/userRole";
@@ -99,7 +98,7 @@ const Dashboard = () => {
       render: (id: number) => (
         <NavLink
           to={`/incidence/${id}`}
-          className="text-decoration-none text-dark"
+          className="text-decoration-none icon-main"
           data-tooltip-id="action-tooltip"
           data-tooltip-content="Ver incidencia"
           data-tooltip-place="right"
@@ -153,10 +152,10 @@ const Dashboard = () => {
             <div className="d-flex align-self-center gap-2 col-3">
               <input
                 type="text"
-                className="form-control flex-fill bg-input"
+                className="form-control flex-fill"
                 placeholder="Buscar incidencia"
               />
-              <button type="button" className="btn btn-light flex-fill">
+              <button type="button" className="btn button-main flex-fill">
                 <FontAwesomeIcon icon={faSearch} />
               </button>
             </div>
