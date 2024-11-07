@@ -11,6 +11,19 @@ interface NavItemProps {
   className: string;
 }
 
+/**
+ * NavItem Component
+ *
+ * This component renders a single navigation item as a link, with an icon and label.
+ * It uses `NavLink` from `react-router-dom` to handle active link styling based on
+ * the current route. Each link can display an icon, label text, and custom styling.
+ *
+ * @component
+ * @param {NavItemProps} props - Component properties containing the target route,
+ * icon, label, and additional CSS classes for styling.
+ * @returns {React.ReactElement} - A styled navigation link with icon and label.
+ */
+
 const NavItem: React.FC<NavItemProps> = ({ to, icon, label, className }) => {
   return (
     <NavLink

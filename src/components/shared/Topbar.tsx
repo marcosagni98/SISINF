@@ -20,6 +20,19 @@ interface TopbarBtnProps {
   className?: string;
 }
 
+/**
+ * TopbarBtn Component
+ *
+ * This component represents an individual button within the topbar. The button
+ * displays an icon and optionally executes a click handler when pressed.
+ *
+ * @component
+ * @param {TopbarBtnProps} props - Properties containing the icon (`icon`) to display,
+ * an optional `clickHandler` function triggered on button click, and an optional
+ * `className` to add custom styles.
+ * @returns {React.ReactElement} - A button element with an icon and optional click behavior.
+ */
+
 const TopbarBtn: React.FC<TopbarBtnProps> = ({
   icon,
   clickHandler,
@@ -34,6 +47,19 @@ const TopbarBtn: React.FC<TopbarBtnProps> = ({
   </button>
 );
 
+/**
+ * Topbar Component
+ *
+ * This component renders a topbar with navigation controls, a title, and user settings.
+ * It includes a toggle for dark mode and a logout option. The component receives a `title`
+ * to display, and a state management function for toggling the sidebar's collapsed state.
+ *
+ * @component
+ * @param {TopbarProps} props - Properties specifying if the sidebar is collapsed,
+ * a function to toggle collapse (`setIsCollapsed`), and a `title` string for the topbar.
+ * @returns {React.ReactElement} - A topbar component with navigation, title, and user options.
+ */
+
 const Topbar: React.FC<TopbarProps> = ({
   isCollapsed,
   setIsCollapsed,
@@ -42,12 +68,23 @@ const Topbar: React.FC<TopbarProps> = ({
   const [darkMode, setDarkMode] = useState(false);
   const { logout } = useAuth();
 
+  /**
+   * Toggles the theme between light and dark mode.
+   *
+   * Updates the `data-bs-theme` attribute on the document root element to reflect
+   * the selected theme, which Bootstrap uses to style elements accordingly.
+   */
+
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
     const newTheme = !darkMode ? 'light' : 'dark';
     document.documentElement.setAttribute('data-bs-theme', newTheme);
   };
 
+   /**
+   * Handles user logout by invoking the `logout` function from the authentication hook.
+   */
+  
   const handleLogout = () => {
     logout();
   };

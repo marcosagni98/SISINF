@@ -11,16 +11,29 @@ interface SidebarProps {
 }
 
 interface NavItemProps {
-  to: string; 
-  icon: IconDefinition; 
+  to: string;
+  icon: IconDefinition;
   label: string
 }
+
+/**
+ * NavItem Component
+ *
+ * This component represents an individual navigation item for the sidebar. Each item
+ * displays an icon and label, and uses `NavLink` for automatic active styling based
+ * on the current route.
+ *
+ * @component
+ * @param {NavItemProps} props - Properties containing the destination route (`to`),
+ * the icon to display, and the label text for the navigation item.
+ * @returns {React.ReactElement} - A styled navigation link item with an icon and label.
+ */
 
 const NavItem: React.FC<NavItemProps> = ({ to, icon, label }) => {
   return (
     <NavLink
       to={to}
-      className={({ isActive }) => 
+      className={({ isActive }) =>
         `nav-link d-flex align-items-center text-decoration-none text-dark btn btn-light ${isActive ? 'fw-bold' : ''}`
       }
     >
@@ -28,6 +41,21 @@ const NavItem: React.FC<NavItemProps> = ({ to, icon, label }) => {
     </NavLink>
   );
 };
+
+
+/**
+ * Sidebar Component
+ *
+ * This component renders a collapsible sidebar navigation menu. The sidebar displays
+ * different navigation items based on the user's role, using icons for easy navigation.
+ * The `NavItem` component is used to create each link, with conditional rendering for
+ * items restricted to specific user roles.
+ *
+ * @component
+ * @param {SidebarProps} props - Properties specifying whether the sidebar is collapsed.
+ * @returns {React.ReactElement} - A sidebar component with navigation links tailored to
+ * the user's role.
+ */
 
 const Sidebar: React.FC<SidebarProps> = ({ isCollapsed }) => {
   const { user } = useAuth();
