@@ -3,24 +3,22 @@ import { API_BASE_URL } from "../../config";
 import { AverageIncidencesResolutionTime } from "../../interfaces/statistics/AverageIncidencesResolutionTime";
 
 /** 
- * Function to fetch average incident resolution time from the API.
- * It calls the API endpoint to retrieve the average resolution time data for incidents.
- * 
- * @returns {Promise<any>} - Returns a promise with the average incident resolution time data.
- */
-const fetch = () => {
-  return fetchData(`${API_BASE_URL}/api/v1/Statistics/Average-incident-resolution-time`);
-};
-
-/** 
- * Custom hook to fetch the average incident resolution time data with authentication.
- * Provides a way to retrieve average resolution time statistics for incidents.
- * 
- * @returns {Object} - Contains fetched data, loading status, error, and the fetch function.
+ * Custom hook to fetch the average incidences resolution time
+ *
+ * @returns {Object} - Contains the data, completed status, error, and the fetch function for retrieving the data
  */
 const useFetchAverageIncidencesResolutionTime = () => {
   const { data, completed, error, fetchData } =
     useFetchWithAuthBase<AverageIncidencesResolutionTime>();
+
+  /**
+   * Function to fetch the average incidences resolution time
+   * @returns {Promise<any>} - Returns a promise with the response from the API
+  */
+  const fetch = () => {
+    return fetchData(`${API_BASE_URL}/average-incidences-resolution-time/1`);
+    return fetchData(`${API_BASE_URL}/api/v1/Statistics/Average-incident-resolution-time`);
+  };
 
   return { data, completed, error, fetch };
 };
