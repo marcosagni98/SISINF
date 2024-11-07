@@ -1,13 +1,14 @@
-import useFetchBase from "../useFetchBase";
 import { API_BASE_URL } from "../../config";
 import { IncidencesTableRow } from "../../interfaces/incidences/IncidencesTableRow";
+import { PaginationProps } from "../../interfaces/shared/PaginationProps";
+import useFetchWithAuthAndPaginationBase from "../useFetchWithAuthAndPaginationBase";
 
 const useFetchMyIncidences = () => {
   const { data, completed, error, fetchData } =
-    useFetchBase<IncidencesTableRow[]>();
+  useFetchWithAuthAndPaginationBase<IncidencesTableRow>();
 
-  const fetch = () => {
-    return fetchData(`${API_BASE_URL}/my-incidences`);
+  const fetch = (paginationProps: PaginationProps) => {
+    return fetchData(`${API_BASE_URL}/api/v1/Incident`, paginationProps);
   };
 
   return { data, completed, error, fetch };

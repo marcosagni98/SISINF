@@ -3,7 +3,6 @@ import Layout from '../components/shared/Layout';
 import OverviewIncidencesComponent from '../components/Statistics/OverviewIncidencesComponent';
 import TotalIncidencesComponent from '../components/Statistics/TotalIncidencesComponent';
 import IncidencesResolutionComponent from '../components/Statistics/IncidencesResolutionComponent';
-import IncidencesSeverityComponent from '../components/Statistics/IncidencesSeverityComponent';
 
 const Statics: React.FC = () => {
   return (
@@ -25,14 +24,8 @@ const Statics: React.FC = () => {
               <IncidencesResolutionComponent />
             </div>
           </div>
-          <div className="col-4">
-            <div className="">
-              <IncidencesSeverityComponent />
-            </div>
-          </div>
         </div>
       </Layout>
-      {/* Aquí va la pagian de dashboard*/}
     </div>
   );
 };

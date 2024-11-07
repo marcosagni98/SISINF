@@ -1,6 +1,7 @@
 export interface ActiveIncidences {
-  count: number;
+  total: number;
   high: number;
   medium: number;
   low: number;
+  variationFromLastMonth: number;
 }

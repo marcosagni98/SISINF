@@ -1,6 +1,10 @@
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { ActiveIncidences } from "../../interfaces/statistics/ActiveIncidences";
+import { on } from "events";
+import { IncidencePriority } from "../../enums/incidencePriority";
+import NavItem from "../shared/NavItem";
+import { Navigate, useNavigate } from "react-router-dom";
 
 interface ActiveIncidencesProps {
   data: ActiveIncidences | null;
@@ -8,11 +12,22 @@ interface ActiveIncidencesProps {
   error: string | null;
 }
 
+
+
 const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
   data,
   completed,
   error,
 }) => {
+
+  const navigate = useNavigate();
+
+  const handleClick = (priority: IncidencePriority) => {
+    //console.log(`Clicked on ${priority}`);
+    navigate(`/mis-incidencias?prioridad=${priority}`);
+  };
+
+
   return (
     <div className="card p-3 bg-card">
       <h5>Incidencias activas</h5>
@@ -20,7 +35,7 @@ const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
         {!completed || error ? (
           <Skeleton height={30} width={50} />
         ) : (
-          data!.count
+          data!.total
         )}
       </h2>
       <div className="d-flex justify-content-between gap-2">
@@ -41,18 +56,21 @@ const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
             <button
               type="button"
               className="col-4 btn btn-md badge-danger flex-fill"
+              onClick={() => handleClick(2)}
             >
               {data!.high} altas
             </button>
             <button
               type="button"
               className="col-4 btn btn-md badge-warning flex-fill"
+              onClick={() => handleClick(1)}
             >
               {data!.medium} medias
             </button>
             <button
               type="button"
               className="col-4 btn btn-md badge-success flex-fill"
+              onClick={() => handleClick(0)}
             >
               {data!.low} bajas
             </button>

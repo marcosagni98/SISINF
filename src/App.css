@@ -4,7 +4,7 @@
 }
 
 .badge-secondary {
-  background-color: rgba(108, 117, 125, 1);
+  background-color: rgba(168, 177, 185, 1);
   color: #212529;
 }
 
@@ -43,7 +43,7 @@
 }
 
 .badge-secondary:hover {
-  background-color: hsl(210, 12%, 45%);
+  background-color: hsl(210, 12%, 60%);
 }
 
 .badge-success:hover {
@@ -70,7 +70,6 @@
   background-color: hsl(0, 0%, 20%);
 }
 
-
 .bg-main{
   background-color: #f1f1f1;
 }
@@ -91,6 +90,15 @@
 .btn-dark{
   background-color: #949494;
   border: #949494;
+}
+
+[data-bs-theme=dark] .bg-main {
+  background-color: #111111;
+}
+
+[data-bs-theme=dark] .btn-light {
+  color: white !important;
+  background-color: #111111;
 }
 
 .bg-input{
@@ -116,7 +124,6 @@
   border: #272932;
 }
 
-
 [data-bs-theme=dark] .bg-card{
   color:white !important;
   background-color: #333333;
@@ -140,4 +147,56 @@
 [data-bs-theme=dark] .bg-static{
   color:white !important;
   background-color: #333333 !important;
+}
+
+ul.list-group.list-group-striped li:nth-of-type(odd){
+  background: white;
+}
+
+ul.list-group.list-group-striped li:nth-of-type(even){
+  background: #f0f0f0;
+}
+
+.edit-button {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.position-relative:hover .edit-button {
+  opacity: 1;
+}
+
+.rating-container {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+}
+
+.star-input {
+  display: none;
+}
+
+.star {
+  font-size: 2rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.star-label {
+  font-size: 2rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+/* Efecto de hover: llena las estrellas hasta la estrella en la que se posiciona el cursor */
+.star-label:hover,
+.star-label:hover ~ .star-label {
+  color: #FFD700;
+}
+
+/* Estrellas seleccionadas */
+.star-input:checked ~ .star-label {
+  color: #FFD700;
 }

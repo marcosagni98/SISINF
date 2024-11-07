@@ -1,54 +1,58 @@
 // HeatMapChart.tsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
+import useFetchIncidencesByDay from '../../hooks/statistics/useFetchIncidencesByDay';
 
-const generateData = (count: number, range: { min: number; max: number }) => {
-  return Array.from({ length: count }, () => ({
-    x: `Metric${Math.floor(Math.random() * 100)}`, // Asigna un valor x único a cada punto
-    y: Math.floor(Math.random() * (range.max - range.min + 1)) + range.min,
-  }));
+const generateDatesOfYear = (year: number): string[] => {
+  const dates = [];
+  for (let month = 0; month < 12; month++) {
+    const daysInMonth = new Date(year, month + 1, 0).getDate(); // Obtener el número de días en el mes
+    for (let day = 1; day <= daysInMonth; day++) {
+      dates.push(`${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`);
+    }
+  }
+  return dates;
 };
 
 const IncidencesResolutionComponent: React.FC = () => {
+  const [combinedData, setCombinedData] = useState<{ x: string; y: number }[]>([]);
+
+  const {
+    data: dataIncidencesByDay,
+    completed: completedIncidencesByDay,
+    error: errorIncidencesByDay,
+    fetch: fetchIncidencesByDay
+  } = useFetchIncidencesByDay();
+
+  useEffect(() => {
+    fetchIncidencesByDay();
+}, []);
+
+  console.log(dataIncidencesByDay);
+
+  useEffect(() => {
+    if (dataIncidencesByDay) {
+      const incidentDays = new Set(dataIncidencesByDay.map((item) => item.date));
+      const allDaysOfYear = generateDatesOfYear(new Date().getFullYear());
+
+      // Crear el array de datos combinando días con y sin incidencias
+      const data = allDaysOfYear.map(day => ({
+        x: day,
+        y: incidentDays.has(day) ? dataIncidencesByDay.find(item => item.date === day)?.count || 0 : 0, // Si hay incidencias, usar el conteo; si no, usar 0
+      }));
+
+      setCombinedData(data);
+    }
+  }, [dataIncidencesByDay]); // Se ejecuta cuando dataIncidencesByDay cambia
+
   const series = [
     {
-      name: 'Metric1',
-      data: generateData(18, { min: 0, max: 90 }),
-    },
-    {
-      name: 'Metric2',
-      data: generateData(18, { min: 0, max: 90 }),
-    },
-    {
-      name: 'Metric3',
-      data: generateData(18, { min: 0, max: 90 }),
-    },
-    {
-      name: 'Metric4',
-      data: generateData(18, { min: 0, max: 90 }),
-    },
-    {
-      name: 'Metric5',
-      data: generateData(18, { min: 0, max: 90 }),
-    },
-    {
-      name: 'Metric6',
-      data: generateData(18, { min: 0, max: 90 }),
-    },
-    {
-      name: 'Metric7',
-      data: generateData(18, { min: 0, max: 90 }),
-    },
-    {
-      name: 'Metric8',
-      data: generateData(18, { min: 0, max: 90 }),
-    },
-    {
-      name: 'Metric9',
-      data: generateData(18, { min: 0, max: 90 }),
+      name: 'Incidencias por Día',
+      data: combinedData,
     },
   ];
+
 
   const options: ApexOptions = {
     chart: {
@@ -67,11 +71,8 @@ const IncidencesResolutionComponent: React.FC = () => {
         shadeIntensity: 0.5,
         colorScale: {
           ranges: [
-            { from: 0, to: 20, color: '#eff0f1' },
-            { from: 21, to: 40, color: '#d4e0f5' },
-            { from: 41, to: 60, color: '#a8c6ff' },
-            { from: 61, to: 80, color: '#529fff' },
-            { from: 81, to: 100, color: '#005bbf' },
+            { from: 0, to: 2, color: '#eff0f1' },
+            { from: 2, to: 100, color: '#005bbf' },
           ],
         },
       },
