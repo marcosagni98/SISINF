@@ -25,8 +25,6 @@ interface ActiveIncidencesProps {
  * @returns {React.ReactElement} - A card component showing active incidence stats,
  * with buttons to filter by priority.
  */
-
-
 const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
   data,
   completed,
@@ -42,7 +40,6 @@ const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
    *
    * @param {IncidencePriority} priority - The priority level of incidences to filter.
    */
-
   const handleClick = (priority: IncidencePriority) => {
     //console.log(`Clicked on ${priority}`);
     navigate(`/mis-incidencias?prioridad=${priority}`);

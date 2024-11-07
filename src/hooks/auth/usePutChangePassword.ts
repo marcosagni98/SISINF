@@ -2,7 +2,19 @@ import { API_BASE_URL } from "../../config";
 import { ChangePassword } from "../../interfaces/auth/ChangePassword";
 import { GenericRespone } from "../../interfaces/shared/GenericRespone";
 
+/** 
+ * Custom hook to handle the change password PUT request
+ * This hook provides a function to make a PUT request to the reset-password endpoint.
+ * @returns {Object} - Contains the putData function to perform the change password request
+ */
 const usePutChangePassword = () => {
+  
+  /** 
+   * Function to perform the change password PUT request
+   * @param {string} token - The user's authentication token to authorize the request
+   * @param {ChangePassword} data - The data required to change the password
+   * @returns {Promise<{ data: GenericRespone | null; error: string | null }>} - Returns an object containing the response data or error
+   */
   const putData = async (token: string, data: ChangePassword): Promise<{ data: GenericRespone | null; error: string | null }>  => {
     try {
       const headers = {
@@ -30,7 +42,7 @@ const usePutChangePassword = () => {
     }
   };
 
-  return { putData };  
+  return { putData };
 };
 
 export default usePutChangePassword;
