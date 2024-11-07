@@ -5,7 +5,7 @@
 }
 
 [data-bs-theme="dark"] .bg-border-sidebar {
-    border-color: #a5a5a5;
+    border-color: #555555;
     border-width: 0px 1px 0px 0px;
     border-style: solid;
   }
@@ -17,7 +17,7 @@
 }
 
 [data-bs-theme="dark"] .bg-border-topbar {
-  border-color: #a5a5a5;
+  border-color: #555555;
   border-width: 0px 0px 1px 0px;
   border-style: solid;
 }
@@ -92,11 +92,11 @@
 }
 
 .chat-message {
-    background-color: #111111;
+    background-color: #11191F;
     color: white;
 }
 
 .your-chat-message {
-    background-color: #333333;
+    background-color: #33393F;
     color: white;
 }

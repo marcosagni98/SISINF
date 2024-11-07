@@ -65,17 +65,17 @@ const IncidenceWorklogComponent: React.FC<IncidenceWorklogProps> = ({
               {[...Array(5)].map((_, index) => (
                 <li key={index} className="list-group-item">
                   <div className="d-flex">
-                    <div className="col-6">
+                    <div className="col-4">
                       <h6 className="mb-1">
                         <Skeleton width={80} />
                       </h6>
                     </div>
-                    <div className="col-3">
+                    <div className="col-4">
                       <p className="mb-1">
                         <Skeleton width={60} />
                       </p>
                     </div>
-                    <div className="col-3">
+                    <div className="col-4">
                       <p>
                         <Skeleton width={80} />
                       </p>
@@ -90,13 +90,13 @@ const IncidenceWorklogComponent: React.FC<IncidenceWorklogProps> = ({
                 [...worklog].reverse().map((log, index) => (
                   <li key={index} className="list-group-item">
                     <div className="d-flex">
-                      <div className="col-6">
+                      <div className="col-4">
                         <h6 className="mb-1">{log.technicianName}</h6>
                       </div>
-                      <div className="col-3">
+                      <div className="col-4">
                         <p className="mb-1">Minutos: {log.minWorked}</p>
                       </div>
-                      <div className="col-3">
+                      <div className="col-4">
                         <p>{toLocalDate(log.logDate)}</p>
                       </div>
                     </div>

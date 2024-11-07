@@ -32,7 +32,7 @@ const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
           data!.total
         )}
       </h2>
-      <div className="d-flex justify-content-between gap-2">
+      <div className="d-flex justify-content-between gap-2 text-dark">
         {!completed || error ? (
           <>
             <div className="col-4 btn btn-md p-0">
