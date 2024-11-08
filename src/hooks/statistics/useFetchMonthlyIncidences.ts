@@ -10,8 +10,6 @@ const useFetchMonthlyIncidences = () => {
     return fetchData(`${API_BASE_URL}/api/v1/Statistics/incidences-monthly-resume`);
   };
 
-  //console.log(data);
-
   return { data, completed, error, fetch };
 };
 

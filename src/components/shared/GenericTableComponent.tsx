@@ -39,9 +39,9 @@ const GenericTableComponent = <T extends {}>({
       <table className="table table-borderless table-striped m-0">
         <thead>
           <tr className="text-uppercase">
-            {headers.map((header) => (
+            {headers.map((header, index) => (
               <th
-                key={header.key}
+                key={index}
                 onClick={() => onSort(header.key)}
                 className="fw-semibold"
               >
@@ -69,8 +69,8 @@ const GenericTableComponent = <T extends {}>({
             <>
               {[...Array(5)].map((_, index) => (
                 <tr key={index}>
-                  {headers.map((header) => (
-                    <td key={header.key}>
+                  {headers.map((header, index) => (
+                    <td key={index}>
                       <Skeleton width={100} />
                     </td>
                   ))}
@@ -81,8 +81,8 @@ const GenericTableComponent = <T extends {}>({
             <>
               {data.map((row, index) => (
                 <tr key={index}>
-                  {headers.map((header) => (
-                    <td key={header.key}>
+                  {headers.map((header, index) => (
+                    <td key={index}>
                       {header.render
                         ? header.key === "row"
                           ? header.render(row as any)

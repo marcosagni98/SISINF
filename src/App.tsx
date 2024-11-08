@@ -3,7 +3,7 @@ import "./App.css";
 import "./Theme.css";
 import CreateIncidence from "./pages/CreateIncidence";
 import RecoverPassword from "./pages/RecoverPassword";
-import Statics from "./pages/Statics";
+import Stadistics from "./pages/Stadistics";
 import Dashboard from "./pages/Dashboard";
 import MyIncidences from "./pages/MyIncidences";
 import Historic from "./pages/Historic";
@@ -44,7 +44,7 @@ function App() {
       </Route>
 
       <Route element={<PrivateRoute roles={[UserRole.Administrator]}/>}>
-        <Route path="/statics" element={<Statics />} />
+        <Route path="/stadistics" element={<Stadistics />} />
       </Route>
 
       <Route element={<PrivateRoute roles={[UserRole.Technician, UserRole.Administrator]}/>}>

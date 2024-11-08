@@ -76,7 +76,7 @@ const IncidenceDetails = () => {
     error: errorMessages,
     fetch: fetchMessages,
   } = useFetchMessages();
-  
+
   const {
     data: dataFeedback,
     completed: completedFeedback,
@@ -125,20 +125,18 @@ const IncidenceDetails = () => {
       newConnection
         .start()
         .then(() => {
-          console.log("Conexión de SignalR iniciada");
           newConnection.on("ReceiveMessage", (message: IncidenceMessage) => {
-            console.log("recibo");
             if (message.incidentId === parseInt(id!)) {
               eventEmitter.emit("messageAdded", message);
             }
           });
         })
-        .catch((err) => console.error("Error al iniciar la conexión:", err));
+        .catch((err) => {
+          //Ignored
+        });
 
       return () => {
-        newConnection.stop().then(() => {
-          console.log("Conexión de SignalR detenida");
-        });
+        newConnection.stop();
       };
     }
   }, [id, user, dataIncidence]);
@@ -154,7 +152,7 @@ const IncidenceDetails = () => {
           newMessage
         );
       } catch (err) {
-        console.error("Error al enviar el mensaje:", err);
+        // Ignored
       }
     }
   };

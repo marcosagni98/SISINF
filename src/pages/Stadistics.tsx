@@ -4,7 +4,7 @@ import OverviewIncidencesComponent from '../components/Statistics/OverviewIncide
 import TotalIncidencesComponent from '../components/Statistics/TotalIncidencesComponent';
 import IncidencesResolutionComponent from '../components/Statistics/IncidencesResolutionComponent';
 
-const Statics: React.FC = () => {
+const Stadistics: React.FC = () => {
   return (
     <div>
       <Layout title="Estadisticas">
@@ -30,4 +30,4 @@ const Statics: React.FC = () => {
   );
 };
 
-export default Statics;
+export default Stadistics;

@@ -10,8 +10,6 @@ const useFetchActiveIncidences = () => {
     return fetchData(`${API_BASE_URL}/api/v1/Statistics/Active-incidents`);
   };
 
-  //console.log(data);
-
   return { data, completed, error, fetch };
 };
 
