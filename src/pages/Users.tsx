@@ -15,8 +15,7 @@ import {
 import { UsersTableRow } from "../interfaces/users/UsersTableRow";
 import { Tooltip } from "react-tooltip";
 import usePutUpdateUserRole from "../hooks/users/usePutUpdateUserRole";
-import { Navigate, useNavigate } from "react-router-dom";
-import { User } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Pagination } from "../interfaces/shared/Paginated";
 
@@ -189,7 +188,7 @@ const Users: React.FC = () => {
             />
             <button
               type="button"
-              className="btn btn-dark ms-2"
+              className="btn button-main ms-2"
               onClick={handleSearch}
             >
               <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>

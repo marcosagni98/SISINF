@@ -1,10 +1,8 @@
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { ActiveIncidences } from "../../interfaces/statistics/ActiveIncidences";
-import { on } from "events";
 import { IncidencePriority } from "../../enums/incidencePriority";
-import NavItem from "../shared/NavItem";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface ActiveIncidencesProps {
   data: ActiveIncidences | null;
@@ -12,14 +10,11 @@ interface ActiveIncidencesProps {
   error: string | null;
 }
 
-
-
 const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
   data,
   completed,
   error,
 }) => {
-
   const navigate = useNavigate();
 
   const handleClick = (priority: IncidencePriority) => {
@@ -27,9 +22,8 @@ const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
     navigate(`/mis-incidencias?prioridad=${priority}`);
   };
 
-
   return (
-    <div className="card p-3">
+    <div className="card p-3 bg-main">
       <h5>Incidencias activas</h5>
       <h2 className="fw-semibold">
         {!completed || error ? (
@@ -38,7 +32,7 @@ const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
           data!.total
         )}
       </h2>
-      <div className="d-flex justify-content-between gap-2">
+      <div className="d-flex justify-content-between gap-2 text-dark">
         {!completed || error ? (
           <>
             <div className="col-4 btn btn-md p-0">

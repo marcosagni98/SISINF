@@ -107,7 +107,7 @@ const CreateIncidenceComponent: React.FC = () => {
   };
 
   return (
-    <div className="card">
+    <div className="card bg-main">
       <div className="card-body">
         <h4 className="fw-bold mb-3">Añadir una incidencia</h4>
         <p className="text-muted mb-4">
@@ -162,7 +162,7 @@ const CreateIncidenceComponent: React.FC = () => {
               </option>
             </select>
           </div>
-          <button type="submit" className="btn btn-dark">
+          <button type="submit" className="btn button-main-dark">
             Crear Incidencia
           </button>
         </form>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import useFetchMonthlyIncidences from '../../hooks/statistics/useFetchMonthlyIncidences';
 
@@ -24,7 +24,7 @@ const TotalIncidencesComponent: React.FC = () => {
     console.log(chartData); // Para ver el resultado de la transformación
 
     return (
-        <div className="p-3 bg-light rounded">
+        <div className="p-3 bg-static rounded">
             <h5>Total de incidencias</h5>
             <ResponsiveContainer width="95%" height={200}>
                 <BarChart data={chartData}> {/* Asegúrate de pasar los datos al BarChart */}

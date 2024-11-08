@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import HeatMap from '@uiw/react-heat-map';
+import HeatMap from "@uiw/react-heat-map";
 import useFetchIncidencesByDay from "../../hooks/statistics/useFetchIncidencesByDay";
+import { Tooltip } from "react-tooltip";
 
 const IncidencesResolutionComponent: React.FC = () => {
   const {
@@ -21,7 +22,8 @@ const IncidencesResolutionComponent: React.FC = () => {
   useEffect(() => {
     if (dataIncidencesResolution && dataIncidencesResolution.length > 0) {
       const firstDate = dataIncidencesResolution[0].date;
-      const lastDate = dataIncidencesResolution[dataIncidencesResolution.length - 1].date;
+      const lastDate =
+        dataIncidencesResolution[dataIncidencesResolution.length - 1].date;
 
       // Extract the year from the first and last date
       const startYear = new Date(firstDate).getFullYear();
@@ -48,14 +50,50 @@ const IncidencesResolutionComponent: React.FC = () => {
   return (
     <div>
       {dataIncidencesResolution ? (
-        <HeatMap
-          width={750}
-          value={dataIncidencesResolution}
-          weekLabels={['', 'Mon', '', 'Wed', '', 'Fri', '']}
-          // Dynamically set the start and end date based on the year
-          startDate={year ? new Date(`${year}-01-01`) : new Date()}
-          endDate={year ? new Date(`${year}-12-31`) : new Date()}
-        />
+        <>
+          <HeatMap
+            width={900}
+            className="card p-4"
+            rectSize={13}
+            value={dataIncidencesResolution}
+            weekLabels={["", "Mon", "", "Wed", "", "Fri", ""]}
+            // Dynamically set the start and end date based on the year
+            startDate={year ? new Date(`${year}-01-01`) : new Date()}
+            endDate={year ? new Date(`${year}-12-31`) : new Date()}
+            panelColors={[
+              "#f4decd",
+              "#e4b293",
+              "#d48462",
+              "#c2533a",
+              "#ad001d",
+              "#6c0012",
+            ]}
+            rectRender={(props, data) => {
+              if (!data.count) return <rect {...props} rx="3" ry="3" />;
+              return (
+                <rect
+                  {...props}
+                  rx="3"
+                  ry="3"
+                  data-tooltip-id="my-tooltip"
+                  data-tooltip-content={`${data.date}: ${data.count || 0} ${
+                    data.count > 1 ? "incidencias" : "incidencia"
+                  }`}
+                />
+              );
+            }}
+            legendRender={(props) => {
+              return (
+                <rect
+                  {...props}
+                  rx="3"
+                  ry="3"
+                />
+              );
+            }}
+          />
+          <Tooltip id="my-tooltip" />
+        </>
       ) : (
         <p>No data available</p>
       )}

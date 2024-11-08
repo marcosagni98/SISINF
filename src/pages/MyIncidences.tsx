@@ -4,8 +4,6 @@ import useFetchMyIncidences from "../hooks/incidences/useFetchMyIncidences";
 import PaginationComponent from "../components/shared/PaginationComponent";
 import GenericTableComponent from "../components/shared/GenericTableComponent";
 import { getPriorityBadgeClass } from "../utils/getPriorityBadgeClass";
-import { useSearchParams } from "react-router-dom";
-
 import {
   IncidencePriority,
   incidencePriorityMap,
@@ -14,7 +12,7 @@ import { IncidenceStatus, incidenceStatusMap } from "../enums/incidenceStatus";
 import { getStatusBadgeClass } from "../utils/getStatusBadgeClass";
 import { faEye, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NavLink } from "react-router-dom";
+import { NavLink, useSearchParams } from "react-router-dom";
 import { PaginationProps } from "../interfaces/shared/PaginationProps";
 import { Tooltip } from "react-tooltip";
 import useFetchMyIncidencesPrioridad from "../hooks/incidences/useFetchMyIncidencesPrioridad";
@@ -114,7 +112,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
       render: (id: number) => (
         <NavLink
           to={`/incidence/${id}`}
-          className="text-decoration-none text-dark"
+          className="text-decoration-none icon-main"
           data-tooltip-id="action-tooltip"
           data-tooltip-content="Ver incidencia"
           data-tooltip-place="right"
@@ -151,7 +149,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
             />
             <button
               type="button"
-              className="btn btn-dark ms-2"
+              className="btn button-main ms-2"
               onClick={handleSearch}
             >
               <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>

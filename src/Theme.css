@@ -1,0 +1,106 @@
+.bg-border-sidebar {
+  border-color: #cccccc;
+  border-width: 0px 1px 0px 0px;
+  border-style: solid;
+}
+
+[data-bs-theme="dark"] .bg-border-sidebar {
+    border-color: #555555;
+    border-width: 0px 1px 0px 0px;
+    border-style: solid;
+  }
+
+.bg-border-topbar {
+  border-color: #cccccc;
+  border-width: 0px 0px 1px 0px;
+  border-style: solid;
+}
+
+[data-bs-theme="dark"] .bg-border-topbar {
+  border-color: #555555;
+  border-width: 0px 0px 1px 0px;
+  border-style: solid;
+}
+
+.bg-main {
+    background-color: #F2F2F2;
+}
+
+[data-bs-theme="dark"] .bg-main {
+    background-color: #212529;
+}
+
+.sidebar-button {
+    background-color: #F2F2F2;
+    color: black;
+}
+
+.sidebar-button:hover {
+    color: black;
+    font-weight: bold;
+}
+
+[data-bs-theme="dark"] .sidebar-button {
+    background-color: #212529;
+    color: white;
+}
+
+.button-main {
+    background-color: #F2F2F2;
+    color: black;
+}
+
+.button-main:hover {
+    background-color: #F2F2F2;
+    color: black;
+}
+
+[data-bs-theme="dark"] .button-main {
+    background-color: #212529;
+    color: white;
+}
+
+.button-main-dark {
+    background-color: #212529;
+    color: white;
+}
+
+.button-main-dark:hover {
+    background-color: #212529;
+    color: white;
+}
+
+[data-bs-theme="dark"] .button-main-dark {
+    background-color: #F2F2F2;
+    color: black;
+}
+
+.bg-background {
+    background-color: white;
+}
+
+[data-bs-theme="dark"] .bg-background {
+    background-color: #111111;
+}
+
+.icon-main {
+    color: #212529;
+}
+
+[data-bs-theme="dark"] .icon-main {
+    color: white;
+}
+
+.chat-message {
+    background-color: #11191F;
+    color: white;
+}
+
+.your-chat-message {
+    background-color: #33393F;
+    color: white;
+}
+
+[data-bs-theme="dark"] text {
+    color: white;
+}

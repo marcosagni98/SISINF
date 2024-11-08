@@ -24,7 +24,7 @@
 }
 
 .badge-info {
-  background-color: rgba(13, 202, 240, 1);
+  background-color: rgb(163, 235, 255);
   color: #212529;
 }
 
@@ -40,60 +40,42 @@
 
 .badge-primary:hover {
   background-color: hsl(217, 100%, 50%);
+  color: #212529;
 }
 
 .badge-secondary:hover {
   background-color: hsl(210, 12%, 60%);
+  color: #212529;
 }
 
 .badge-success:hover {
   background-color: hsl(145, 80%, 70%);
+  color: #212529;
 }
 
 .badge-danger:hover {
   background-color: hsl(0, 80%, 75%);
+  color: #212529;
 }
 
 .badge-warning:hover {
   background-color: hsl(55, 100%, 75%);
+  color: #212529;
 }
 
 .badge-info:hover {
   background-color: hsl(192, 90%, 60%);
+  color: #212529;
 }
 
 .badge-light:hover {
   background-color: hsl(0, 0%, 95%);
+  color: #212529;
 }
 
 .badge-dark:hover {
   background-color: hsl(0, 0%, 20%);
-}
-
-
-.bg-main{
-  background-color: #F1F1F1;
-}
-
-[data-bs-theme=dark] .bg-main {
-  background-color: #111111;
-}
-
-[data-bs-theme=dark] .btn-light {
-  color: white !important;
-  background-color: #111111;
-}
-
-.bg-input{
-  background-color: #ECECEC;
-}
-
-ul.list-group.list-group-striped li:nth-of-type(odd){
-  background: white;
-}
-
-ul.list-group.list-group-striped li:nth-of-type(even){
-  background: #f0f0f0;
+  color: white;
 }
 
 .edit-button {

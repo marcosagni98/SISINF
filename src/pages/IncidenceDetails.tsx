@@ -217,7 +217,7 @@ const IncidenceDetails = () => {
       title: '<h5><FontAwesomeIcon icon="pencil" /> Editar descripción</h5>',
       html:
         '<label for="newDescriptionInput" class="form-label">Ingrese la nueva descripción de la incidencia</label>' +
-        `<textarea id="newDescriptionInput" class="swal2-input w-100" placeholder="Nueva descripción">${
+        `<textarea id="newDescriptionInput" class="swal2-input w-100 form-control bg-light text-dark border" style="border-color: #cccccc !important" placeholder="Nueva descripción">${
           dataIncidence!.description
         }</textarea>`,
       showCancelButton: true,

@@ -3,11 +3,10 @@ import Layout from "../components/shared/Layout";
 import useFetchHistoric from "../hooks/historic/useFetchHistoric";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faSearch } from "@fortawesome/free-solid-svg-icons";
 import GenericTableComponent from "../components/shared/GenericTableComponent";
 import { PaginationProps } from "../interfaces/shared/PaginationProps";
 import PaginationComponent from "../components/shared/PaginationComponent";
-import { User } from "../context/AuthContext";
 import { IncidenceStatus, incidenceStatusMap } from "../enums/incidenceStatus";
 import { getStatusBadgeClass } from "../utils/getStatusBadgeClass";
 
@@ -78,7 +77,7 @@ const Historic: React.FC = () => {
       render: (id: number) => (
         <NavLink
           to={`/incidence/${id}`}
-          className="text-decoration-none text-dark"
+          className="text-decoration-none icon-main"
           data-tooltip-id="action-tooltip"
           data-tooltip-content="Ver incidencia"
           data-tooltip-place="right"
@@ -105,8 +104,8 @@ const Historic: React.FC = () => {
                   className="form-control flex-fill"
                   placeholder="Buscar incidencia"
                 />
-                <button type="button" className="btn btn-dark flex-fill">
-                  Buscar
+                <button type="button" className="btn button-main flex-fill">
+                  <FontAwesomeIcon icon={faSearch} />
                 </button>
               </div>
               {/* Boton de Añadir Usuario */}

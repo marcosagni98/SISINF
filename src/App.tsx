@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
+import "./Theme.css";
 import CreateIncidence from "./pages/CreateIncidence";
 import RecoverPassword from "./pages/RecoverPassword";
 import Statics from "./pages/Statics";
