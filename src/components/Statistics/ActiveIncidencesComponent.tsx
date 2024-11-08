@@ -18,7 +18,6 @@ const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
   const navigate = useNavigate();
 
   const handleClick = (priority: IncidencePriority) => {
-    //console.log(`Clicked on ${priority}`);
     navigate(`/mis-incidencias?prioridad=${priority}`);
   };
 

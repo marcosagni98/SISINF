@@ -26,7 +26,6 @@ const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
 
   useEffect(() => {
     const handleMessageAdded = (eventPayload: IncidenceMessage) => {
-      console.log(eventPayload);
       setMessages((prevMessages) => [...prevMessages, eventPayload]);
     };
 

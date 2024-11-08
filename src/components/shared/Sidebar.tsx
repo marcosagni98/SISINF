@@ -38,7 +38,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed }) => {
         <NavItem to="/" icon={faHome} label="Inicio" />
         <NavItem to="/newincidence" icon={faPlus} label="Nueva Incidencia" />
         <NavItem to="/mis-incidencias" icon={faList} label="Mis incidencias" />
-        {user && user.role === UserRole.Administrator && <NavItem to="/statics" icon={faChartBar} label="Estadísticas" />}
+        {user && user.role === UserRole.Administrator && <NavItem to="/stadistics" icon={faChartBar} label="Estadísticas" />}
         {user && user.role === UserRole.Administrator && <NavItem to="/users" icon={faUser} label="Usuarios" />}
         {user && user.role >= UserRole.Technician && <NavItem to="/historic" icon={faHistory} label="Histórico" />}
       </nav>

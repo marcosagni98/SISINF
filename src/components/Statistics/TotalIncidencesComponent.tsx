@@ -21,8 +21,6 @@ const TotalIncidencesComponent: React.FC = () => {
         incidencias: incidences,
     }));
 
-    console.log(chartData); // Para ver el resultado de la transformación
-
     return (
         <div className="p-3 bg-static rounded">
             <h5>Total de incidencias</h5>
