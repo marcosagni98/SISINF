@@ -9,17 +9,17 @@ const Statics: React.FC = () => {
     <div>
       <Layout title="Estadisticas">
         <div className="row my-4">
-          <div className="col">
+          <div className="col-6">
             <OverviewIncidencesComponent />
           </div>
-          <div className="col">
+          <div className="col-6">
             <div className="">
              <TotalIncidencesComponent />
             </div>
           </div>
         </div>
         <div className="row my-4">
-          <div className="col">
+          <div className="col-6">
             <div className="">
               <IncidencesResolutionComponent />
             </div>
