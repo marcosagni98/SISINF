@@ -57,7 +57,7 @@ const RecoverPasswordComponent: React.FC = () => {
               onChange={handleChange}
             />
           </div>
-          <div className="d-grid gap-2">
+          <div className="d-grid">
             <button type="submit" className="btn button-main-dark">
               Recuperar contraseña
             </button>

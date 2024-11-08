@@ -53,7 +53,7 @@ const IncidenceInfoComponent: React.FC<IncidenceInfoProps> = ({
   return (
     <div className="card">
       <div className="card-body">
-        <div className="d-flex position-relative gap-2 align-items-start">
+        <div className="d-flex position-relative align-items-start">
           <h4 className="fw-bold mb-3">
             {!completed || error ? <Skeleton height={30} width={100} /> : title}
           </h4>
@@ -65,7 +65,7 @@ const IncidenceInfoComponent: React.FC<IncidenceInfoProps> = ({
             <FontAwesomeIcon icon={faPencil} />
           </button>
         </div>
-        <div className="d-flex position-relative gap-2 align-items-start">
+        <div className="d-flex position-relative align-items-start">
           <p className="text-muted mb-4">
             {!completed || error ? (
               <Skeleton height={30} width={100} />

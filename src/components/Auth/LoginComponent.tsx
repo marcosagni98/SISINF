@@ -90,7 +90,7 @@ const LoginComponent: React.FC = () => {
               ¿Has olvidado tu contraseña?
             </NavLink>
           </div>
-          <div className="d-grid gap-2 text-center">
+          <div className="d-grid text-center">
             <button type="submit" className="btn button-main-dark">
               Iniciar sesión
             </button>

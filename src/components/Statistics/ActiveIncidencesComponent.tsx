@@ -31,42 +31,48 @@ const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
           data!.total
         )}
       </h2>
-      <div className="d-flex justify-content-between gap-2 text-dark">
+      <div className="d-flex justify-content-between text-dark">
         {!completed || error ? (
           <>
-            <div className="col-4 btn btn-md p-0">
+            <div className="col-4 px-2">
               <Skeleton height={30} width="100%" />
             </div>
-            <div className="col-4 btn btn-md p-0">
+            <div className="col-4 px-2">
               <Skeleton height={30} width="100%" />
             </div>
-            <div className="col-4 btn btn-md p-0">
+            <div className="col-4 px-2">
               <Skeleton height={30} width="100%" />
             </div>
           </>
         ) : (
           <>
-            <button
-              type="button"
-              className="col-4 btn btn-md badge-danger flex-fill"
-              onClick={() => handleClick(2)}
-            >
-              {data!.high} altas
-            </button>
-            <button
-              type="button"
-              className="col-4 btn btn-md badge-warning flex-fill"
-              onClick={() => handleClick(1)}
-            >
-              {data!.medium} medias
-            </button>
-            <button
-              type="button"
-              className="col-4 btn btn-md badge-success flex-fill"
-              onClick={() => handleClick(0)}
-            >
-              {data!.low} bajas
-            </button>
+            <div className="px-2 col-4">
+              <button
+                type="button"
+                className="btn btn-md badge-danger w-100"
+                onClick={() => handleClick(2)}
+              >
+                {data!.high} altas
+              </button>
+            </div>
+            <div className="px-2 col-4">
+              <button
+                type="button"
+                className="btn btn-md badge-warning w-100"
+                onClick={() => handleClick(1)}
+              >
+                {data!.medium} medias
+              </button>
+            </div>
+            <div className="px-2 col-4">
+              <button
+                type="button"
+                className="btn btn-md badge-success w-100"
+                onClick={() => handleClick(0)}
+              >
+                {data!.low} bajas
+              </button>
+            </div>
           </>
         )}
       </div>

@@ -219,7 +219,7 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
                     status === IncidenceStatus.Review &&
                     !feedback && (
                       <button
-                        className="btn btn-dark btn-sm mt-2"
+                        className="btn button-main-dark btn-sm mt-2"
                         type="button"
                         onClick={handleValorar}
                       >

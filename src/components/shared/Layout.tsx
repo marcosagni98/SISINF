@@ -15,10 +15,8 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
     <div className="d-flex flex-column bg-main">
       <Topbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} title={title} />
       <div className="d-flex">
-        <div style={{minWidth: "225px"}}>
-          <Sidebar isCollapsed={isCollapsed} />
-        </div>
-        <div className="col p-5 vh-100 bg-background">
+        <Sidebar isCollapsed={isCollapsed} />
+        <div className="w-100 p-md-5 p-3 h-100 bg-background" style={{minHeight: '100vh'}}>
           {children}
         </div>
       </div>

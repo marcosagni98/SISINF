@@ -172,7 +172,7 @@ const Users: React.FC = () => {
   return (
     <Layout title="Configuracion usuarios">
       <div className="row">
-        <div className="offset-9 col-md-3">
+        <div className="offset-md-9 col-md-3">
           <div className="d-flex my-3">
             <input
               type="text"

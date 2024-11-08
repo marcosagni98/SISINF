@@ -453,7 +453,7 @@ const IncidenceDetails = () => {
       html: `
         <div class="d-flex justify-content-center">
           <div class="text-center">
-            <div class="rating-container d-flex flex-row-reverse justify-content-center gap-1 mb-3">
+            <div class="rating-container d-flex flex-row-reverse justify-content-center mb-3">
               ${[5, 4, 3, 2, 1]
                 .map(
                   (i) => `
@@ -530,7 +530,7 @@ const IncidenceDetails = () => {
   return (
     <Layout title="Inicio">
       <div className="row">
-        <div className="col-8 mb-4">
+        <div className="col-md-8 mb-4">
           <IncidenceInfoComponent
             data={
               dataIncidence
@@ -552,7 +552,7 @@ const IncidenceDetails = () => {
             handleSendMessage={sendMessage}
           />
         </div>
-        <div className="col-4 mb-4 d-flex flex-column gap-3">
+        <div className="col-md-4 mb-4 d-flex flex-column">
           <IncidenceDetailsComponent
             dataIncidence={
               dataIncidence
@@ -582,12 +582,14 @@ const IncidenceDetails = () => {
             completedFeedback={completedFeedback}
             errorFeedback={errorFeedback}
           />
-          <IncidenceWorklogComponent
-            data={dataIncidenceWorklog}
-            completed={completedIncidenceWorklog}
-            error={errorIncidenceWorklog}
-            handleOpenModal={inputWorklogModal}
-          />
+          <div className="my-3">
+            <IncidenceWorklogComponent
+              data={dataIncidenceWorklog}
+              completed={completedIncidenceWorklog}
+              error={errorIncidenceWorklog}
+              handleOpenModal={inputWorklogModal}
+            />
+          </div>
           <IncidenceHistoryComponent
             data={dataIncidenceHistory}
             completed={completedIncidenceHistory}
