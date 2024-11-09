@@ -96,9 +96,9 @@ const Historic: React.FC = () => {
     <div>
       <Layout title="Historico de Incidencias">
         <div className="row">
-          <div className="col-md-12">
+          <div className="col-lg-12">
             <div className="d-flex my-3">
-              <div className="d-flex align-self-center offset-md-9 col-3">
+              <div className="d-flex align-self-center offset-lg-9 col-3">
                 <input
                   type="text"
                   className="form-control flex-fill"

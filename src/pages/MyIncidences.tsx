@@ -133,7 +133,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
   return (
     <Layout title="Mis Incidencias">
       <div className="row">
-        <div className="offset-md-9 col-md-3">
+        <div className="offset-lg-9 col-lg-3">
           <div className="d-flex my-3">
             <input
               type="text"

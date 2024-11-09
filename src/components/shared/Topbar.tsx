@@ -32,32 +32,35 @@ const Topbar: React.FC<TopbarProps> = ({ isCollapsed, setIsCollapsed, title }) =
   };
 
   return (
-    <div className="d-flex bg-border-topbar justify-content-between align-items-center py-3 px-4">
-      <TopbarBtn icon={faBars} clickHandler={() => setIsCollapsed(!isCollapsed)} />
-      <h4 className="m-0 fw-bold">{title}</h4>
-      <div className="d-flex align-items-center">
-        <TopbarBtn icon={faMoon} clickHandler={toggleTheme} />
-        <div className="dropdown">
-          <button
-            type="button"
-            className="btn dropdown-toggle"
-            id="dropdownMenuButton"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <FontAwesomeIcon icon={faUser} />
-          </button>
-          <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-            <li>
-              <button className="dropdown-item text-danger" onClick={handleLogout}>
-                Cerrar sesión
-              </button>
-            </li>
-          </ul>
+    <div className="bg-border-topbar text-center py-3 px-4">
+      <div className="d-flex justify-content-between align-items-center">
+        <TopbarBtn icon={faBars} clickHandler={() => setIsCollapsed(!isCollapsed)} />
+        <h4 className="m-0 fw-bold">{title}</h4>
+        <div className="d-flex align-items-center">
+          <TopbarBtn icon={faMoon} clickHandler={toggleTheme} />
+          <div className="dropdown">
+            <button
+              type="button"
+              className="btn dropdown-toggle"
+              id="dropdownMenuButton"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <FontAwesomeIcon icon={faUser} />
+            </button>
+            <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+              <li>
+                <button className="dropdown-item text-danger" onClick={handleLogout}>
+                  Cerrar sesión
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
   );
 };
+
 
 export default Topbar;

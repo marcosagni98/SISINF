@@ -1,12 +1,12 @@
 .bg-border-sidebar {
   border-color: #cccccc;
-  border-width: 0px 1px 0px 0px;
+  border-width: 0px 1px 1px 0px;
   border-style: solid;
 }
 
 [data-bs-theme="dark"] .bg-border-sidebar {
     border-color: #555555;
-    border-width: 0px 1px 0px 0px;
+    border-width: 0px 1px 1px 0px;
     border-style: solid;
   }
 
@@ -97,7 +97,7 @@
 }
 
 .your-chat-message {
-    background-color: #33393F;
+    background-color: #55595F;
     color: white;
 }
 

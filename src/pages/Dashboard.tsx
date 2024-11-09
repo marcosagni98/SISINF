@@ -118,7 +118,7 @@ const Dashboard = () => {
       <div className="row">
         {user && user!.role >= UserRole.Technician &&
           <>
-            <div className="col-md-4 mb-4">
+            <div className="col-lg-4 mb-4">
               <ActiveIncidencesComponent
                 data={dataActiveIncidences}
                 completed={completedActiveIncidences}
@@ -126,7 +126,7 @@ const Dashboard = () => {
               />
             </div>
 
-            <div className="col-md-4 mb-4">
+            <div className="col-lg-4 mb-4">
               <AverageIncidencesResolutionTimeComponent
                 data={dataAverageIncidencesResolutionTime}
                 completed={completedAverageIncidencesResolutionTime}
@@ -134,7 +134,7 @@ const Dashboard = () => {
               />
             </div>
 
-            <div className="col-md-4 mb-4">
+            <div className="col-lg-4 mb-4">
               <UserHappinessComponent
                 data={dataUserHappiness}
                 completed={completedUserHappiness}
@@ -146,9 +146,9 @@ const Dashboard = () => {
       </div>
 
       <div className="row">
-        <div className="col-md-12">
+        <div className="col-lg-12">
           <div className="row my-3">
-            <h4 className="col-md-9 fw-bold fs-4">Incidencias Recientes</h4>
+            <h4 className="col-lg-9 fw-bold fs-4">Incidencias Recientes</h4>
             <div className="d-flex align-self-center col">
               <input
                 type="text"

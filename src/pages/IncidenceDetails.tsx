@@ -465,7 +465,7 @@ const IncidenceDetails = () => {
             </div>
             <div class="mb-3">
               <label for="feedBackInput" class="form-label mb-3">Ingrese un comentario si lo desea</label>
-              <textarea id="feedBackInput" class="swal2-input w-100" placeholder="Retroalimentación ..."></textarea>
+              <textarea id="feedBackInput" class="swal2-input w-100 form-control bg-light text-dark border" placeholder="Retroalimentación ..."></textarea>
             </div>
           </div>
         </div>
@@ -530,7 +530,7 @@ const IncidenceDetails = () => {
   return (
     <Layout title="Inicio">
       <div className="row">
-        <div className="col-md-8 mb-4">
+        <div className="col-lg-8 mb-4">
           <IncidenceInfoComponent
             data={
               dataIncidence
@@ -552,7 +552,7 @@ const IncidenceDetails = () => {
             handleSendMessage={sendMessage}
           />
         </div>
-        <div className="col-md-4 mb-4 d-flex flex-column">
+        <div className="col-lg-4 mb-4 d-flex flex-column">
           <IncidenceDetailsComponent
             dataIncidence={
               dataIncidence
