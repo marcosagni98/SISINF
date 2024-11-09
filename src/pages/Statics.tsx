@@ -4,6 +4,12 @@ import OverviewIncidencesComponent from '../components/Statistics/OverviewIncide
 import TotalIncidencesComponent from '../components/Statistics/TotalIncidencesComponent';
 import IncidencesResolutionComponent from '../components/Statistics/IncidencesResolutionComponent';
 
+/** 
+ * Page for displaying statistics related to incidences
+ * This component is responsible for rendering the general layout and the different statistical components,
+ * such as an overview of incidences, total incidences, and incidences resolution.
+ * @returns {JSX.Element} - Renders the layout with the statistical components inside.
+ */
 const Statics: React.FC = () => {
   return (
     <div>

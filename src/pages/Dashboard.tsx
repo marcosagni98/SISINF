@@ -9,7 +9,6 @@ import Layout from "../components/shared/Layout";
 import useFetchActiveIncidences from "../hooks/statistics/useFetchActiveIncidences";
 import useFetchAverageIncidencesResolutionTime from "../hooks/statistics/useFetchAverageIncidencesResolutionTime";
 import useFetchUserHappiness from "../hooks/statistics/useFetchUserHappiness";
-import IncidencesTableComponent from "../components/Incidences/IncidencesTableComponent";
 import useFetchRecentIncidences from "../hooks/incidences/useFetchRecentIncidences";
 import { useAuth } from "../hooks/useAuth";
 import { UserRole } from "../enums/userRole";
@@ -22,9 +21,17 @@ import { NavLink } from "react-router-dom";
 import { PaginationProps } from "../interfaces/shared/PaginationProps";
 import { Tooltip } from "react-tooltip";
 
+/** 
+ * Dashboard page component
+ * Displays various statistics and a table of recent incidences with sorting, filtering, and pagination capabilities.
+ * Fetches data for active incidences, average resolution time, user happiness, and recent incidences.
+ * @returns {JSX.Element} - Renders the layout with components for displaying statistics and recent incidences.
+ */
+
 const Dashboard = () => {
   const { user } = useAuth();
 
+  // State for managing pagination and sorting options for recent incidences
   const [paginationProps, setPaginationProps] = useState<PaginationProps>({
     pageNumber: 1,
     pageSize: 10,
@@ -33,6 +40,7 @@ const Dashboard = () => {
     orderDirection: "asc",
   });
 
+  // Fetch data hooks for statistics components
   const {
     data: dataActiveIncidences,
     completed: completedActiveIncidences,
@@ -61,6 +69,7 @@ const Dashboard = () => {
     fetch: fetchRecentIncidences,
   } = useFetchRecentIncidences();
 
+  // Fetch data on component mount and when paginationProps change
   useEffect(() => {
     fetchActiveIncidences();
     fetchAverageIncidencesResolutionTime();
@@ -68,6 +77,7 @@ const Dashboard = () => {
     fetchRecentIncidences(paginationProps);
   }, [paginationProps]);
 
+  // Table headers configuration for recent incidences table
   const headers = [
     { key: "id", label: "ID", sortable: true },
     { key: "title", label: "Título", sortable: true },
