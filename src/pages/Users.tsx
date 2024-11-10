@@ -74,24 +74,8 @@ const Users: React.FC = () => {
 
   const { put: putUpdateUserRole } = usePutUpdateUserRole();
 
-  const cambiarRol = async (id: number, userType: UserRole) => {
-    if (userType === UserRole.Administrator) {
-      return;
-    }
-
-    let data = null;
-    let error = null;
-
-    switch (userType) {
-      case UserRole.User:
-        ({ data, error } = await putUpdateUserRole(id, UserRole.Technician));
-        break;
-      case UserRole.Technician:
-        ({ data, error } = await putUpdateUserRole(id, UserRole.User));
-        break;
-      default:
-        break;
-    }
+  const cambiarRol = async (id: number, newType: UserRole) => {
+    const { data, error } = await putUpdateUserRole(id, newType);
 
     if (data?.statusCode === 200) {
       Swal.fire({
@@ -104,13 +88,11 @@ const Users: React.FC = () => {
 
       setUsers((prevUsers) => {
         if (!prevUsers) return prevUsers;
-      
+
         return {
           ...prevUsers,
           items: prevUsers.items.map((user) =>
-            user.id === id
-              ? { ...user, userType: userType === UserRole.User ? UserRole.Technician : UserRole.User }
-              : user
+            user.id === id ? { ...user, userType: newType } : user
           ),
           totalCount: prevUsers.totalCount,
         };
@@ -147,21 +129,45 @@ const Users: React.FC = () => {
             data-tooltip-id="action-tooltip"
             data-tooltip-content="Ascender"
             data-tooltip-place="right"
-            onClick={() => cambiarRol(row.id, row.userType)}
+            onClick={() => cambiarRol(row.id, UserRole.Technician)}
           >
             <FontAwesomeIcon icon={faArrowUp} />
           </button>
         ) : row.userType === UserRole.Technician ? (
-          <button
-            className="btn"
-            data-tooltip-id="action-tooltip"
-            data-tooltip-content="Degradar"
-            data-tooltip-place="right"
-            onClick={() => cambiarRol(row.id, row.userType)}
-          >
-            <FontAwesomeIcon icon={faArrowDown} />
-          </button>
-        ) : null,
+          <>
+            <button
+              className="btn"
+              data-tooltip-id="action-tooltip"
+              data-tooltip-content="Degradar"
+              data-tooltip-place="top"
+              onClick={() => cambiarRol(row.id, UserRole.User)}
+            >
+              <FontAwesomeIcon icon={faArrowDown} />
+            </button>
+            <button
+              className="btn"
+              data-tooltip-id="action-tooltip"
+              data-tooltip-content="Ascender"
+              data-tooltip-place="top"
+              onClick={() => cambiarRol(row.id, UserRole.Administrator)}
+            >
+              <FontAwesomeIcon icon={faArrowUp} />
+            </button>
+          </>
+        ) : (
+          row.userType === UserRole.Administrator &&
+          row.id !== 1 && (
+            <button
+              className="btn"
+              data-tooltip-id="action-tooltip"
+              data-tooltip-content="Degradar"
+              data-tooltip-place="right"
+              onClick={() => cambiarRol(row.id, UserRole.Technician)}
+            >
+              <FontAwesomeIcon icon={faArrowDown} />
+            </button>
+          )
+        ),
     },
   ];
 
@@ -172,7 +178,7 @@ const Users: React.FC = () => {
   return (
     <Layout title="Configuracion usuarios">
       <div className="row">
-        <div className="offset-lg-9 col-lg-3">
+        <div className="offset-xl-9 col-xl-3">
           <div className="d-flex my-3">
             <input
               type="text"

@@ -34,7 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isCollapsed }) => {
 
   return (
     <div
-      className={`sidebar bg-border-sidebar ${isCollapsed ? 'd-none' : 'd-lg-block'}`}
+      className={`sidebar bg-border-sidebar ${isCollapsed ? 'd-none' : 'd-xl-block'}`}
       style={{ minWidth: "225px" }}
     >
       <nav className="nav flex-column p-3">

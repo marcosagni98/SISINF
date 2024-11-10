@@ -530,7 +530,7 @@ const IncidenceDetails = () => {
   return (
     <Layout title="Inicio">
       <div className="row">
-        <div className="col-lg-8 mb-4">
+        <div className="col-xl-8 mb-4">
           <IncidenceInfoComponent
             data={
               dataIncidence
@@ -552,17 +552,15 @@ const IncidenceDetails = () => {
             handleSendMessage={sendMessage}
           />
         </div>
-        <div className="col-lg-4 mb-4 d-flex flex-column">
+        <div className="col-xl-4 mb-4 d-flex flex-column">
           <IncidenceDetailsComponent
             dataIncidence={
               dataIncidence
                 ? {
                     priority: dataIncidence.priority,
                     status: dataIncidence.status,
-                    assignedTo:
-                      dataIncidence.technicianId !== null
-                        ? dataIncidence.technicianName
-                        : "Sin asignar",
+                    assignedTo: dataIncidence.technicianId,
+                    assignedName: dataIncidence.technicianName,
                     createdBy: dataIncidence.userId,
                     createdByName: dataIncidence.userName,
                     createdAt: toLocalDate(dataIncidence.createdAt),
