@@ -50,7 +50,7 @@ const IncidencesResolutionComponent: React.FC = () => {
   return (
     <div>
       {dataIncidencesResolution ? (
-        <>
+        <div className="overflow-auto">
           <HeatMap
             width={900}
             className="card p-4"
@@ -93,7 +93,7 @@ const IncidencesResolutionComponent: React.FC = () => {
             }}
           />
           <Tooltip id="my-tooltip" />
-        </>
+        </div>
       ) : (
         <p>No data available</p>
       )}

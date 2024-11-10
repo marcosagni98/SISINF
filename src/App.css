@@ -121,3 +121,7 @@
 .star-input:checked ~ .star-label {
   color: #FFD700;
 }
+
+.row {
+  flex-wrap: wrap;
+}

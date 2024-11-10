@@ -10,6 +10,6 @@ export interface IncidenceDetails {
     createdAt: string;
     userId: number;
     userName: string;
-    technicianId: number | undefined;
+    technicianId: number | null;
     technicianName: string;
 }

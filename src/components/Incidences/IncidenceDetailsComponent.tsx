@@ -20,7 +20,8 @@ import { IncidenceFeedback } from "../../interfaces/incidences/IncidenceFeedback
 interface IncidenceDetails {
   priority: IncidencePriority;
   status: IncidenceStatus;
-  assignedTo: string;
+  assignedTo: number | null;
+  assignedName: string;
   createdBy: number;
   createdByName: string;
   createdAt: string;
@@ -86,6 +87,7 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
 
     eventEmitter.on("technicianUpdated", (newTechnician: string) => {
       setAssignedTo(newTechnician);
+      setStatus(IncidenceStatus.Pending);
     });
 
     eventEmitter.on("feedbackAdded", (eventPayload: IncidenceFeedback) => {
@@ -104,7 +106,7 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
     if (completedIncidence && !errorIncidence) {
       setStatus(dataIncidence!.status);
       setPriority(dataIncidence!.priority);
-      setAssignedTo(dataIncidence!.assignedTo);
+      setAssignedTo(dataIncidence!.assignedTo !== null ? dataIncidence!.assignedName : null);
     }
   }, [completedIncidence, errorIncidence]);
 
@@ -138,7 +140,7 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                       >
-                        {assignedTo}
+                        {assignedTo !== null ? assignedTo : "Sin asignar"}
                       </button>
                       <ul className="dropdown-menu">
                         {technicians!.map((user, index) => {
@@ -160,7 +162,7 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
                       </ul>
                     </div>
                   ) : (
-                    <span>{assignedTo}</span>
+                    <span>{assignedTo ?? "Sin asignar"}</span>
                   )}
                 </>
               )}
@@ -175,7 +177,7 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
                 <Skeleton width={40} />
               ) : (
                 <>
-                  {user && user && user.role >= UserRole.Technician ? (
+                  {user && user && user.role >= UserRole.Technician && assignedTo !== null ? (
                     <div className="dropdown">
                       <button
                         className={`btn dropdown-toggle badge me-2 ${getStatusBadgeClass(
@@ -191,7 +193,7 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
                         {[...incidenceStatusMap].map(
                           ([iteratedStatus, label], index) => {
                             return (
-                              status !== iteratedStatus && (
+                              iteratedStatus !== IncidenceStatus.Unassigned && status !== iteratedStatus && (
                                 <li key={iteratedStatus}>
                                   <button
                                     className="btn dropdown-item"
@@ -219,7 +221,7 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
                     status === IncidenceStatus.Review &&
                     !feedback && (
                       <button
-                        className="btn btn-dark btn-sm mt-2"
+                        className="btn button-main-dark btn-sm mt-2"
                         type="button"
                         onClick={handleValorar}
                       >

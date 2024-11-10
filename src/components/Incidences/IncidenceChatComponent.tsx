@@ -43,8 +43,11 @@ const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
   }, [completed, error, data]);
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    const chatContainer = chatEndRef.current?.parentElement;
+    if (chatContainer) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  }, [messages]);  
 
   const handleSendClick = () => {
     if (newMessage.trim()) {

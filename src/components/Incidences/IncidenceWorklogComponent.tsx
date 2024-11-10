@@ -51,8 +51,8 @@ const IncidenceWorklogComponent: React.FC<IncidenceWorklogProps> = ({
   const totalMinWorked = worklog.reduce((acc, log) => acc + log.minWorked, 0);
 
   return (
-    <div className="d-flex flex-column gap-3">
-      <div className="d-flex justify-content-between align-items-center">
+    <div className="d-flex flex-column">
+      <div className="d-flex justify-content-between align-items-center mb-2">
         <h5>Registro de tiempo {worklog.length > 0 && (<span>({totalMinWorked} min)</span>)}</h5>
         <button className="btn btn-dark" onClick={handleOpenModal}>
           <FontAwesomeIcon icon={faClock}></FontAwesomeIcon> Imputar

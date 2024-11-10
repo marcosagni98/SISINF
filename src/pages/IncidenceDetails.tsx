@@ -453,7 +453,7 @@ const IncidenceDetails = () => {
       html: `
         <div class="d-flex justify-content-center">
           <div class="text-center">
-            <div class="rating-container d-flex flex-row-reverse justify-content-center gap-1 mb-3">
+            <div class="rating-container d-flex flex-row-reverse justify-content-center mb-3">
               ${[5, 4, 3, 2, 1]
                 .map(
                   (i) => `
@@ -465,7 +465,7 @@ const IncidenceDetails = () => {
             </div>
             <div class="mb-3">
               <label for="feedBackInput" class="form-label mb-3">Ingrese un comentario si lo desea</label>
-              <textarea id="feedBackInput" class="swal2-input w-100" placeholder="Retroalimentación ..."></textarea>
+              <textarea id="feedBackInput" class="swal2-input w-100 form-control bg-light text-dark border" placeholder="Retroalimentación ..."></textarea>
             </div>
           </div>
         </div>
@@ -530,7 +530,7 @@ const IncidenceDetails = () => {
   return (
     <Layout title="Inicio">
       <div className="row">
-        <div className="col-8 mb-4">
+        <div className="col-xl-8 mb-4">
           <IncidenceInfoComponent
             data={
               dataIncidence
@@ -552,17 +552,15 @@ const IncidenceDetails = () => {
             handleSendMessage={sendMessage}
           />
         </div>
-        <div className="col-4 mb-4 d-flex flex-column gap-3">
+        <div className="col-xl-4 mb-4 d-flex flex-column">
           <IncidenceDetailsComponent
             dataIncidence={
               dataIncidence
                 ? {
                     priority: dataIncidence.priority,
                     status: dataIncidence.status,
-                    assignedTo:
-                      dataIncidence.technicianId !== null
-                        ? dataIncidence.technicianName
-                        : "Sin asignar",
+                    assignedTo: dataIncidence.technicianId,
+                    assignedName: dataIncidence.technicianName,
                     createdBy: dataIncidence.userId,
                     createdByName: dataIncidence.userName,
                     createdAt: toLocalDate(dataIncidence.createdAt),
@@ -582,12 +580,14 @@ const IncidenceDetails = () => {
             completedFeedback={completedFeedback}
             errorFeedback={errorFeedback}
           />
-          <IncidenceWorklogComponent
-            data={dataIncidenceWorklog}
-            completed={completedIncidenceWorklog}
-            error={errorIncidenceWorklog}
-            handleOpenModal={inputWorklogModal}
-          />
+          <div className="my-3">
+            <IncidenceWorklogComponent
+              data={dataIncidenceWorklog}
+              completed={completedIncidenceWorklog}
+              error={errorIncidenceWorklog}
+              handleOpenModal={inputWorklogModal}
+            />
+          </div>
           <IncidenceHistoryComponent
             data={dataIncidenceHistory}
             completed={completedIncidenceHistory}

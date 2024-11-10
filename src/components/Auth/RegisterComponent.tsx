@@ -105,7 +105,7 @@ const RegisterComponent: React.FC = () => {
               id="repeat-password"
             />
           </div>
-          <div className="d-grid gap-2">
+          <div className="d-grid">
             <button type="submit" className="btn button-main-dark">
               Registrarse
             </button>
