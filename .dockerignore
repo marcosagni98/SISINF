@@ -2,41 +2,41 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=dotenv,react,visualstudiocode
 
 ### dotenv ###
-.env
+**/.env
 
 ### react ###
-.DS_*
-*.log
-logs
-**/*.backup.*
-**/*.back.*
+**/.DS_*
+**/*.log
+**/logs
+**/**/*.backup.*
+**/**/*.back.*
 
-node_modules
-bower_components
+**/node_modules
+**/bower_components
 
-*.sublime*
+**/*.sublime*
 
-psd
-thumb
-sketch
+**/psd
+**/thumb
+**/sketch
 
 ### VisualStudioCode ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
+**/.vscode/*
+!**/.vscode/settings.json
+!**/.vscode/tasks.json
+!**/.vscode/launch.json
+!**/.vscode/extensions.json
+!**/.vscode/*.code-snippets
 
 # Local History for Visual Studio Code
-.history/
+**/.history/
 
 # Built Visual Studio Code Extensions
-*.vsix
+**/*.vsix
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
-.history
-.ionide
+**/.history
+**/.ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/dotenv,react,visualstudiocode
