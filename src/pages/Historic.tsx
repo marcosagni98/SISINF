@@ -61,12 +61,12 @@ const Historic: React.FC = () => {
       ),
     },
     {
-      key: "technicianId",
+      key: "technicianName",
       label: "Resuelto por",
       sortable: true,
-      render: (technicianId: number) => (
+      render: (technicianName: number) => (
         <span>
-          <span>{technicianId ?? "No asignado"}</span>
+          <span>{technicianName}</span>
         </span>
       )
     },
