@@ -125,14 +125,12 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
               <strong>Asignado a:</strong>
             </div>
             <div className="col position-relative">
-              {!completedIncidence ||
-              errorIncidence ||
-              !completedTechnicians ||
-              errorTechnicians ? (
+              {!completedIncidence || errorIncidence ?
+               (
                 <Skeleton width={40} />
               ) : (
                 <>
-                  {user && user && user.role === UserRole.Administrator ? (
+                  {user && user.role === UserRole.Administrator && completedTechnicians && !errorTechnicians ? (
                     <div className="dropdown">
                       <button
                         className="btn dropdown-toggle"
@@ -162,7 +160,7 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
                       </ul>
                     </div>
                   ) : (
-                    <span>{assignedTo ?? "Sin asignar"}</span>
+                    <span>{assignedTo !== null ? assignedTo : "Sin asignar"}</span>
                   )}
                 </>
               )}

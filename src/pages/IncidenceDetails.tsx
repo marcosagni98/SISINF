@@ -284,10 +284,10 @@ const IncidenceDetails = () => {
         return inputElement;
       },
     }).then(async (result) => {
-      if (result.isConfirmed && result.value) {
+      if (result.isConfirmed) {
         const newStatusPayload: UpdateIncidenceStatus = {
           changedBy: user!.id,
-          resolutionDetails: result.value,
+          resolutionDetails: result.value ?? "",
           statusId: newStatus,
         };
 
@@ -303,7 +303,7 @@ const IncidenceDetails = () => {
             changedAt: new Date().toUTCString(),
             changedBy: user!.id,
             changedByUserName: user!.name,
-            resolutionDetails: result.value,
+            resolutionDetails: result.value ?? "",
             status: newStatus,
           };
           eventEmitter.emit("statusUpdated", emitHistoryPayload);
