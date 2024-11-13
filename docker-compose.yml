@@ -1,0 +1,10 @@
+services:
+  web:
+    image: curryllo/front:latest
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - REACT_APP_API_BASE_URL=${API_BASE_URL}
+      - REACT_APP_DEBUG=${DEBUG}

@@ -19,6 +19,13 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Pagination } from "../interfaces/shared/Paginated";
 
+
+/** 
+ * Users page component
+ * Displays a table of all the users registered in the database. It also allows to change users role.
+ * @returns {JSX.Element} - Renders the layout with components for displaying table of users.
+ */
+
 const Users: React.FC = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState<Pagination<UsersTableRow> | null>(null);
@@ -74,6 +81,7 @@ const Users: React.FC = () => {
 
   const { put: putUpdateUserRole } = usePutUpdateUserRole();
 
+  //Function to change users role
   const cambiarRol = async (id: number, userType: UserRole) => {
     if (userType === UserRole.Administrator) {
       return;
