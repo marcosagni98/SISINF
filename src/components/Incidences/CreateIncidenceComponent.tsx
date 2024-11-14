@@ -3,27 +3,32 @@ import { CreateIncidence as CreateIncidenceInterface } from "../../interfaces/in
 import usePostIncidence from "../../hooks/incidences/usePostIncidence";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
-import {
-  IncidencePriority,
-  incidencePriorityMap,
-} from "../../enums/incidencePriority";
+import { IncidencePriority, incidencePriorityMap } from "../../enums/incidencePriority";
 
+/**
+ * Component for creating a new incidence.
+ * Provides a form for users to enter details about the incidence, including title, description, and priority.
+ */
 const CreateIncidenceComponent: React.FC = () => {
+  /** React Router's navigate function */
   const navigate = useNavigate();
 
+  /** State for storing form data including title, description, and priority */
   const [formData, setFormData] = useState<CreateIncidenceInterface>({
     title: "",
     description: "",
     priority: null,
   });
 
+  /** Hook for handling the incidence creation API call */
   const { post: postIncidence } = usePostIncidence();
 
+  /**
+   * Handles changes to input fields.
+   * Updates the formData state based on the field being changed.
+   */
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { id, value } = e.target;
 
@@ -33,15 +38,22 @@ const CreateIncidenceComponent: React.FC = () => {
     }));
   };
 
+  /**
+   * Handles form submission for creating an incidence.
+   * Sends a request to create the incidence and handles success or error responses.
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    /** Validate form fields before submitting */
     if (!validateForm()) {
       return;
     }
 
+    /** Sends the request to create a new incidence */
     const { data, error } = await postIncidence(formData);
 
+    /** Handle successful creation */
     if (data?.statusCode === 201) {
       Swal.fire({
         icon: "success",
@@ -51,7 +63,9 @@ const CreateIncidenceComponent: React.FC = () => {
         timer: 1500,
       });
       navigate("/dashboard");
-    } else if (error) {
+    } 
+    /** Handle creation error */
+    else if (error) {
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -62,6 +76,10 @@ const CreateIncidenceComponent: React.FC = () => {
     }
   };
 
+  /**
+   * Validates the form inputs to ensure all fields are filled correctly.
+   * Displays error messages if any validation fails.
+   */
   const validateForm = () => {
     if (formData.title.trim() === "") {
       Swal.fire({
@@ -71,7 +89,6 @@ const CreateIncidenceComponent: React.FC = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-
       return false;
     }
 
@@ -83,7 +100,6 @@ const CreateIncidenceComponent: React.FC = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-
       return false;
     }
 
@@ -95,29 +111,31 @@ const CreateIncidenceComponent: React.FC = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-
       return false;
     }
 
     return true;
   };
 
+  /**
+   * Checks if the provided value is a valid incidence priority.
+   */
   const isIncidencePriority = (value: any): value is IncidencePriority => {
     return Object.values(IncidencePriority).includes(value);
   };
 
+  /**
+   * Renders the form for creating a new incidence
+   */
   return (
     <div className="card bg-main">
       <div className="card-body">
         <h4 className="fw-bold mb-3">Añadir una incidencia</h4>
-        <p className="text-muted mb-4">
-          Indica de forma detallada la incidencia
-        </p>
+        <p className="text-muted mb-4">Indica de forma detallada la incidencia</p>
         <form onSubmit={handleSubmit}>
+          {/* Input for Title */}
           <div className="mb-3">
-            <label htmlFor="title" className="form-label">
-              Título
-            </label>
+            <label htmlFor="title" className="form-label">Título</label>
             <input
               type="text"
               className="form-control"
@@ -127,10 +145,10 @@ const CreateIncidenceComponent: React.FC = () => {
               onChange={handleChange}
             />
           </div>
+
+          {/* Textarea for Description */}
           <div className="mb-3">
-            <label htmlFor="description" className="form-label">
-              Descripción
-            </label>
+            <label htmlFor="description" className="form-label">Descripción</label>
             <textarea
               className="form-control"
               id="description"
@@ -140,17 +158,17 @@ const CreateIncidenceComponent: React.FC = () => {
               onChange={handleChange}
             ></textarea>
           </div>
+
+          {/* Select for Priority */}
           <div className="mb-4">
-            <label htmlFor="priority" className="form-label">
-              Prioridad
-            </label>
+            <label htmlFor="priority" className="form-label">Prioridad</label>
             <select
               className="form-select"
               id="priority"
               value={formData.priority ?? ""}
               onChange={handleChange}
             >
-              <option value={""}>Seleccione una opción</option>
+              <option value="">Seleccione una opción</option>
               <option value={IncidencePriority.High}>
                 {incidencePriorityMap.get(IncidencePriority.High)}
               </option>
@@ -162,6 +180,8 @@ const CreateIncidenceComponent: React.FC = () => {
               </option>
             </select>
           </div>
+
+          {/* Submit Button */}
           <button type="submit" className="btn button-main-dark">
             Crear Incidencia
           </button>

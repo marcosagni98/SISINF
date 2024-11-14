@@ -3,7 +3,12 @@ import HeatMap from "@uiw/react-heat-map";
 import useFetchIncidencesByDay from "../../hooks/statistics/useFetchIncidencesByDay";
 import { Tooltip } from "react-tooltip";
 
+/**
+ * Component for displaying a heatmap visualization of incidences resolved over the year.
+ * Uses the `HeatMap` component to show data fetched from an API.
+ */
 const IncidencesResolutionComponent: React.FC = () => {
+  // Fetch incidences data using a custom hook
   const {
     data: dataIncidencesResolution,
     completed: completedIncidencesResolution,
@@ -14,6 +19,7 @@ const IncidencesResolutionComponent: React.FC = () => {
   // Local state to store the year dynamically
   const [year, setYear] = useState<number | null>(null);
 
+  // Fetch incidences data on component mount
   useEffect(() => {
     getIncidencesResolution();
   }, []);
@@ -21,6 +27,7 @@ const IncidencesResolutionComponent: React.FC = () => {
   // Update the year based on the first and last date from the API response
   useEffect(() => {
     if (dataIncidencesResolution && dataIncidencesResolution.length > 0) {
+      console.log(dataIncidencesResolution);
       const firstDate = dataIncidencesResolution[0].date;
       const lastDate =
         dataIncidencesResolution[dataIncidencesResolution.length - 1].date;
@@ -40,6 +47,7 @@ const IncidencesResolutionComponent: React.FC = () => {
     }
   }, [dataIncidencesResolution]);
 
+  // Show a loading message or error if the data is not yet fetched or if there's an error
   if (!completedIncidencesResolution || errorIncidencesResolution) {
     return (
       <div>
@@ -47,10 +55,12 @@ const IncidencesResolutionComponent: React.FC = () => {
       </div>
     );
   }
+
   return (
     <div>
-      {dataIncidencesResolution ? (
+      {dataIncidencesResolution && dataIncidencesResolution.length > 0 ? (
         <div className="overflow-auto">
+          {/* Heatmap visualization of the incidences */}
           <HeatMap
             width={900}
             className="card p-4"
@@ -69,6 +79,7 @@ const IncidencesResolutionComponent: React.FC = () => {
               "#6c0012",
             ]}
             rectRender={(props, data) => {
+              // Render each rectangle in the heatmap with a tooltip
               if (!data.count) return <rect {...props} rx="3" ry="3" />;
               return (
                 <rect
@@ -92,10 +103,11 @@ const IncidencesResolutionComponent: React.FC = () => {
               );
             }}
           />
+          {/* Tooltip for displaying count details on hover */}
           <Tooltip id="my-tooltip" />
         </div>
       ) : (
-        <p>No data available</p>
+        <p>No hay incidencias</p>
       )}
     </div>
   );

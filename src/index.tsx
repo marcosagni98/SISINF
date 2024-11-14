@@ -9,12 +9,19 @@ import { AuthProvider } from "./context/AuthContext";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeContext";
 
+// Get the root element where the React app will be mounted
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+/**
+ * Render the React application.
+ * Wraps the App component with providers for authentication, theme, and routing.
+ * Uses React Strict Mode if the application is in DEBUG mode.
+ */
 root.render(
   DEBUG ? (
+    // Strict mode enabled in DEBUG mode for highlighting potential issues
     <React.StrictMode>
       <Router>
         <ThemeProvider>
@@ -25,6 +32,7 @@ root.render(
       </Router>
     </React.StrictMode>
   ) : (
+    // Normal mode for production builds
     <Router>
       <ThemeProvider>
         <AuthProvider>

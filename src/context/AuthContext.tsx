@@ -41,14 +41,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   );
   const [user, setUser] = useState<User | null>(null);
 
+  /**
+   * Effect to decode the token and extract user information.
+   * If the token is expired or invalid, the user is logged out.
+   */
   useEffect(() => {
     if (token) {
       try {
         const decoded = jwtDecode<JwtPayload>(token);
         const currentTime = Date.now() / 1000;
+
+        // Check if the token has expired
         if (decoded.exp < currentTime) {
           logout();
         } else {
+          // Map the decoded role to the UserRole enum
           const roleString = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
 
           const roleMap: { [key: string]: UserRole } = {
@@ -59,6 +66,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
           
           const role = roleMap[roleString];
 
+          // Set user information in state
           setUser({
             email: decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],
             role: role,
@@ -67,6 +75,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
           });
         }
       } catch (error) {
+        // If decoding fails, log the user out
         logout();
       }
     } else {
@@ -74,11 +83,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, [token]);
 
+  /**
+   * Handles user login by setting the token in localStorage and state.
+   */
   const login = (newToken: string) => {
     localStorage.setItem("token", newToken);
     setToken(newToken);
   };
 
+  /**
+   * Handles user logout by clearing the token and user state.
+   * Redirects to the login page.
+   */
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);

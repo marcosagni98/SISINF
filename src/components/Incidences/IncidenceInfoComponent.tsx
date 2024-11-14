@@ -17,6 +17,10 @@ interface IncidenceInfoProps {
   handleEditDescription: () => void;
 }
 
+/**
+ * Component for displaying and editing the title and description of an incidence.
+ * Allows users to edit the title and description if they have the appropriate permissions.
+ */
 const IncidenceInfoComponent: React.FC<IncidenceInfoProps> = ({
   data,
   completed,
@@ -24,9 +28,15 @@ const IncidenceInfoComponent: React.FC<IncidenceInfoProps> = ({
   handleEditTitle,
   handleEditDescription,
 }) => {
+  /** State to store the title of the incidence */
   const [title, setTitle] = useState("");
+  /** State to store the description of the incidence */
   const [description, setDescription] = useState("");
 
+  /**
+   * Listens for updates to the title and description via the event emitter.
+   * Updates the local state when changes occur.
+   */
   useEffect(() => {
     eventEmitter.on("titleUpdated", (newTitle: string) => {
       setTitle(newTitle);
@@ -36,13 +46,16 @@ const IncidenceInfoComponent: React.FC<IncidenceInfoProps> = ({
       setDescription(newDescription);
     });
 
+    /** Cleanup listeners on component unmount */
     return () => {
       eventEmitter.removeAllListeners("titleUpdated");
       eventEmitter.removeAllListeners("descriptionUpdated");
     };
-  }, [])
-  
+  }, []);
 
+  /**
+   * Updates the title and description state when new data is received.
+   */
   useEffect(() => {
     if (completed && !error) {
       setTitle(data!.title);
@@ -50,9 +63,14 @@ const IncidenceInfoComponent: React.FC<IncidenceInfoProps> = ({
     }
   }, [completed, error]);
 
+  /**
+   * Renders the component with editable fields for title and description.
+   * Displays skeleton loaders while data is being fetched.
+   */
   return (
     <div className="card">
       <div className="card-body">
+        {/* Title Section */}
         <div className="d-flex position-relative align-items-start">
           <h4 className="fw-bold mb-3">
             {!completed || error ? <Skeleton height={30} width={100} /> : title}
@@ -65,6 +83,8 @@ const IncidenceInfoComponent: React.FC<IncidenceInfoProps> = ({
             <FontAwesomeIcon icon={faPencil} />
           </button>
         </div>
+
+        {/* Description Section */}
         <div className="d-flex position-relative align-items-start">
           <p className="text-muted mb-4">
             {!completed || error ? (
