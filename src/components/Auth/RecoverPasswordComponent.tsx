@@ -5,26 +5,9 @@ import usePostRecoverPassword from '../../hooks/auth/usePostRecoverPassword';
 import Swal from 'sweetalert2';
 import { RecoverPassword } from '../../interfaces/auth/RecoverPassword';
 
-
-/**
- * RecoverPasswordComponent
- * 
- * Renders a form to initiate a password recovery process. The user provides their email,
- * and upon submission, an API request is made to send password reset instructions.
- * Handles both success and error responses with feedback to the user.
- *
- * @component
- * @returns {React.ReactElement} - The rendered password recovery form
- */
 const RecoverPasswordComponent: React.FC = () => {
   const [formData, setFormData] = useState<RecoverPassword>({ email: '' });
 
-
-  /**
-   * handleChange - Updates the email in formData state when input changes
-   *
-   * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
-   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -33,11 +16,6 @@ const RecoverPasswordComponent: React.FC = () => {
 
   const { post: postRecoverPassword } = usePostRecoverPassword();
 
-  /**
-   * handleSubmit - Submits the form, calling the password recovery API and handling responses
-   *
-   * @param {React.FormEvent} e - Form submission event
-   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 

@@ -17,16 +17,6 @@ interface IncidenceInfoProps {
   handleEditDescription: () => void;
 }
 
-/**
- * IncidenceInfoComponent
- *
- * This component displays the title and description of an incidence. It allows the title
- * and description to be edited through buttons. The component listens for changes in the title
- * and description through events and updates accordingly.
- *
- * @component
- * @returns {React.ReactElement} - The rendered component with title, description, and edit buttons.
- */
 const IncidenceInfoComponent: React.FC<IncidenceInfoProps> = ({
   data,
   completed,
@@ -37,11 +27,6 @@ const IncidenceInfoComponent: React.FC<IncidenceInfoProps> = ({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  /**
-   * useEffect to handle updates to title and description. Listens for events
-   * 'titleUpdated' and 'descriptionUpdated', updating the component’s
-   * title and description states when triggered.
-   */
   useEffect(() => {
     eventEmitter.on("titleUpdated", (newTitle: string) => {
       setTitle(newTitle);
@@ -57,10 +42,7 @@ const IncidenceInfoComponent: React.FC<IncidenceInfoProps> = ({
     };
   }, [])
   
-   /**
-   * useEffect to initially set the title and description once data is fully loaded
-   * and there are no errors. Updates title and description states with data values.
-   */
+
   useEffect(() => {
     if (completed && !error) {
       setTitle(data!.title);
