@@ -35,15 +35,6 @@ import usePostFeedback from "../hooks/incidences/usePostFeedback";
 import { IncidenceFeedback } from "../interfaces/incidences/IncidenceFeedback";
 import useFetchFeedback from "../hooks/incidences/useFetchFeedback";
 
-
-/** 
- * Incidence Details page component
- * Displays the chat of the current incidence, changes history, time register and a details box which includes
- * assignee, status, priority and informer.
- * @returns {JSX.Element} - Renders the layout with components for displaying the chat, time register, changes history
- * and details box.
- */
-
 const IncidenceDetails = () => {
   const { id } = useParams();
   const { user } = useAuth();
@@ -150,7 +141,6 @@ const IncidenceDetails = () => {
     }
   }, [id, user, dataIncidence]);
 
-  //Function that sends a message
   const sendMessage = async (newMessage: string) => {
     if (connection) {
       try {
@@ -169,7 +159,6 @@ const IncidenceDetails = () => {
 
   const { put: putIncidenceInfo } = usePutIncidentInfo();
 
-  //Pop Up to change indicendes title
   const changeTitleModal = () => {
     Swal.fire({
       title: '<h5><FontAwesomeIcon icon="pencil" /> Editar título</h5>',
@@ -221,7 +210,6 @@ const IncidenceDetails = () => {
     });
   };
 
-  //Pop Up to change incidences description
   const changeDescriptionModal = () => {
     Swal.fire({
       title: '<h5><FontAwesomeIcon icon="pencil" /> Editar descripción</h5>',
@@ -277,7 +265,6 @@ const IncidenceDetails = () => {
 
   const { put: putIncidenceStatus } = usePutIncidentStatus();
 
-  //Function to change incidences status
   const changeStatusModal = (newStatus: IncidenceStatus) => {
     Swal.fire({
       title: `<h5><FontAwesomeIcon icon="pencil" /> Cambiar estado a ${incidenceStatusMap.get(
@@ -297,10 +284,10 @@ const IncidenceDetails = () => {
         return inputElement;
       },
     }).then(async (result) => {
-      if (result.isConfirmed && result.value) {
+      if (result.isConfirmed) {
         const newStatusPayload: UpdateIncidenceStatus = {
           changedBy: user!.id,
-          resolutionDetails: result.value,
+          resolutionDetails: result.value ?? "",
           statusId: newStatus,
         };
 
@@ -316,7 +303,7 @@ const IncidenceDetails = () => {
             changedAt: new Date().toUTCString(),
             changedBy: user!.id,
             changedByUserName: user!.name,
-            resolutionDetails: result.value,
+            resolutionDetails: result.value ?? "",
             status: newStatus,
           };
           eventEmitter.emit("statusUpdated", emitHistoryPayload);
@@ -342,7 +329,6 @@ const IncidenceDetails = () => {
 
   const { put: putIncidencePriority } = usePutIncidentPriority();
 
-  //Function to change incidences priority
   const changePriority = async (newPriority: IncidencePriority) => {
     const { data, error } = await putIncidencePriority(parseInt(id!), {
       priorityId: newPriority,
@@ -371,7 +357,6 @@ const IncidenceDetails = () => {
 
   const { put: putIncidentTechnician } = usePutIncidentTechnician();
 
-  //Function to change incidences technician
   const setNewTechnician = async (
     newTechnicianId: number,
     newTechnicianName: string
@@ -404,7 +389,6 @@ const IncidenceDetails = () => {
 
   const { post: postWorklog } = usePostWorklog();
 
-  //Function to add entry in log 
   const inputWorklogModal = () => {
     Swal.fire({
       title: '<h5><FontAwesomeIcon icon="pencil" /> Imputación de tiempo</h5>',
@@ -463,7 +447,6 @@ const IncidenceDetails = () => {
 
   const { post: postFeedback } = usePostFeedback();
 
-  //Pop Up to add incidences rating rating
   const showRatingModal = () => {
     Swal.fire({
       title: "<h5>Valorar resolución de la incidencia</h5>",

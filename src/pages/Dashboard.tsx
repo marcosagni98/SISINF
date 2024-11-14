@@ -21,17 +21,15 @@ import { NavLink } from "react-router-dom";
 import { PaginationProps } from "../interfaces/shared/PaginationProps";
 import { Tooltip } from "react-tooltip";
 
-/** 
+ /** 
  * Dashboard page component
  * Displays various statistics and a table of recent incidences with sorting, filtering, and pagination capabilities.
  * Fetches data for active incidences, average resolution time, user happiness, and recent incidences.
  * @returns {JSX.Element} - Renders the layout with components for displaying statistics and recent incidences.
  */
-
 const Dashboard = () => {
   const { user } = useAuth();
 
-  // State for managing pagination and sorting options for recent incidences
   const [paginationProps, setPaginationProps] = useState<PaginationProps>({
     pageNumber: 1,
     pageSize: 10,
@@ -40,7 +38,6 @@ const Dashboard = () => {
     orderDirection: "asc",
   });
 
-  // Fetch data hooks for statistics components
   const {
     data: dataActiveIncidences,
     completed: completedActiveIncidences,
@@ -69,7 +66,6 @@ const Dashboard = () => {
     fetch: fetchRecentIncidences,
   } = useFetchRecentIncidences();
 
-  // Fetch data on component mount and when paginationProps change
   useEffect(() => {
     fetchActiveIncidences();
     fetchAverageIncidencesResolutionTime();
@@ -77,7 +73,6 @@ const Dashboard = () => {
     fetchRecentIncidences(paginationProps);
   }, [paginationProps]);
 
-  // Table headers configuration for recent incidences table
   const headers = [
     { key: "id", label: "ID", sortable: true },
     { key: "title", label: "Título", sortable: true },
@@ -160,7 +155,7 @@ const Dashboard = () => {
         <div className="col-xl-12">
           <div className="row my-3">
             <h4 className="col-xl-9 fw-bold fs-4">Incidencias Recientes</h4>
-            <div className="d-flex align-self-center col">
+            {/*<div className="d-flex align-self-center col">
               <input
                 type="text"
                 className="form-control flex-fill"
@@ -169,7 +164,7 @@ const Dashboard = () => {
               <button type="button" className="btn button-main flex-fill">
                 <FontAwesomeIcon icon={faSearch} />
               </button>
-            </div>
+            </div>*/}
           </div>
         </div>
         <div className="p-2">

@@ -21,12 +21,6 @@ interface MyIncidencesProps {
   prioridad?: IncidencePriority;
 }
 
-/** 
- * My Incidences component
- * Displays a table of users incidences.
- * @returns {JSX.Element} - Renders the layout with components for displaying table of incidences.
- */
-
 const MyIncidences: React.FC<MyIncidencesProps> = () => {
   const [searchParams] = useSearchParams();
   const prioridad = searchParams.get("prioridad") ? Number(searchParams.get("prioridad")) : null;
@@ -70,7 +64,6 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
     setPaginationProps((prev) => ({ ...prev, pageSize: size, pageNumber: 1 }));
   };
 
-  //Function to sort
   const handleSort = (column: string) => {
     setPaginationProps((prev) => ({
       ...prev,
@@ -79,7 +72,6 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
     }));
   };
 
-  //Function to search
   const handleSearch = () => {
     setPaginationProps((prev) => ({
       ...prev,
@@ -141,7 +133,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
   return (
     <Layout title="Mis Incidencias">
       <div className="row">
-        <div className="offset-xl-9 col-xl-3">
+        {/*<div className="offset-xl-9 col-xl-3">
           <div className="d-flex my-3">
             <input
               type="text"
@@ -163,7 +155,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
               <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
             </button>
           </div>
-        </div>
+        </div>*/}
       </div>
       <div className="row p-2">
         <GenericTableComponent
