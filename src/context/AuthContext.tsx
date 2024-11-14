@@ -32,6 +32,18 @@ export interface JwtPayload {
   exp: number;
 }
 
+/**
+ * AuthProvider Component
+ *
+ * This component provides authentication context to the application. It manages the user's login state, 
+ * including decoding the JWT token and setting the user data. It also handles token expiration and navigation 
+ * after logging out.
+ *
+ * @component
+ * @param {ReactNode} children - The child components that will consume the AuthContext
+ * @returns {React.ReactElement} - The provider component that wraps the application
+ */
+
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
@@ -74,10 +86,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, [token]);
 
+
+  /**
+   * Login Function
+   *
+   * This function is called to log in the user by saving the token in localStorage and updating the state.
+   *
+   * @param {string} newToken - The new authentication token
+   */
+
   const login = (newToken: string) => {
     localStorage.setItem("token", newToken);
     setToken(newToken);
   };
+
+  /**
+   * Logout Function
+   *
+   * This function is called to log out the user by clearing the token and user state 
+   * and navigating to the login page.
+   */
 
   const logout = () => {
     localStorage.removeItem("token");

@@ -21,6 +21,12 @@ import { NavLink } from "react-router-dom";
 import { PaginationProps } from "../interfaces/shared/PaginationProps";
 import { Tooltip } from "react-tooltip";
 
+ /** 
+ * Dashboard page component
+ * Displays various statistics and a table of recent incidences with sorting, filtering, and pagination capabilities.
+ * Fetches data for active incidences, average resolution time, user happiness, and recent incidences.
+ * @returns {JSX.Element} - Renders the layout with components for displaying statistics and recent incidences.
+ */
 const Dashboard = () => {
   const { user } = useAuth();
 

@@ -10,6 +10,19 @@ interface UserHappinessProps {
   error: string | null;
 }
 
+/**
+ * UserHappinessComponent Component
+ *
+ * This component displays the user's happiness ratio and the change in satisfaction from the previous month.
+ * If the data is still loading or an error occurs, it shows a loading skeleton. 
+ * Once the data is successfully fetched, it shows the user's happiness percentage 
+ * and the change ratio from the last month, with an icon indicating if the change is positive or negative.
+ *
+ * @component
+ * @param {UserHappinessProps} props - The component's props.
+ * @returns {React.ReactElement} - A component that shows the user's happiness ratio and the change in satisfaction from the last month.
+ */
+
 const UserHappinessComponent: React.FC<UserHappinessProps> = ({
   data,
   completed,
