@@ -13,6 +13,16 @@ interface IncidenceWorklogProps {
   handleOpenModal: () => void;
 }
 
+/**
+ * IncidenceWorklogComponent
+ *
+ * This component displays the worklog of an incidence, allowing the user to view the time
+ * logged by each technician. It also provides a button to log time entries.
+ * The component listens for new worklog entries via an event emitter and updates the state accordingly.
+ *
+ * @component
+ * @returns {React.ReactElement} - The rendered component with the time log and a button for imputing time.
+ */
 const IncidenceWorklogComponent: React.FC<IncidenceWorklogProps> = ({
   data,
   completed,
@@ -42,6 +52,10 @@ const IncidenceWorklogComponent: React.FC<IncidenceWorklogProps> = ({
     };
   }, []);
 
+  /** 
+   * useEffect hook to listen for the "worklogAdded" event.
+   * Adds new worklog entries when an event with log details is emitted.
+   */
   useEffect(() => {
     if (completed && !error) {
       setWorklog(data!);

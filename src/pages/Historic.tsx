@@ -10,7 +10,15 @@ import PaginationComponent from "../components/shared/PaginationComponent";
 import { IncidenceStatus, incidenceStatusMap } from "../enums/incidenceStatus";
 import { getStatusBadgeClass } from "../utils/getStatusBadgeClass";
 
+/**
+ * Component for displaying the historic incidence data.
+ * Renders the layout, table of historic incidences, and pagination controls.
+ * @returns {JSX.Element} - The rendered Historic component with table and pagination.
+ */
+
 const Historic: React.FC = () => {
+
+  // State for pagination properties, including page number, page size, search term, and sort order
   const [paginationProps, setPaginationProps] = useState<PaginationProps>({
     pageNumber: 1,
     pageSize: 10,
@@ -19,6 +27,7 @@ const Historic: React.FC = () => {
     orderDirection: "asc",
   });
   
+  // Fetch function and state for handling historic incidence data
   const {
     data: dataHistoric,
     completed: completedHistoric,
@@ -26,19 +35,33 @@ const Historic: React.FC = () => {
     fetch: fetchHistoric,
   } = useFetchHistoric();
 
-  
+  // Fetch historic incidence data on component mount or pagination property change
   useEffect(() => {
     fetchHistoric(paginationProps);
   }, [paginationProps]);
 
+
+  /**
+   * Handles page change event for pagination, updating the current page.
+   * @param {number} page - The page number to set.
+   */
   const handlePageChange = (page: number) => {
     setPaginationProps((prev) => ({ ...prev, pageNumber: page }));
   };
 
+  /**
+   * Handles change in page size for pagination, resetting to page 1.
+   * @param {number} size - The number of items per page.
+   */
   const handlePageSizeChange = (size: number) => {
     setPaginationProps((prev) => ({ ...prev, pageSize: size, pageNumber: 1 }));
   };
 
+  /**
+   * Handles sorting of the table based on selected column.
+   * Toggles between ascending and descending order.
+   * @param {string} column - The column to sort by.
+   */
   const handleSort = (column: string) => {
     setPaginationProps((prev) => ({
       ...prev,
@@ -47,6 +70,7 @@ const Historic: React.FC = () => {
     }));
   };
 
+  // Column headers configuration for the incidence table, including sortable columns and custom render functions
   const headers = [
     { key: "id", label: "ID", sortable: true },
     { key: "title", label: "Título", sortable: true },
@@ -88,6 +112,7 @@ const Historic: React.FC = () => {
     },
   ];
 
+  // Calculate total pages for pagination based on the total count and page size
   const totalPages = dataHistoric?.totalCount
   ? Math.ceil(dataHistoric.totalCount / paginationProps.pageSize)
   : 1;

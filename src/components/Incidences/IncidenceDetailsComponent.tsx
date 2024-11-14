@@ -46,6 +46,15 @@ interface IncidenceDetailsProps {
   errorFeedback: string | null;
 }
 
+/**
+ * IncidenceDetailsComponent
+ * 
+ * Component to display and manage details of an incidence, including status, priority, technician assignment, and feedback.
+ * The component allows admins to update the status and priority, assign technicians, and rate the resolution of the incidence.
+ *
+ * @component
+ * @returns {React.ReactElement} - The rendered incidence details component
+ */
 const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
   dataIncidence,
   completedIncidence,
@@ -67,6 +76,9 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
   const [assignedTo, setAssignedTo] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<IncidenceFeedback | null>(null);
 
+  /**
+   * Effect to listen for events to update status, priority, assigned technician, and feedback.
+   */
   useEffect(() => {
     eventEmitter.on(
       "statusUpdated",
@@ -102,6 +114,9 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
     };
   }, []);
 
+  /**
+   * Effect to initialize incident details once data is loaded and error-free.
+   */
   useEffect(() => {
     if (completedIncidence && !errorIncidence) {
       setStatus(dataIncidence!.status);
@@ -110,6 +125,9 @@ const IncidenceDetailsComponent: React.FC<IncidenceDetailsProps> = ({
     }
   }, [completedIncidence, errorIncidence]);
 
+  /**
+   * Effect to initialize feedback once data is loaded and error-free.
+   */
   useEffect(() => {
     if (completedFeedback && !errorFeedback) {
       setFeedback(incidenceFeedback!);

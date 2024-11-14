@@ -1,5 +1,3 @@
-// src/components/Login.tsx
-
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -8,6 +6,17 @@ import { Login as LoginInterface } from "../../interfaces/auth/Login";
 import Swal from "sweetalert2";
 import usePostLogin from "../../hooks/auth/usePostLogin";
 
+
+/**
+ * LoginComponent
+ * 
+ * Renders a login form allowing users to enter their email and password, handles
+ * authentication logic by calling the login API and updating the auth context on success.
+ * Provides navigation to registration and password recovery routes.
+ *
+ * @component
+ * @returns {React.ReactElement} - The rendered login form
+ */
 const LoginComponent: React.FC = () => {
   const [credentials, setCredentials] = useState<LoginInterface>({
     email: "",
@@ -18,7 +27,12 @@ const LoginComponent: React.FC = () => {
   const navigate = useNavigate();
 
   const { post: postLogin } = usePostLogin();
-
+  
+  /**
+   * handleChange - Updates credentials state when input fields change
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
+   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setCredentials((prev) => ({
@@ -27,6 +41,12 @@ const LoginComponent: React.FC = () => {
     }));
   };
 
+  /**
+   * handleSubmit - Submits the login form, calling the login API
+   * and handling success or error responses
+   *
+   * @param {React.FormEvent<HTMLFormElement>} e - Form submission event
+   */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { data, error } = await postLogin(credentials);
