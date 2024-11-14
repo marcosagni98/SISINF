@@ -10,11 +10,16 @@ interface UserHappinessProps {
   error: string | null;
 }
 
+/**
+ * Component to display user satisfaction metrics.
+ * Shows the current user happiness ratio and the change compared to the previous month.
+ */
 const UserHappinessComponent: React.FC<UserHappinessProps> = ({
   data,
   completed,
   error,
 }) => {
+  // Display loading skeletons if data is not yet loaded or if there's an error
   if (!completed || error) {
     return (
       <div className="card p-3 bg-main">
@@ -29,12 +34,14 @@ const UserHappinessComponent: React.FC<UserHappinessProps> = ({
     );
   }
 
+  /** Determine if the change ratio from last month is positive or negative */
   const isNegative = data!.changeRatioFromLastMonth < 0;
   const arrowIcon = isNegative ? faArrowUp : faArrowDown;
   const textClass = isNegative ? "text-danger" : "text-success";
 
   return (
     <div className="card p-3 bg-main">
+      {/* Header for the user happiness section */}
       <h5>Satisfacción del usuario</h5>
       <h2 className="fw-semibold">{data!.happinessRatio * 100}%</h2>
       <p className={textClass}>

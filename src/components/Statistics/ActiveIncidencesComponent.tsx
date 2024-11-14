@@ -10,6 +10,10 @@ interface ActiveIncidencesProps {
   error: string | null;
 }
 
+/**
+ * Component to display the count of active incidences based on their priority (high, medium, low).
+ * Allows navigation to the filtered list of incidences by priority.
+ */
 const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
   data,
   completed,
@@ -17,13 +21,19 @@ const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
 }) => {
   const navigate = useNavigate();
 
+  /**
+   * Handles the click event to navigate to the list of incidences filtered by priority.
+   */
   const handleClick = (priority: IncidencePriority) => {
     navigate(`/mis-incidencias?prioridad=${priority}`);
   };
 
   return (
     <div className="card p-3 bg-main">
+      {/* Header */}
       <h5>Incidencias activas</h5>
+
+      {/* Total number of active incidences */}
       <h2 className="fw-semibold">
         {!completed || error ? (
           <Skeleton height={30} width={50} />
@@ -31,8 +41,11 @@ const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
           data!.total
         )}
       </h2>
+
+      {/* Buttons for filtering by priority */}
       <div className="d-flex justify-content-between text-dark">
         {!completed || error ? (
+          // Display skeletons while loading data
           <>
             <div className="col-4 px-2">
               <Skeleton height={30} width="100%" />
@@ -45,6 +58,7 @@ const ActiveIncidencesComponent: React.FC<ActiveIncidencesProps> = ({
             </div>
           </>
         ) : (
+          // Display buttons with counts based on priority
           <>
             <div className="px-2 col-4">
               <button

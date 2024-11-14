@@ -11,6 +11,10 @@ interface NavItemProps {
   className: string;
 }
 
+/**
+ * Component for rendering a navigation link with an icon and label.
+ * Highlights the link if it is active using React Router's `NavLink`.
+ */
 const NavItem: React.FC<NavItemProps> = ({ to, icon, label, className }) => {
   return (
     <NavLink
@@ -21,6 +25,7 @@ const NavItem: React.FC<NavItemProps> = ({ to, icon, label, className }) => {
         }`
       }
     >
+      {/* Display the icon and label */}
       <FontAwesomeIcon icon={icon} className="me-3" /> {label}
     </NavLink>
   );

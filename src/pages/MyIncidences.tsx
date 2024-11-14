@@ -10,7 +10,7 @@ import {
 } from "../enums/incidencePriority";
 import { IncidenceStatus, incidenceStatusMap } from "../enums/incidenceStatus";
 import { getStatusBadgeClass } from "../utils/getStatusBadgeClass";
-import { faEye, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink, useSearchParams } from "react-router-dom";
 import { PaginationProps } from "../interfaces/shared/PaginationProps";
@@ -25,6 +25,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
   const [searchParams] = useSearchParams();
   const prioridad = searchParams.get("prioridad") ? Number(searchParams.get("prioridad")) : null;
 
+  // State to manage pagination and sorting
   const [paginationProps, setPaginationProps] = useState<PaginationProps>({
     pageNumber: 1,
     pageSize: 10,
@@ -47,15 +48,17 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
     fetch: fetchMyIncidencesPrioridad,
   } = useFetchMyIncidencesPrioridad();
 
+  // Fetch data on component mount and when pagination or priority changes
   useEffect(() => {
     if(prioridad == null){
       fetchMyIncidences(paginationProps);
     }
     else{
-      fetchMyIncidencesPrioridad(paginationProps, prioridad); 
+      fetchMyIncidencesPrioridad(paginationProps, prioridad);
     }
   }, [paginationProps, prioridad]);
 
+  // Handle pagination changes
   const handlePageChange = (page: number) => {
     setPaginationProps((prev) => ({ ...prev, pageNumber: page }));
   };
@@ -64,6 +67,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
     setPaginationProps((prev) => ({ ...prev, pageSize: size, pageNumber: 1 }));
   };
 
+  // Handle sorting by column
   const handleSort = (column: string) => {
     setPaginationProps((prev) => ({
       ...prev,
@@ -123,6 +127,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
     },
   ];
 
+  // Calculate total pages based on the fetched data
   const totalPages = (() => {
     const data = prioridad !== null ? dataMyIncidencesPrioridad : dataMyIncidences;
     return data && data.totalCount
@@ -158,6 +163,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
         </div>*/}
       </div>
       <div className="row p-2">
+        {/* Render the table of incidences */}
         <GenericTableComponent
           headers={headers}
           data={prioridad !== null ? dataMyIncidencesPrioridad?.items || [] : dataMyIncidences?.items || []}
@@ -167,6 +173,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
           sortColumn={paginationProps.orderBy}
           sortDirection={paginationProps.orderDirection}
         />
+        {/* Render pagination controls */}
         <PaginationComponent
           currentPage={paginationProps.pageNumber}
           totalPages={totalPages || 1}
@@ -175,6 +182,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
           onPageSizeChange={handlePageSizeChange}
         />
       </div>
+      {/* Tooltip for action icons */}
       <Tooltip id="action-tooltip" />
     </Layout>
   );

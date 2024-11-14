@@ -8,6 +8,10 @@ interface PaginationProps {
   onPageSizeChange: (size: number) => void;
 }
 
+/**
+ * Component for rendering pagination controls.
+ * Allows users to navigate between pages and change the number of items displayed per page.
+ */
 const PaginationComponent: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
@@ -15,10 +19,17 @@ const PaginationComponent: React.FC<PaginationProps> = ({
   onPageChange,
   onPageSizeChange,
 }) => {
+  /** Maximum number of page buttons to display */
   const maxPageButtons = 5;
+  /** Calculate the starting page number for pagination buttons */
   const startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+  /** Calculate the ending page number for pagination buttons */
   const endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
 
+  /**
+   * Handles changes to the page size dropdown.
+   * Calls the onPageSizeChange callback with the selected size.
+   */
   const handlePageSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newSize = parseInt(e.target.value, 10);
     if (!isNaN(newSize) && newSize > 0) {
@@ -28,7 +39,9 @@ const PaginationComponent: React.FC<PaginationProps> = ({
 
   return (
     <div>
+      {/* Pagination Controls */}
       <div className="d-flex justify-content-center mt-3">
+        {/* Button to navigate to the first page */}
         {currentPage > 1 && (
           <button
             className="btn mx-1 btn-secondary"
@@ -37,6 +50,7 @@ const PaginationComponent: React.FC<PaginationProps> = ({
             Primero
           </button>
         )}
+        {/* Button to navigate to the previous set of pages */}
         {startPage > 1 && (
           <button
             className="btn mx-1 btn-secondary"
@@ -45,6 +59,8 @@ const PaginationComponent: React.FC<PaginationProps> = ({
             &lt;
           </button>
         )}
+
+        {/* Page number buttons */}
         {[...Array(endPage - startPage + 1)].map((_, index) => {
           const page = startPage + index;
           return (
@@ -59,6 +75,8 @@ const PaginationComponent: React.FC<PaginationProps> = ({
             </button>
           );
         })}
+
+        {/* Button to navigate to the next set of pages */}
         {endPage < totalPages && (
           <button
             className="btn mx-1 btn-secondary"
@@ -67,6 +85,7 @@ const PaginationComponent: React.FC<PaginationProps> = ({
             &gt;
           </button>
         )}
+        {/* Button to navigate to the last page */}
         {currentPage < totalPages && (
           <button
             className="btn mx-1 btn-secondary"
@@ -76,6 +95,8 @@ const PaginationComponent: React.FC<PaginationProps> = ({
           </button>
         )}
       </div>
+
+      {/* Page Size Selector */}
       <div className="mt-3">
         <label htmlFor="pageSize" className="me-2">
           Tamaño de página:

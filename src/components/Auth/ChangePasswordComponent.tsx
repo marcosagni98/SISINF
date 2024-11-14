@@ -7,16 +7,32 @@ import { ChangePassword as ChangePasswordInterface } from "../../interfaces/auth
 import { JwtPayload } from "../../context/AuthContext";
 import usePutChangePassword from "../../hooks/auth/usePutChangePassword";
 
+/** 
+ * Main component for changing the password.
+ * Displays a form for users to change their password using a token.
+ */
 const ChangePasswordComponent: React.FC = () => {
+  /** State for storing form data including email and password */
   const [formData, setFormData] = useState<ChangePasswordInterface>({ email: "", password: "" });
+  /** State for storing the repeated password input */
   const [repeatPassword, setRepeatPassword] = useState<string>("");
+
+  /** React Router's navigate function */
   const navigate = useNavigate();
+  /** React Router's location object to access query parameters */
   const location = useLocation();
+
+  /** Hook for sending the change password request */
   const { putData: putChangePassword } = usePutChangePassword();
 
+  /** Extracting the token from the URL query parameters */
   const queryParams = new URLSearchParams(location.search);
   const token = queryParams.get("token");
 
+  /** 
+   * useEffect hook to decode the token and extract the email.
+   * If token is invalid, navigates to the unauthorized page.
+   */
   useEffect(() => {
     if (token) {
       try {
@@ -31,6 +47,10 @@ const ChangePasswordComponent: React.FC = () => {
     }
   }, [location, navigate]);
 
+  /**
+   * Handler for input changes in the password fields.
+   * Updates the form data based on the field being changed.
+   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     if (id === "password") {
@@ -40,9 +60,14 @@ const ChangePasswordComponent: React.FC = () => {
     }
   };
 
+  /**
+   * Handles form submission for changing the password.
+   * Validates passwords and sends a request to update the password.
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    /** Check if the password and repeat password match */
     if (formData.password !== repeatPassword) {
       Swal.fire({
         icon: "error",
@@ -54,8 +79,10 @@ const ChangePasswordComponent: React.FC = () => {
       return;
     }
 
+    /** Sends the change password request using the provided token */
     const { data, error } = await putChangePassword(token!, formData);
 
+    /** Handle the response and show appropriate notifications */
     if (data?.statusCode === 200) {
       Swal.fire({
         icon: "success",
@@ -76,6 +103,9 @@ const ChangePasswordComponent: React.FC = () => {
     }
   };
 
+  /** 
+   * Renders the password change form 
+   */
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-background">
       <div className="card p-4 bg-main" style={{ width: "350px" }}>
