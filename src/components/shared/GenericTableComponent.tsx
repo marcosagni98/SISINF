@@ -25,18 +25,6 @@ interface TableProps<T> {
   sortDirection: SortDirection;
 }
 
-
-/**
- * GenericTableComponent
- *
- * This component renders a generic, sortable table with skeleton loading indicators.
- * It is reusable and accepts dynamic data and headers.
- *
- * @template T - Type of data items displayed in each row.
- * @param {TableProps<T>} props - The component's properties.
- * @returns {React.ReactElement} - Rendered table with headers, data rows, and sorting icons.
- */
-
 const GenericTableComponent = <T extends {}>({
   headers,
   data,
