@@ -11,19 +11,30 @@ interface IncidenceChatProps {
   handleSendMessage: (message: string) => void;
 }
 
+/**
+ * Component for displaying and interacting with a chat related to an incidence.
+ * Allows users to view chat messages and send new ones.
+ */
 const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
   data,
   completed,
   error,
   handleSendMessage,
 }) => {
+  /** Retrieves the current authenticated user */
   const { user } = useAuth();
 
+  /** State to store chat messages */
   const [messages, setMessages] = useState<IncidenceMessage[]>([]);
+  /** State for the current message input by the user */
   const [newMessage, setNewMessage] = useState<string>("");
 
+  /** Reference to the chat end div to scroll into view when new messages arrive */
   const chatEndRef = useRef<HTMLDivElement>(null);
 
+  /**
+   * Listens for new messages being added via the event emitter and updates the chat.
+   */
   useEffect(() => {
     const handleMessageAdded = (eventPayload: IncidenceMessage) => {
       setMessages((prevMessages) => [...prevMessages, eventPayload]);
@@ -31,37 +42,54 @@ const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
 
     eventEmitter.on("messageAdded", handleMessageAdded);
 
+    /** Cleanup listener on component unmount */
     return () => {
       eventEmitter.removeListener("messageAdded", handleMessageAdded);
     };
   }, []);
 
+  /**
+   * Updates the messages state when the data prop changes and the request is completed.
+   */
   useEffect(() => {
     if (completed && !error) {
       setMessages(data!);
     }
   }, [completed, error, data]);
 
+  /**
+   * Scrolls to the bottom of the chat when new messages are added.
+   */
   useEffect(() => {
     const chatContainer = chatEndRef.current?.parentElement;
     if (chatContainer) {
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
-  }, [messages]);  
+  }, [messages]);
 
+  /**
+   * Handles sending a new message when the send button is clicked.
+   * Clears the input field after sending.
+   */
   const handleSendClick = () => {
     if (newMessage.trim()) {
       handleSendMessage(newMessage.trim());
       setNewMessage("");
     }
   };
-  
+
+  /**
+   * Handles sending a message when the Enter key is pressed.
+   */
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSendClick();
     }
   };
 
+  /**
+   * Renders the chat messages and input field for sending new messages.
+   */
   return (
     <div className="card mt-4">
       <div className="card-body">
@@ -87,6 +115,7 @@ const IncidenceChatComponent: React.FC<IncidenceChatProps> = ({
           ))}
           <div ref={chatEndRef} />
         </div>
+        {/* Input for new message and send button */}
         <div className="input-group">
           <input
             type="text"

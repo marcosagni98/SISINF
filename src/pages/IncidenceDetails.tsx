@@ -35,6 +35,7 @@ import usePostFeedback from "../hooks/incidences/usePostFeedback";
 import { IncidenceFeedback } from "../interfaces/incidences/IncidenceFeedback";
 import useFetchFeedback from "../hooks/incidences/useFetchFeedback";
 
+// Componente principal para manejar la vista de detalles de la incidencia
 const IncidenceDetails = () => {
   const { id } = useParams();
   const { user } = useAuth();
@@ -84,6 +85,7 @@ const IncidenceDetails = () => {
     fetch: fetchFeedback,
   } = useFetchFeedback();
 
+  // Verifica si el usuario tiene permiso para ver esta incidencia
   const userAllowed =
     dataIncidence && user
       ? user.role === UserRole.Administrator ||
@@ -91,6 +93,7 @@ const IncidenceDetails = () => {
         dataIncidence.userId === user.id
       : false;
 
+  // Efecto para cargar los datos iniciales y establecer una conexión en tiempo real
   useEffect(() => {
     if (!dataInitialized && id !== undefined && user !== null) {
       const incidenceId = parseInt(id);
@@ -111,6 +114,7 @@ const IncidenceDetails = () => {
       }
     }
 
+    // Configuración de la conexión SignalR para recibir mensajes en tiempo real
     if (userAllowed && user !== null && connection === null) {
       const newConnection = new HubConnectionBuilder()
         .withUrl(`${API_BASE_URL}/messagehub?userId=${user.id}`, {
@@ -141,6 +145,7 @@ const IncidenceDetails = () => {
     }
   }, [id, user, dataIncidence]);
 
+  // Función para enviar un nuevo mensaje a través de SignalR
   const sendMessage = async (newMessage: string) => {
     if (connection) {
       try {
@@ -527,6 +532,7 @@ const IncidenceDetails = () => {
     });
   };
 
+  // Renderiza la interfaz del componente con los detalles de la incidencia
   return (
     <Layout title="Inicio">
       <div className="row">

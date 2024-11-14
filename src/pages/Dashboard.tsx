@@ -21,9 +21,14 @@ import { NavLink } from "react-router-dom";
 import { PaginationProps } from "../interfaces/shared/PaginationProps";
 import { Tooltip } from "react-tooltip";
 
+/**
+ * Dashboard component displaying an overview of statistics and recent incidences.
+ * Includes user-specific data based on roles (e.g., technicians, administrators).
+ */
 const Dashboard = () => {
   const { user } = useAuth();
 
+  // Pagination and sorting state
   const [paginationProps, setPaginationProps] = useState<PaginationProps>({
     pageNumber: 1,
     pageSize: 10,
@@ -60,6 +65,7 @@ const Dashboard = () => {
     fetch: fetchRecentIncidences,
   } = useFetchRecentIncidences();
 
+  // Fetch data on component mount and when pagination changes
   useEffect(() => {
     fetchActiveIncidences();
     fetchAverageIncidencesResolutionTime();
@@ -67,6 +73,7 @@ const Dashboard = () => {
     fetchRecentIncidences(paginationProps);
   }, [paginationProps]);
 
+  // Table headers for displaying recent incidences
   const headers = [
     { key: "id", label: "ID", sortable: true },
     { key: "title", label: "Título", sortable: true },
@@ -108,13 +115,15 @@ const Dashboard = () => {
       ),
     },
   ];
-    
+
+  // Function to handle sorting (to be implemented)
   function handleSort(column: string): void {
     throw new Error("Function not implemented.");
   }
 
   return (
     <Layout title="Inicio">
+      {/* Statistics overview for users with Technician role or higher */}
       <div className="row">
         {user && user!.role >= UserRole.Technician &&
           <>
@@ -145,34 +154,26 @@ const Dashboard = () => {
         }
       </div>
 
+      {/* Recent incidences table */}
       <div className="row">
         <div className="col-xl-12">
           <div className="row my-3">
             <h4 className="col-xl-9 fw-bold fs-4">Incidencias Recientes</h4>
-            {/*<div className="d-flex align-self-center col">
-              <input
-                type="text"
-                className="form-control flex-fill"
-                placeholder="Buscar incidencia"
-              />
-              <button type="button" className="btn button-main flex-fill">
-                <FontAwesomeIcon icon={faSearch} />
-              </button>
-            </div>*/}
           </div>
         </div>
         <div className="p-2">
-        <GenericTableComponent
-          headers={headers}
-          data={dataRecentIncidences?.items || []}
-          completed={completedRecentIncidences}
-          error={errorRecentIncidences}
-          onSort={handleSort}
-          sortColumn={paginationProps.orderBy}
-          sortDirection={paginationProps.orderDirection}
-        />
+          <GenericTableComponent
+            headers={headers}
+            data={dataRecentIncidences?.items || []}
+            completed={completedRecentIncidences}
+            error={errorRecentIncidences}
+            onSort={handleSort}
+            sortColumn={paginationProps.orderBy}
+            sortDirection={paginationProps.orderDirection}
+          />
         </div>
       </div>
+      {/* Tooltip for actions */}
       <Tooltip id="action-tooltip" />
     </Layout>
   );

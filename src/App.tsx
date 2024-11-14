@@ -16,17 +16,24 @@ import LoginPage from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
 import PrivateRoute from "./components/shared/PrivateRoute";
 
+/**
+ * Main application component that defines the routing structure.
+ * Uses `PrivateRoute` to protect certain routes based on authentication and user roles.
+ */
 function App() {
   return (
     <Routes>
+      {/* Public routes */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/recover-password" element={<RecoverPassword />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
       <Route path="/reset-password" element={<ResetPassword />} />
 
+      {/* Redirect all unmatched routes to the dashboard */}
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
 
+      {/* Protected routes (requires authentication) */}
       <Route element={<PrivateRoute />}>
         <Route path="/dashboard" element={<Dashboard />} />
       </Route>
@@ -35,22 +42,27 @@ function App() {
         <Route path="/newincidence" element={<CreateIncidence />} />
       </Route>
 
-      <Route element={<PrivateRoute roles={[UserRole.Administrator]}/>}>
+      {/* Admin-only routes */}
+      <Route element={<PrivateRoute roles={[UserRole.Administrator]} />}>
         <Route path="/users" element={<Users />} />
       </Route>
 
+      {/* User routes */}
       <Route element={<PrivateRoute />}>
         <Route path="/mis-incidencias" element={<MyIncidences />} />
       </Route>
 
-      <Route element={<PrivateRoute roles={[UserRole.Administrator]}/>}>
+      {/* Statistics page accessible to Admin only */}
+      <Route element={<PrivateRoute roles={[UserRole.Administrator]} />}>
         <Route path="/stadistics" element={<Stadistics />} />
       </Route>
 
-      <Route element={<PrivateRoute roles={[UserRole.Technician, UserRole.Administrator]}/>}>
+      {/* Technician and Admin-only routes */}
+      <Route element={<PrivateRoute roles={[UserRole.Technician, UserRole.Administrator]} />}>
         <Route path="/historic" element={<Historic />} />
       </Route>
 
+      {/* Incidence details route accessible to authenticated users */}
       <Route element={<PrivateRoute />}>
         <Route path="/incidence/:id" element={<IncidenceDetails />} />
       </Route>
