@@ -7,15 +7,6 @@ import { ChangePassword as ChangePasswordInterface } from "../../interfaces/auth
 import { JwtPayload } from "../../context/AuthContext";
 import usePutChangePassword from "../../hooks/auth/usePutChangePassword";
 
-/**
- * ChangePasswordComponent
- * 
- * Component that renders a password reset form. It retrieves the email from the token provided in the URL,
- * and allows the user to change their password by entering a new password and confirming it.
- *
- * @component
- * @returns {React.ReactElement} - The rendered password change form
- */
 const ChangePasswordComponent: React.FC = () => {
   const [formData, setFormData] = useState<ChangePasswordInterface>({ email: "", password: "" });
   const [repeatPassword, setRepeatPassword] = useState<string>("");
@@ -26,10 +17,6 @@ const ChangePasswordComponent: React.FC = () => {
   const queryParams = new URLSearchParams(location.search);
   const token = queryParams.get("token");
 
-  /**
-   * useEffect - Decodes token to get user email, then updates formData with the email.
-   * Redirects to /unauthorized if the token is invalid or missing.
-   */
   useEffect(() => {
     if (token) {
       try {
@@ -44,11 +31,6 @@ const ChangePasswordComponent: React.FC = () => {
     }
   }, [location, navigate]);
 
-  /**
-   * handleChange - Handles input changes for password and repeat-password fields
-   *
-   * @param {React.ChangeEvent<HTMLInputElement>} e - The input change event
-   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     if (id === "password") {
@@ -58,12 +40,6 @@ const ChangePasswordComponent: React.FC = () => {
     }
   };
 
-   /**
-   * handleSubmit - Handles form submission for password change
-   * Validates password matching, then attempts password change via API
-   *
-   * @param {React.FormEvent} e - The form submission event
-   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 

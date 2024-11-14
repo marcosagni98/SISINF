@@ -11,22 +11,6 @@ interface AverageIncidencesResolutionTimeProps {
   error: string | null;
 }
 
-/**
- * AverageIncidencesResolutionTimeComponent Component
- *
- * This component displays the average time taken to resolve incidences,
- * as well as the percentage change from the previous month. A loading
- * skeleton is shown while the data is being fetched, and an error message
- * is displayed if there is an issue.
- *
- * @component
- * @param {AverageIncidencesResolutionTimeProps} props - Contains the average
- * resolution time data (`data`), a boolean indicating if loading is complete (`completed`),
- * and an error message (`error`) if an issue occurred during data fetching.
- * @returns {React.ReactElement} - A card component showing average incidence resolution time
- * and the change in resolution time compared to the previous month.
- */
-
 const AverageIncidencesResolutionTimeComponent: React.FC<
   AverageIncidencesResolutionTimeProps
 > = ({ data, completed, error }) => {
