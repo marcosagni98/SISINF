@@ -133,7 +133,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
   return (
     <Layout title="Mis Incidencias">
       <div className="row">
-        <div className="offset-xl-9 col-xl-3">
+        {/*<div className="offset-xl-9 col-xl-3">
           <div className="d-flex my-3">
             <input
               type="text"
@@ -155,7 +155,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
               <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
             </button>
           </div>
-        </div>
+        </div>*/}
       </div>
       <div className="row p-2">
         <GenericTableComponent

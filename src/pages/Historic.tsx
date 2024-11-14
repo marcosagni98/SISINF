@@ -97,7 +97,7 @@ const Historic: React.FC = () => {
       <Layout title="Historico de Incidencias">
         <div className="row">
           <div className="col-xl-12">
-            <div className="d-flex my-3">
+            {/*<div className="d-flex my-3">
               <div className="d-flex align-self-center offset-xl-9 col-3">
                 <input
                   type="text"
@@ -108,8 +108,7 @@ const Historic: React.FC = () => {
                   <FontAwesomeIcon icon={faSearch} />
                 </button>
               </div>
-              {/* Boton de Añadir Usuario */}
-            </div>
+            </div>*/}
           </div>
         </div>
         {/* Tabla de Mis Incidencias */}

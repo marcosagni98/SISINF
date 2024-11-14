@@ -9,6 +9,16 @@ import {
   incidencePriorityMap,
 } from "../../enums/incidencePriority";
 
+/**
+ * CreateIncidenceComponent
+ *
+ * This component renders a form to create a new "incidence". The user provides
+ * details like title, description, and priority level. After validating the data,
+ * the form submits via an API request.
+ *
+ * @component
+ * @returns {React.ReactElement} - The rendered form for incidence creation.
+ */
 const CreateIncidenceComponent: React.FC = () => {
   const navigate = useNavigate();
 
@@ -20,6 +30,11 @@ const CreateIncidenceComponent: React.FC = () => {
 
   const { post: postIncidence } = usePostIncidence();
 
+  /**
+   * handleChange - Updates form data based on user input
+   *
+   * @param {React.ChangeEvent} e - Input event from form fields
+   */
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -33,6 +48,12 @@ const CreateIncidenceComponent: React.FC = () => {
     }));
   };
 
+  /**
+   * handleSubmit - Handles form submission, validating inputs and
+   * making the API call. Displays success or error messages.
+   *
+   * @param {React.FormEvent} e - The form submission event
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
