@@ -27,6 +27,7 @@ const IncidencesResolutionComponent: React.FC = () => {
   // Update the year based on the first and last date from the API response
   useEffect(() => {
     if (dataIncidencesResolution && dataIncidencesResolution.length > 0) {
+      console.log(dataIncidencesResolution);
       const firstDate = dataIncidencesResolution[0].date;
       const lastDate =
         dataIncidencesResolution[dataIncidencesResolution.length - 1].date;
@@ -57,7 +58,7 @@ const IncidencesResolutionComponent: React.FC = () => {
 
   return (
     <div>
-      {dataIncidencesResolution ? (
+      {dataIncidencesResolution && dataIncidencesResolution.length > 0 ? (
         <div className="overflow-auto">
           {/* Heatmap visualization of the incidences */}
           <HeatMap
@@ -106,7 +107,7 @@ const IncidencesResolutionComponent: React.FC = () => {
           <Tooltip id="my-tooltip" />
         </div>
       ) : (
-        <p>No data available</p>
+        <p>No hay incidencias</p>
       )}
     </div>
   );
