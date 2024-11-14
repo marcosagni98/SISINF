@@ -149,7 +149,7 @@ const Dashboard = () => {
         <div className="col-xl-12">
           <div className="row my-3">
             <h4 className="col-xl-9 fw-bold fs-4">Incidencias Recientes</h4>
-            <div className="d-flex align-self-center col">
+            {/*<div className="d-flex align-self-center col">
               <input
                 type="text"
                 className="form-control flex-fill"
@@ -158,7 +158,7 @@ const Dashboard = () => {
               <button type="button" className="btn button-main flex-fill">
                 <FontAwesomeIcon icon={faSearch} />
               </button>
-            </div>
+            </div>*/}
           </div>
         </div>
         <div className="p-2">
