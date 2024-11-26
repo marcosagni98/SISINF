@@ -3,6 +3,14 @@ import { ChangePassword } from "../../interfaces/auth/ChangePassword";
 import { GenericRespone } from "../../interfaces/shared/GenericRespone";
 
 const usePutChangePassword = () => {
+  /** 
+   * 'putData' function: Sends a PUT request to the API to change the password.
+   * It requires an authorization token and the new password data to be sent.
+   * 
+   * @param {string} token - The authorization token to authenticate the user.
+   * @param {ChangePassword} data - The new password data.
+   * @returns {Promise<{ data: GenericRespone | null; error: string | null }>} - A promise that resolves with the response data or error message.
+   */
   const putData = async (token: string, data: ChangePassword): Promise<{ data: GenericRespone | null; error: string | null }>  => {
     try {
       const headers = {

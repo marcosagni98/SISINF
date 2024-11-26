@@ -7,11 +7,7 @@ import PaginationComponent from "../components/shared/PaginationComponent";
 import GenericTableComponent from "../components/shared/GenericTableComponent";
 import { UserRole, userRoleMap } from "../enums/userRole";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowDown,
-  faArrowUp,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { UsersTableRow } from "../interfaces/users/UsersTableRow";
 import { Tooltip } from "react-tooltip";
 import usePutUpdateUserRole from "../hooks/users/usePutUpdateUserRole";
@@ -19,6 +15,10 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Pagination } from "../interfaces/shared/Paginated";
 
+/**
+ * Users page component for managing user roles.
+ * Allows administrators to view, search, sort, and update user roles.
+ */
 const Users: React.FC = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState<Pagination<UsersTableRow> | null>(null);
@@ -36,7 +36,8 @@ const Users: React.FC = () => {
     error: errorUsers,
     fetch: fetchUsers,
   } = useFetchUsers();
-
+  
+  // Fetch data whenever pagination or sorting changes
   useEffect(() => {
     fetchUsers(paginationProps);
   }, [paginationProps]);
@@ -74,6 +75,7 @@ const Users: React.FC = () => {
 
   const { put: putUpdateUserRole } = usePutUpdateUserRole();
 
+  // Handle role change for a specific user
   const cambiarRol = async (id: number, newType: UserRole) => {
     const { data, error } = await putUpdateUserRole(id, newType);
 
@@ -157,15 +159,15 @@ const Users: React.FC = () => {
         ) : (
           row.userType === UserRole.Administrator &&
           row.id !== 1 && (
-            <button
-              className="btn"
-              data-tooltip-id="action-tooltip"
-              data-tooltip-content="Degradar"
-              data-tooltip-place="right"
-              onClick={() => cambiarRol(row.id, UserRole.Technician)}
-            >
-              <FontAwesomeIcon icon={faArrowDown} />
-            </button>
+          <button
+            className="btn"
+            data-tooltip-id="action-tooltip"
+            data-tooltip-content="Degradar"
+            data-tooltip-place="right"
+            onClick={() => cambiarRol(row.id, UserRole.Technician)}
+          >
+            <FontAwesomeIcon icon={faArrowDown} />
+          </button>
           )
         ),
     },
@@ -179,27 +181,6 @@ const Users: React.FC = () => {
     <Layout title="Configuracion usuarios">
       <div className="row">
         <div className="offset-xl-9 col-xl-3">
-        {/*<div className="d-flex my-3">
-            <input
-              type="text"
-              className="form-control flex-fill w-50"
-              placeholder="Buscar usuario"
-              value={paginationProps.search}
-              onChange={(e) =>
-                setPaginationProps((prev) => ({
-                  ...prev,
-                  search: e.target.value,
-                }))
-              }
-            />
-            <button
-              type="button"
-              className="btn button-main ms-2"
-              onClick={handleSearch}
-            >
-              <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
-            </button>
-          </div>*/}
         </div>
       </div>
       <div className="row p-2">
@@ -220,6 +201,7 @@ const Users: React.FC = () => {
           onPageSizeChange={handlePageSizeChange}
         />
       </div>
+      {/* Tooltip for action icons */}
       <Tooltip id="action-tooltip" />
     </Layout>
   );
