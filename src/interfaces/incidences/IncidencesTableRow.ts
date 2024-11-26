@@ -9,12 +9,12 @@ import { IncidenceStatus } from "../../enums/incidenceStatus";
  * @property {string} title - The title or name of the incident.
  * @property {IncidenceStatus} status - The current status of the incident (e.g., Open, In Progress, Resolved).
  * @property {IncidencePriority} priority - The priority level of the incident (e.g., Low, Medium, High).
- * @property {string} assignedTo - The name of the person (technician or user) the incident is assigned to.
+ * @property {string} technicianName - The name of the person (technician or user) the incident is assigned to.
  */
 export interface IncidencesTableRow {
     id: number;
     title: string;
     status: IncidenceStatus;
     priority: IncidencePriority;
-    assignedTo: string;
+    technicianName: string;
 }

@@ -108,7 +108,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
         </span>
       ),
     },
-    { key: "assignedTo", label: "Asignado a", sortable: true },
+    { key: "technicianName", label: "Asignado a", sortable: true },
     {
       key: "id",
       label: "Acciones",
