@@ -174,9 +174,11 @@ const Dashboard = () => {
 
       {/* Recent incidences table */}
       <div className="row">
-        <div className="offset-xl-9 col-xl-3">
+        <div className="col-xl-3">
+          <h4 className="fw-bold fs-4 my-3">Incidencias Recientes</h4>
+        </div>
+        <div className="col-xl-9 d-flex justify-content-end">
           <div className="d-flex my-3">
-            <h4 className="col-xl-3 fw-bold fs-4">Incidencias Recientes</h4>
             <input
               type="text"
               className="form-control flex-fill w-50"
@@ -198,7 +200,7 @@ const Dashboard = () => {
             </button>
           </div>
         </div>
-      </div >
+      </div>
       <div className="row p-2">
         <GenericTableComponent
           headers={headers}
