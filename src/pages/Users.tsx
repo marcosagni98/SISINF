@@ -7,7 +7,7 @@ import PaginationComponent from "../components/shared/PaginationComponent";
 import GenericTableComponent from "../components/shared/GenericTableComponent";
 import { UserRole, userRoleMap } from "../enums/userRole";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown, faArrowUp, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { UsersTableRow } from "../interfaces/users/UsersTableRow";
 import { Tooltip } from "react-tooltip";
 import usePutUpdateUserRole from "../hooks/users/usePutUpdateUserRole";
@@ -181,6 +181,27 @@ const Users: React.FC = () => {
     <Layout title="Configuracion usuarios">
       <div className="row">
         <div className="offset-xl-9 col-xl-3">
+        <div className="d-flex my-3">
+            <input
+              type="text"
+              className="form-control flex-fill w-50"
+              placeholder="Buscar incidencia"
+              value={paginationProps.search}
+              onChange={(e) =>
+                setPaginationProps((prev) => ({
+                  ...prev,
+                  search: e.target.value,
+                }))
+              }
+            />
+            <button
+              type="button"
+              className="btn button-main ms-2"
+              onClick={handleSearch}
+            >
+              <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+            </button>
+          </div>
         </div>
       </div>
       <div className="row p-2">
