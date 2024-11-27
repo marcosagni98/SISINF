@@ -20,6 +20,7 @@ import { getPriorityBadgeClass } from "../utils/getPriorityBadgeClass";
 import { NavLink } from "react-router-dom";
 import { PaginationProps } from "../interfaces/shared/PaginationProps";
 import { Tooltip } from "react-tooltip";
+import useFetchUsers from "../hooks/users/useFetchUsers";
 
 /**
  * Dashboard component displaying an overview of statistics and recent incidences.
@@ -65,22 +66,30 @@ const Dashboard = () => {
     fetch: fetchRecentIncidences,
   } = useFetchRecentIncidences();
 
+  const {
+    data: dataUsers,
+    completed: completedUsers,
+    error: errorUsers,
+    fetch: fetchUsers,
+  } = useFetchUsers();
+
   // Fetch data on component mount and when pagination changes
   useEffect(() => {
     fetchActiveIncidences();
     fetchAverageIncidencesResolutionTime();
     fetchUserHappiness();
     fetchRecentIncidences(paginationProps);
+    fetchUsers(paginationProps);
   }, [paginationProps]);
 
   // Table headers for displaying recent incidences
   const headers = [
-    { key: "id", label: "ID", sortable: true },
-    { key: "title", label: "Título", sortable: true },
+    { key: "id", label: "ID", sortable: false },
+    { key: "title", label: "Título", sortable: false },
     {
       key: "status",
       label: "Estado",
-      sortable: true,
+      sortable: false,
       render: (status: IncidenceStatus) => (
         <span className={`badge ${getStatusBadgeClass(status)}`}>
           {incidenceStatusMap.get(status)}
@@ -90,14 +99,14 @@ const Dashboard = () => {
     {
       key: "priority",
       label: "Prioridad",
-      sortable: true,
+      sortable: false,
       render: (priority: IncidencePriority) => (
         <span className={`badge ${getPriorityBadgeClass(priority)}`}>
           {incidencePriorityMap.get(priority)}
         </span>
       ),
     },
-    { key: "technicianName", label: "Asignado a", sortable: true },
+    { key: "technicianName", label: "Asignado a", sortable: false },
     {
       key: "id",
       label: "Acciones",
@@ -120,6 +129,15 @@ const Dashboard = () => {
   function handleSort(column: string): void {
     throw new Error("Function not implemented.");
   }
+
+  const handleSearch = () => {
+    setPaginationProps((prev) => ({
+      ...prev,
+      pageNumber: 1,
+      search: prev.search,
+    }));
+    fetchUsers(paginationProps);
+  };
 
   return (
     <Layout title="Inicio">
@@ -159,6 +177,27 @@ const Dashboard = () => {
         <div className="col-xl-12">
           <div className="row my-3">
             <h4 className="col-xl-9 fw-bold fs-4">Incidencias Recientes</h4>
+              <div className="d-flex my-3">
+                <input
+                  type="text"
+                  className="form-control flex-fill w-50"
+                  placeholder="Buscar incidencia"
+                  value={paginationProps.search}
+                  onChange={(e) =>
+                    setPaginationProps((prev) => ({
+                      ...prev,
+                      search: e.target.value,
+                    }))
+                  }
+                />
+                <button
+                  type="button"
+                  className="btn button-main ms-2"
+                  onClick={handleSearch}
+                >
+                  <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+                </button>
+              </div>
           </div>
         </div>
         <div className="p-2">

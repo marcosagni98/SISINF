@@ -3,12 +3,13 @@ import Layout from "../components/shared/Layout";
 import useFetchHistoric from "../hooks/historic/useFetchHistoric";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faSearch } from "@fortawesome/free-solid-svg-icons";
 import GenericTableComponent from "../components/shared/GenericTableComponent";
 import PaginationComponent from "../components/shared/PaginationComponent";
 import { PaginationProps } from "../interfaces/shared/PaginationProps";
 import { IncidenceStatus, incidenceStatusMap } from "../enums/incidenceStatus";
 import { getStatusBadgeClass } from "../utils/getStatusBadgeClass";
+import useFetchUsers from "../hooks/users/useFetchUsers";
 
 /**
  * Historic page component that displays a list of historical incidences.
@@ -32,9 +33,17 @@ const Historic: React.FC = () => {
     fetch: fetchHistoric,
   } = useFetchHistoric();
 
+  const {
+    data: dataUsers,
+    completed: completedUsers,
+    error: errorUsers,
+    fetch: fetchUsers,
+  } = useFetchUsers();
+
   // Fetch data whenever pagination or sorting changes
   useEffect(() => {
     fetchHistoric(paginationProps);
+    fetchUsers(paginationProps);
   }, [paginationProps]);
 
   // Handle page change for pagination
@@ -54,6 +63,15 @@ const Historic: React.FC = () => {
       orderBy: column,
       orderDirection: prev.orderDirection === "asc" ? "desc" : "asc",
     }));
+  };
+
+  const handleSearch = () => {
+    setPaginationProps((prev) => ({
+      ...prev,
+      pageNumber: 1,
+      search: prev.search,
+    }));
+    fetchUsers(paginationProps);
   };
 
   // Table headers configuration for the GenericTableComponent
@@ -108,7 +126,27 @@ const Historic: React.FC = () => {
       <Layout title="Historico de Incidencias">
       <div className="row">
         <div className="col-xl-12">
-          {/* Optionally, include a search bar here if needed */}
+        <div className="d-flex my-3">
+              <input
+                type="text"
+                className="form-control flex-fill w-50"
+                placeholder="Buscar incidencia"
+                value={paginationProps.search}
+                onChange={(e) =>
+                  setPaginationProps((prev) => ({
+                    ...prev,
+                    search: e.target.value,
+                  }))
+                }
+              />
+              <button
+                type="button"
+                className="btn button-main ms-2"
+                onClick={handleSearch}
+              >
+                <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+              </button>
+            </div>
         </div>
       </div>
 
