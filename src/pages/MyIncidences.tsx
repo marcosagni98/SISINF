@@ -10,7 +10,7 @@ import {
 } from "../enums/incidencePriority";
 import { IncidenceStatus, incidenceStatusMap } from "../enums/incidenceStatus";
 import { getStatusBadgeClass } from "../utils/getStatusBadgeClass";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink, useSearchParams } from "react-router-dom";
 import { PaginationProps } from "../interfaces/shared/PaginationProps";
@@ -138,7 +138,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
   return (
     <Layout title="Mis Incidencias">
       <div className="row">
-        {/*<div className="offset-xl-9 col-xl-3">
+        <div className="offset-xl-9 col-xl-3">
           <div className="d-flex my-3">
             <input
               type="text"
@@ -160,7 +160,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
               <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
             </button>
           </div>
-        </div>*/}
+        </div>
       </div>
       <div className="row p-2">
         {/* Render the table of incidences */}
