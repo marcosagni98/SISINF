@@ -181,27 +181,27 @@ const Users: React.FC = () => {
     <Layout title="Configuracion usuarios">
       <div className="row">
         <div className="offset-xl-9 col-xl-3">
-          <div className="d-flex my-3">
-              <input
-                type="text"
-                className="form-control flex-fill w-50"
-                placeholder="Buscar incidencia"
-                value={paginationProps.search}
-                onChange={(e) =>
-                  setPaginationProps((prev) => ({
-                    ...prev,
-                    search: e.target.value,
-                  }))
-                }
-              />
-              <button
-                type="button"
-                className="btn button-main ms-2"
-                onClick={handleSearch}
-              >
-                <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
-              </button>
-            </div>
+        <div className="d-flex my-3">
+            <input
+              type="text"
+              className="form-control flex-fill w-50"
+              placeholder="Buscar incidencia"
+              value={paginationProps.search}
+              onChange={(e) =>
+                setPaginationProps((prev) => ({
+                  ...prev,
+                  search: e.target.value,
+                }))
+              }
+            />
+            <button
+              type="button"
+              className="btn button-main ms-2"
+              onClick={handleSearch}
+            >
+              <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+            </button>
+          </div>
         </div>
       </div>
       <div className="row p-2">

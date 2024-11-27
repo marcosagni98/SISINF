@@ -174,47 +174,45 @@ const Dashboard = () => {
 
       {/* Recent incidences table */}
       <div className="row">
-        <div className="col-xl-12">
-          <div className="row my-3">
-            <h4 className="col-xl-9 fw-bold fs-4">Incidencias Recientes</h4>
-              <div className="d-flex my-3">
-                <input
-                  type="text"
-                  className="form-control flex-fill w-50"
-                  placeholder="Buscar incidencia"
-                  value={paginationProps.search}
-                  onChange={(e) =>
-                    setPaginationProps((prev) => ({
-                      ...prev,
-                      search: e.target.value,
-                    }))
-                  }
-                />
-                <button
-                  type="button"
-                  className="btn button-main ms-2"
-                  onClick={handleSearch}
-                >
-                  <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
-                </button>
-              </div>
+        <div className="offset-xl-9 col-xl-3">
+          <div className="d-flex my-3">
+            <h4 className="col-xl-3 fw-bold fs-4">Incidencias Recientes</h4>
+            <input
+              type="text"
+              className="form-control flex-fill w-50"
+              placeholder="Buscar incidencia"
+              value={paginationProps.search}
+              onChange={(e) =>
+                setPaginationProps((prev) => ({
+                  ...prev,
+                  search: e.target.value,
+                }))
+              }
+            />
+            <button
+              type="button"
+              className="btn button-main ms-2"
+              onClick={handleSearch}
+            >
+              <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
+            </button>
           </div>
         </div>
-        <div className="p-2">
-          <GenericTableComponent
-            headers={headers}
-            data={dataRecentIncidences?.items || []}
-            completed={completedRecentIncidences}
-            error={errorRecentIncidences}
-            onSort={handleSort}
-            sortColumn={paginationProps.orderBy}
-            sortDirection={paginationProps.orderDirection}
-          />
-        </div>
+      </div >
+      <div className="row p-2">
+        <GenericTableComponent
+          headers={headers}
+          data={dataRecentIncidences?.items || []}
+          completed={completedRecentIncidences}
+          error={errorRecentIncidences}
+          onSort={handleSort}
+          sortColumn={paginationProps.orderBy}
+          sortDirection={paginationProps.orderDirection}
+        />
       </div>
       {/* Tooltip for actions */}
       <Tooltip id="action-tooltip" />
-    </Layout>
+    </Layout >
   );
 };
 
