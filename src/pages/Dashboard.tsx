@@ -22,10 +22,6 @@ import { PaginationProps } from "../interfaces/shared/PaginationProps";
 import { Tooltip } from "react-tooltip";
 import useFetchUsers from "../hooks/users/useFetchUsers";
 
-/**
- * Dashboard component displaying an overview of statistics and recent incidences.
- * Includes user-specific data based on roles (e.g., technicians, administrators).
- */
 const Dashboard = () => {
   const { user } = useAuth();
 
@@ -37,6 +33,9 @@ const Dashboard = () => {
     orderBy: "id",
     orderDirection: "asc",
   });
+
+  // State to control when to trigger the search
+  const [searchTrigger, setSearchTrigger] = useState<string>("");
 
   const {
     data: dataActiveIncidences,
@@ -73,14 +72,21 @@ const Dashboard = () => {
     fetch: fetchUsers,
   } = useFetchUsers();
 
-  // Fetch data on component mount and when pagination changes
+  // Fetch data on component mount and when search is triggered
   useEffect(() => {
     fetchActiveIncidences();
     fetchAverageIncidencesResolutionTime();
     fetchUserHappiness();
     fetchRecentIncidences(paginationProps);
-    fetchUsers(paginationProps);
-  }, [paginationProps]);
+    
+    // Only fetch users when search is explicitly triggered
+    if (searchTrigger) {
+      fetchUsers({
+        ...paginationProps,
+        search: searchTrigger
+      });
+    }
+  }, [searchTrigger]);
 
   // Table headers for displaying recent incidences
   const headers = [
@@ -131,12 +137,12 @@ const Dashboard = () => {
   }
 
   const handleSearch = () => {
-    setPaginationProps((prev) => ({
+    // Set the search trigger to the current search value
+    setPaginationProps(prev => ({
       ...prev,
-      pageNumber: 1,
-      search: prev.search,
+      pageNumber: 1
     }));
-    fetchUsers(paginationProps);
+    setSearchTrigger(paginationProps.search);
   };
 
   return (
@@ -201,20 +207,25 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className="row p-2">
-        <GenericTableComponent
-          headers={headers}
-          data={dataRecentIncidences?.items || []}
-          completed={completedRecentIncidences}
-          error={errorRecentIncidences}
-          onSort={handleSort}
-          sortColumn={paginationProps.orderBy}
-          sortDirection={paginationProps.orderDirection}
-        />
-      </div>
+      
+      {/* Only render the table if there are recent incidences */}
+      {dataRecentIncidences?.items && dataRecentIncidences.items.length > 0 && (
+        <div className="row p-2">
+          <GenericTableComponent
+            headers={headers}
+            data={dataRecentIncidences.items}
+            completed={completedRecentIncidences}
+            error={errorRecentIncidences}
+            onSort={handleSort}
+            sortColumn={paginationProps.orderBy}
+            sortDirection={paginationProps.orderDirection}
+          />
+        </div>
+      )}
+      
       {/* Tooltip for actions */}
       <Tooltip id="action-tooltip" />
-    </Layout >
+    </Layout>
   );
 };
 
