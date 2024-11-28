@@ -33,13 +33,16 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
     orderBy: "id",
     orderDirection: "asc",
   });
+
+  // State to control when to fetch data
+  const [shouldFetch, setShouldFetch] = useState(true);
+
   const {
     data: dataMyIncidences,
     completed: completedMyIncidences,
     error: errorMyIncidences,
     fetch: fetchMyIncidences,
   } = useFetchMyIncidences();
-
 
   const {
     data: dataMyIncidencesPrioridad,
@@ -48,23 +51,28 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
     fetch: fetchMyIncidencesPrioridad,
   } = useFetchMyIncidencesPrioridad();
 
-  // Fetch data on component mount and when pagination or priority changes
+  // Fetch data only when shouldFetch is true and when pagination or priority changes
   useEffect(() => {
-    if(prioridad == null){
-      fetchMyIncidences(paginationProps);
+    if (shouldFetch) {
+      if(prioridad == null){
+        fetchMyIncidences(paginationProps);
+      }
+      else{
+        fetchMyIncidencesPrioridad(paginationProps, prioridad);
+      }
+      setShouldFetch(false);
     }
-    else{
-      fetchMyIncidencesPrioridad(paginationProps, prioridad);
-    }
-  }, [paginationProps, prioridad]);
+  }, [shouldFetch, paginationProps, prioridad]);
 
   // Handle pagination changes
   const handlePageChange = (page: number) => {
     setPaginationProps((prev) => ({ ...prev, pageNumber: page }));
+    setShouldFetch(true);
   };
 
   const handlePageSizeChange = (size: number) => {
     setPaginationProps((prev) => ({ ...prev, pageSize: size, pageNumber: 1 }));
+    setShouldFetch(true);
   };
 
   // Handle sorting by column
@@ -74,15 +82,23 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
       orderBy: column,
       orderDirection: prev.orderDirection === "asc" ? "desc" : "asc",
     }));
+    setShouldFetch(true);
   };
 
+  // Handle search button click
   const handleSearch = () => {
     setPaginationProps((prev) => ({
       ...prev,
       pageNumber: 1,
-      search: prev.search,
     }));
-    fetchMyIncidences(paginationProps);
+    setShouldFetch(true);
+  };
+
+  // Handle search input key press
+  const handleSearchKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   const headers = [
@@ -151,6 +167,7 @@ const MyIncidences: React.FC<MyIncidencesProps> = () => {
                   search: e.target.value,
                 }))
               }
+              onKeyPress={handleSearchKeyPress}
             />
             <button
               type="button"

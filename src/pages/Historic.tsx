@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, KeyboardEvent } from "react";
 import Layout from "../components/shared/Layout";
 import useFetchHistoric from "../hooks/historic/useFetchHistoric";
 import { NavLink } from "react-router-dom";
@@ -25,6 +25,9 @@ const Historic: React.FC = () => {
     orderDirection: "asc",
   });
 
+  // State to control when to fetch data
+  const [shouldFetch, setShouldFetch] = useState(true);
+
   // Fetch data using custom hook for historic incidences
   const {
     data: dataHistoric,
@@ -42,18 +45,23 @@ const Historic: React.FC = () => {
 
   // Fetch data whenever pagination or sorting changes
   useEffect(() => {
+    if (shouldFetch) {
     fetchHistoric(paginationProps);
     fetchUsers(paginationProps);
-  }, [paginationProps]);
+    }
+    setShouldFetch(false);
+  }, [shouldFetch, paginationProps]);
 
   // Handle page change for pagination
   const handlePageChange = (page: number) => {
     setPaginationProps((prev) => ({ ...prev, pageNumber: page }));
+    setShouldFetch(true);
   };
 
   // Handle page size change for pagination
   const handlePageSizeChange = (size: number) => {
     setPaginationProps((prev) => ({ ...prev, pageSize: size, pageNumber: 1 }));
+    setShouldFetch(true);
   };
 
   // Handle sorting when a column is clicked
@@ -63,15 +71,21 @@ const Historic: React.FC = () => {
       orderBy: column,
       orderDirection: prev.orderDirection === "asc" ? "desc" : "asc",
     }));
+    setShouldFetch(true);
   };
 
   const handleSearch = () => {
     setPaginationProps((prev) => ({
       ...prev,
       pageNumber: 1,
-      search: prev.search,
     }));
-    fetchUsers(paginationProps);
+    setShouldFetch(true);
+  };
+
+  const handleSearchKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   // Table headers configuration for the GenericTableComponent
@@ -138,6 +152,7 @@ const Historic: React.FC = () => {
                   search: e.target.value,
                 }))
               }
+              onKeyPress={handleSearchKeyPress}
             />
             <button
               type="button"

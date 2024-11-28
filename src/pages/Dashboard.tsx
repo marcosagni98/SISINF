@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import { useEffect, useState, KeyboardEvent } from "react";
 import ActiveIncidencesComponent from "../components/Statistics/ActiveIncidencesComponent";
 import AverageIncidencesResolutionTimeComponent from "../components/Statistics/AverageIncidencesResolutionTimeComponent";
 import UserHappinessComponent from "../components/Statistics/UserHappinessComponent";
@@ -38,6 +38,10 @@ const Dashboard = () => {
     orderDirection: "asc",
   });
 
+  // State to control when to fetch data
+  const [shouldFetch, setShouldFetch] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
+
   const {
     data: dataActiveIncidences,
     completed: completedActiveIncidences,
@@ -66,21 +70,23 @@ const Dashboard = () => {
     fetch: fetchRecentIncidences,
   } = useFetchRecentIncidences();
 
-  const {
-    data: dataUsers,
-    completed: completedUsers,
-    error: errorUsers,
-    fetch: fetchUsers,
-  } = useFetchUsers();
 
   // Fetch data on component mount and when pagination changes
   useEffect(() => {
-    fetchActiveIncidences();
-    fetchAverageIncidencesResolutionTime();
-    fetchUserHappiness();
-    fetchRecentIncidences(paginationProps);
-    fetchUsers(paginationProps);
-  }, [paginationProps]);
+    if (shouldFetch) {
+      if (isSearching) {
+        fetchRecentIncidences(paginationProps);
+      }
+      else{
+        fetchActiveIncidences();
+        fetchAverageIncidencesResolutionTime();
+        fetchUserHappiness();
+        fetchRecentIncidences(paginationProps);
+      }
+    }
+    setIsSearching(false);
+    setShouldFetch(false);
+  }, [shouldFetch, isSearching, paginationProps]);
 
   // Table headers for displaying recent incidences
   const headers = [
@@ -128,15 +134,23 @@ const Dashboard = () => {
   // Function to handle sorting (to be implemented)
   function handleSort(column: string): void {
     throw new Error("Function not implemented.");
+    setShouldFetch(true);
   }
 
   const handleSearch = () => {
     setPaginationProps((prev) => ({
       ...prev,
       pageNumber: 1,
-      search: prev.search,
     }));
-    fetchUsers(paginationProps);
+    setIsSearching(true);
+    setShouldFetch(true);
+  };
+
+  // Handle search input key press
+  const handleSearchKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   return (
@@ -190,6 +204,7 @@ const Dashboard = () => {
                   search: e.target.value,
                 }))
               }
+              onKeyPress={handleSearchKeyPress}
             />
             <button
               type="button"
