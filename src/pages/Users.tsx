@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, KeyboardEvent } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Layout from "../components/shared/Layout";
 import useFetchUsers from "../hooks/users/useFetchUsers";
@@ -30,6 +30,9 @@ const Users: React.FC = () => {
     orderDirection: "asc",
   });
 
+    // State to control when to fetch data
+    const [shouldFetch, setShouldFetch] = useState(true);
+
   const {
     data: dataUsers,
     completed: completedUsers,
@@ -39,21 +42,26 @@ const Users: React.FC = () => {
   
   // Fetch data whenever pagination or sorting changes
   useEffect(() => {
-    fetchUsers(paginationProps);
-  }, [paginationProps]);
+    if (shouldFetch) {
+      fetchUsers(paginationProps);
+    }
+    setShouldFetch(false);
+  }, [shouldFetch,paginationProps]);
 
   useEffect(() => {
     if (dataUsers) {
       setUsers(dataUsers);
     }
-  }, [dataUsers]);
+  }, [ dataUsers]);
 
   const handlePageChange = (page: number) => {
     setPaginationProps((prev) => ({ ...prev, pageNumber: page }));
+    setShouldFetch(true);
   };
 
   const handlePageSizeChange = (size: number) => {
     setPaginationProps((prev) => ({ ...prev, pageSize: size, pageNumber: 1 }));
+    setShouldFetch(true);
   };
 
   const handleSort = (column: string) => {
@@ -62,15 +70,22 @@ const Users: React.FC = () => {
       orderBy: column,
       orderDirection: prev.orderDirection === "asc" ? "desc" : "asc",
     }));
+    setShouldFetch(true);
   };
 
   const handleSearch = () => {
     setPaginationProps((prev) => ({
       ...prev,
       pageNumber: 1,
-      search: prev.search,
     }));
-    fetchUsers(paginationProps);
+    setShouldFetch(true);
+  };
+
+  // Handle search input key press
+  const handleSearchKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   const { put: putUpdateUserRole } = usePutUpdateUserRole();
@@ -193,6 +208,7 @@ const Users: React.FC = () => {
                   search: e.target.value,
                 }))
               }
+              onKeyPress={handleSearchKeyPress}
             />
             <button
               type="button"

@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import { useEffect, useState, KeyboardEvent } from "react";
 import ActiveIncidencesComponent from "../components/Statistics/ActiveIncidencesComponent";
 import AverageIncidencesResolutionTimeComponent from "../components/Statistics/AverageIncidencesResolutionTimeComponent";
 import UserHappinessComponent from "../components/Statistics/UserHappinessComponent";
@@ -22,6 +22,10 @@ import { PaginationProps } from "../interfaces/shared/PaginationProps";
 import { Tooltip } from "react-tooltip";
 import useFetchUsers from "../hooks/users/useFetchUsers";
 
+/**
+ * Dashboard component displaying an overview of statistics and recent incidences.
+ * Includes user-specific data based on roles (e.g., technicians, administrators).
+ */
 const Dashboard = () => {
   const { user } = useAuth();
 
@@ -34,8 +38,9 @@ const Dashboard = () => {
     orderDirection: "asc",
   });
 
-  // State to control when to trigger the search
-  const [searchTrigger, setSearchTrigger] = useState<string>("");
+  // State to control when to fetch data
+  const [shouldFetch, setShouldFetch] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
 
   const {
     data: dataActiveIncidences,
@@ -65,28 +70,23 @@ const Dashboard = () => {
     fetch: fetchRecentIncidences,
   } = useFetchRecentIncidences();
 
-  const {
-    data: dataUsers,
-    completed: completedUsers,
-    error: errorUsers,
-    fetch: fetchUsers,
-  } = useFetchUsers();
 
-  // Fetch data on component mount and when search is triggered
+  // Fetch data on component mount and when pagination changes
   useEffect(() => {
-    fetchActiveIncidences();
-    fetchAverageIncidencesResolutionTime();
-    fetchUserHappiness();
-    fetchRecentIncidences(paginationProps);
-    
-    // Only fetch users when search is explicitly triggered
-    if (searchTrigger) {
-      fetchUsers({
-        ...paginationProps,
-        search: searchTrigger
-      });
+    if (shouldFetch) {
+      if (isSearching) {
+        fetchRecentIncidences(paginationProps);
+      }
+      else{
+        fetchActiveIncidences();
+        fetchAverageIncidencesResolutionTime();
+        fetchUserHappiness();
+        fetchRecentIncidences(paginationProps);
+      }
     }
-  }, [searchTrigger]);
+    setIsSearching(false);
+    setShouldFetch(false);
+  }, [shouldFetch, isSearching, paginationProps]);
 
   // Table headers for displaying recent incidences
   const headers = [
@@ -134,15 +134,23 @@ const Dashboard = () => {
   // Function to handle sorting (to be implemented)
   function handleSort(column: string): void {
     throw new Error("Function not implemented.");
+    setShouldFetch(true);
   }
 
   const handleSearch = () => {
-    // Set the search trigger to the current search value
-    setPaginationProps(prev => ({
+    setPaginationProps((prev) => ({
       ...prev,
-      pageNumber: 1
+      pageNumber: 1,
     }));
-    setSearchTrigger(paginationProps.search);
+    setIsSearching(true);
+    setShouldFetch(true);
+  };
+
+  // Handle search input key press
+  const handleSearchKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   return (
@@ -196,6 +204,7 @@ const Dashboard = () => {
                   search: e.target.value,
                 }))
               }
+              onKeyPress={handleSearchKeyPress}
             />
             <button
               type="button"
@@ -207,25 +216,20 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      
-      {/* Only render the table if there are recent incidences */}
-      {dataRecentIncidences?.items && dataRecentIncidences.items.length > 0 && (
-        <div className="row p-2">
-          <GenericTableComponent
-            headers={headers}
-            data={dataRecentIncidences.items}
-            completed={completedRecentIncidences}
-            error={errorRecentIncidences}
-            onSort={handleSort}
-            sortColumn={paginationProps.orderBy}
-            sortDirection={paginationProps.orderDirection}
-          />
-        </div>
-      )}
-      
+      <div className="row p-2">
+        <GenericTableComponent
+          headers={headers}
+          data={dataRecentIncidences?.items || []}
+          completed={completedRecentIncidences}
+          error={errorRecentIncidences}
+          onSort={handleSort}
+          sortColumn={paginationProps.orderBy}
+          sortDirection={paginationProps.orderDirection}
+        />
+      </div>
       {/* Tooltip for actions */}
       <Tooltip id="action-tooltip" />
-    </Layout>
+    </Layout >
   );
 };
 
