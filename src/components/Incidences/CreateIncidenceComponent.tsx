@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CreateIncidence as CreateIncidenceInterface } from "../../interfaces/incidences/CreateIncidence";
 import usePostIncidence from "../../hooks/incidences/usePostIncidence";
+import usePostDescriptionIA from "../../hooks/incidences/usePostDescriptionIA";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { IncidencePriority, incidencePriorityMap } from "../../enums/incidencePriority";
@@ -23,6 +24,8 @@ const CreateIncidenceComponent: React.FC = () => {
   /** Hook for handling the incidence creation API call */
   const { post: postIncidence } = usePostIncidence();
 
+  const { post: postDescription } = usePostDescriptionIA();
+
   /**
    * Handles changes to input fields.
    * Updates the formData state based on the field being changed.
@@ -36,6 +39,42 @@ const CreateIncidenceComponent: React.FC = () => {
       ...prevData,
       [id]: id === "priority" ? parseInt(value) : value,
     }));
+  };
+
+  useEffect(() => {
+    console.log('Componente re-renderizado. Datos actuales:', formData);
+  }, [formData]); // Este efecto se ejecutará cada vez que formData cambie
+
+  const handleImproveDescription = async () => {
+    const { data, error } = await postDescription({
+      title: formData.title,
+      currentDescription: formData.description, 
+    });
+    console.log(data);
+    console.log(formData.title);
+    console.log(formData.description);
+    if (data) {
+      // Update the form fields with the data returned by the API
+      setFormData((prevData) => ({
+        ...prevData,
+        description: data.improveDescription, // assuming the API response contains 'improvedDescription'
+      }));
+      Swal.fire({
+        icon: "success",
+        title: "Descripción mejorada",
+        text: "La descripción ha sido mejorada con IA",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } else if (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
   /**
@@ -63,7 +102,7 @@ const CreateIncidenceComponent: React.FC = () => {
         timer: 1500,
       });
       navigate("/dashboard");
-    } 
+    }
     /** Handle creation error */
     else if (error) {
       Swal.fire({
@@ -186,6 +225,10 @@ const CreateIncidenceComponent: React.FC = () => {
             Crear Incidencia
           </button>
         </form>
+        {/* Button to improve description with AI */}
+        <button className="btn button-main-dark mt-2" onClick={handleImproveDescription}>
+          Mejorar descripción con IA
+        </button>
       </div>
     </div>
   );
