@@ -46,7 +46,7 @@ const CreateIncidenceComponent: React.FC = () => {
     }
 
     const { data, error } = await postDescription({
-      title: '',
+      title: formData.title,
       currentDescription: formData.description, 
     });
 
